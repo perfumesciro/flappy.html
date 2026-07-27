@@ -181,17 +181,46 @@ nav a:hover{
 }
 
 .inicio h1{
-    position: relative;
-    display: inline-block;
-    padding: 35px 50px;
-}
 
-.inicio h1{
+    position: relative;
+
+    display: inline-block;
+
     font-size:62px;
     color:var(--verde);
     font-weight:800;
     line-height:1.2;
+
     margin-bottom:25px;
+
+    z-index:2;
+}
+.inicio h1::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:260px;
+    height:260px;
+
+    left:50%;
+    top:40%;
+
+    transform:translate(-50%,-50%);
+
+    background:url("imagenes/logo.png") center center no-repeat;
+
+    background-size:contain;
+
+    opacity:.18;
+
+    filter:blur(3px);
+
+    z-index:-1;
+
+    pointer-events:none;
+
 }
 
 .inicio p{
