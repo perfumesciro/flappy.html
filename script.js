@@ -128,34 +128,30 @@ window.addEventListener("scroll",()=>{
 const subir = document.createElement("button");
 
 subir.innerHTML = "⬆";
-
 subir.className = "subir";
 
 document.body.appendChild(subir);
 
-window.addEventListener("scroll",()=>{
+window.addEventListener("scroll", () => {
 
-    if(window.scrollY > 500){
-
-        subir.style.display="flex";
-
-    }else{
-
-        subir.style.display="none";
-
+    if (window.scrollY > 500) {
+        subir.style.display = "flex";
+    } else {
+        subir.style.display = "none";
     }
 
 });
 
-subir.addEventListener("click",()=>{
+subir.addEventListener("click", () => {
 
     window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
-        top:0,
+});
 
-        behavior:"smooth"
-
- });
+/* PANTALLA DE CARGA */
 
 window.addEventListener("load", () => {
 
@@ -163,6 +159,6 @@ window.addEventListener("load", () => {
 
     setTimeout(() => {
         loader.style.display = "none";
-    }, 20);
+    }, 800);
 
 });
