@@ -133,11 +133,31 @@ nav a:hover{
 }
 
 .inicio h1{
-    font-size:62px;
-    color:var(--verde);
-    font-weight:800;
-    line-height:1.2;
-    margin-bottom:25px;
+    position: relative;
+    display: inline-block;
+    padding: 35px 50px;
+}
+
+.inicio h1::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+
+    border-top: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+
+    box-shadow:
+        inset 12px 12px 0 -8px #0f7c36,
+        inset -12px 12px 0 -8px #0f7c36,
+        inset 12px -12px 0 -8px #0f7c36,
+        inset -12px -12px 0 -8px #0f7c36,
+        0 0 20px rgba(15,124,54,.5);
+
+    filter: blur(1px);
+    pointer-events: none;
 }
 
 .inicio p{
