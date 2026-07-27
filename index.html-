@@ -1,27 +1,393 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird</title>
-    <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pedro Clean Market</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
+
 <body>
 
-<div id="menu">
-    <h1>🐦 Flappy Bird</h1>
-    <button id="startBtn">Jugar</button>
+<!-- HEADER -->
+
+<header>
+
+<div class="logo">
+Pedro Clean Market
 </div>
 
-<canvas id="gameCanvas" width="400" height="600"></canvas>
+<nav>
 
-<div id="gameOver">
-    <h1>Game Over</h1>
-    <p id="scoreText"></p>
-    <button onclick="location.reload()">Volver a jugar</button>
+<a href="#inicio">Inicio</a>
+<a href="#nosotros">¿Por qué elegirnos?</a>
+<a href="#productos">Productos</a>
+<a href="#contacto">Contacto</a>
+
+</nav>
+
+</header>
+
+<!-- INICIO -->
+
+<section class="inicio" id="inicio">
+
+<div class="inicio-texto">
+
+<h1>
+🌿 Limpieza que transforma cada espacio
+</h1>
+
+<p>
+
+En <strong>Pedro Clean Market</strong> encontrás productos de limpieza de excelente calidad para hogares, comercios y empresas.
+
+</p>
+
+<a href="#productos" class="boton">
+Ver productos
+</a>
+
 </div>
+
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+
+<section class="porque" id="nosotros">
+
+<h2>
+
+¿Por qué elegir Pedro Clean Market?
+
+</h2>
+
+<div class="beneficios">
+
+<div class="beneficio">
+
+<div class="emoji">
+🌿
+</div>
+
+<h3>
+Calidad Garantizada
+</h3>
+
+<p>
+Productos seleccionados para lograr una limpieza profesional.
+</p>
+
+</div>
+
+<div class="beneficio">
+
+<div class="emoji">
+🧼
+</div>
+
+<h3>
+Gran Rendimiento
+</h3>
+
+<p>
+Fórmulas concentradas que duran mucho más.
+</p>
+
+</div>
+
+<div class="beneficio">
+
+<div class="emoji">
+🚚
+</div>
+
+<h3>
+Entrega Rápida
+</h3>
+
+<p>
+Atención personalizada y envíos rápidos.
+</p>
+
+</div>
+
+
+
+</div>
+
+</section><!-- PRODUCTOS -->
+
+<section class="productos" id="productos">
+
+<h2>
+Nuestros Productos
+</h2>
+
+<div class="categorias">
+
+<button class="categoria activo" data-categoria="todos">
+Todos
+</button>
+
+<button class="categoria" data-categoria="pisos">
+Pisos
+</button>
+
+<button class="categoria" data-categoria="ropa">
+Ropa
+</button>
+
+<button class="categoria" data-categoria="cocina">
+Cocina
+</button>
+
+<button class="categoria" data-categoria="manos">
+Manos
+</button>
+
+<button class="categoria" data-categoria="bolsas">
+Bolsas
+</button>
+
+</div>
+
+<div class="productos-grid">
+
+
+<div class="producto" data-categoria="cocina">
+
+<img src="imagenes/detergente.png" alt="Detergente">
+
+<h3>
+Detergente 12% amarillo
+</h3>
+
+<p>
+Ideal para una limpieza profunda de platos y utensilios.
+</p>
+
+<a href="#" class="whatsapp" data-producto="Detergente 12%">
+<i class="fa-brands fa-whatsapp"></i>
+Consultar
+</a>
+
+</div>
+
+
+
+<div class="producto" data-categoria="ropa">
+
+<img src="jabon.png" alt="Jabón líquido">
+
+<h3>
+Jabón Líquido para Ropa 15% azul baja espuma 
+</h3>
+
+<p>
+Limpieza eficaz con excelente rendimiento.
+</p>
+
+<a href="#" class="whatsapp" data-producto="Jabón Líquido para Ropa">
+<i class="fa-brands fa-whatsapp"></i>
+Consultar
+</a>
+
+</div>
+
+
+
+<div class="producto" data-categoria="ropa">
+
+<img src="imagenes/suavizante.png" alt="Suavizante">
+
+<h3>
+Suavizante para Ropa Triple Perfume Celeste
+</h3>
+
+<p>
+Suavidad, perfume duradero y frescura para toda tu ropa.
+</p>
+
+<a href="#" class="whatsapp" data-producto="Suavizante para Ropa Triple Perfume Celeste">
+<i class="fa-brands fa-whatsapp"></i>
+Consultar
+</a>
+
+</div>
+
+
+
+<div class="producto" data-categoria="manos">
+
+<img src="imagenes/jabon-manos.png" alt="Jabón para manos">
+
+<h3>
+Jabón para Manos
+</h3>
+
+<p>
+Limpieza e higiene diaria con una suave fragancia.
+</p>
+
+<a href="#" class="whatsapp" data-producto="Jabón para Manos">
+<i class="fa-brands fa-whatsapp"></i>
+Consultar
+</a>
+
+</div>
+
+
+
+<div class="producto" data-categoria="limpieza">
+
+<img src="imagenes/desinfectante.png" alt="Desinfectante">
+
+<h3>
+Desinfectante de pisos,desodorantes concentrados linea plus
+Procenex citrico 
+</h3>
+
+<p>
+Limpieza y frescura para mantener tus espacios impecables.
+</p>
+
+<a href="#" class="whatsapp" data-producto="Desinfectante">
+<i class="fa-brands fa-whatsapp"></i>
+Consultar
+</a>
+
+</div>
+
+
+
+<div class="producto" data-categoria="limpieza">
+
+<img src="imagenes/desengrasante.png" alt="Desengrasante">
+
+<h3>
+Desengrasante Multiuso
+</h3>
+
+<p>
+Elimina grasa y suciedad en diferentes superficies.
+</p>
+
+<a href="#" class="whatsapp" data-producto="Desengrasante Multiuso">
+<i class="fa-brands fa-whatsapp"></i>
+Consultar
+</a>
+
+</div>
+
+
+
+<div class="producto" data-categoria="bolsas">
+
+<img src="imagenes/bolsas.png" alt="Bolsas">
+
+<h3>
+Bolsas de Residuos
+</h3>
+
+<p>
+Resistentes y prácticas para el hogar o comercio.
+</p>
+
+<a href="#" class="whatsapp" data-producto="Bolsas de Residuos">
+<i class="fa-brands fa-whatsapp"></i>
+Consultar
+</a>
+
+</div>
+
+
+</div>
+
+</section><!-- CONTACTO -->
+
+<footer id="contacto">
+
+<div class="footer-contenido">
+
+<h2>
+Pedro Clean Market
+</h2>
+
+<p>
+
+💚 La limpieza comienza con productos de calidad.
+
+</p>
+
+<p>
+
+Atención personalizada para hogares, comercios y empresas.
+
+</p>
+
+<div class="contacto">
+
+<a href="https://wa.me/5491171005652" target="_blank" class="boton-whatsapp">
+
+<i class="fa-brands fa-whatsapp"></i>
+
+Escribinos por WhatsApp
+
+</a>
+
+<h3>
+
+</h3>
+
+</div>
+
+</div>
+
+</footer>
+
+<!-- BOTÓN FLOTANTE -->
+
+<a href="https://wa.me/5491171005652"
+class="whatsapp-flotante"
+target="_blank">
+
+<i class="fa-brands fa-whatsapp"></i>
+
+</a>
 
 <script src="script.js"></script>
 
-</body>
+</body><!-- PANTALLA DE CARGA -->
+
+<div id="loader">
+
+    <div class="loader-contenido">
+
+        <div class="esponja">
+            🧽
+        </div>
+
+        <h2>
+            Pedro Clean Market
+        </h2>
+
+        <p>
+            Cargando<span></span>
+        </p>
+
+    </div>
+
+</div>
+  
+
 </html>
