@@ -155,12 +155,14 @@ subir.addEventListener("click",()=>{
 
         behavior:"smooth"
 
-    });
+ });
 
-});window.addEventListener("load",()=>{
+window.addEventListener("load", () => {
 
     const loader = document.getElementById("loader");
 
-    loader.style.display="none";
+    setTimeout(() => {
+        loader.style.display = "none";
+    }, 3000);
 
 });
