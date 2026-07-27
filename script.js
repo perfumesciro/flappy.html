@@ -163,6 +163,6 @@ window.addEventListener("load", () => {
 
     setTimeout(() => {
         loader.style.display = "none";
-    }, 300);
+    }, 20);
 
 });
