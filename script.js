@@ -159,6 +159,6 @@ window.addEventListener("load", () => {
 
     setTimeout(() => {
         loader.style.display = "none";
-    }, 800);
+    }, 1000);
 
 });
