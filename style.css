@@ -201,21 +201,22 @@ nav a:hover{
 
     position:absolute;
 
-    width:260px;
-    height:260px;
+    width:240px;
+    height:240px;
 
     left:50%;
-    top:40%;
 
-    transform:translate(-50%,-50%);
+    top:-30px;
 
-    background:url("logo.png") center center no-repeat;
+    transform:translateX(-50%);
+
+    background:url("imagenes/logo.png") center center no-repeat;
 
     background-size:contain;
 
-    opacity:.18;
+    opacity:.30;
 
-    filter:blur(3px);
+    filter:blur(1.5px);
 
     z-index:-1;
 
