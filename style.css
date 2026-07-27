@@ -140,17 +140,44 @@ nav a:hover{
     z-index:1;
 
 }
-.inicio-texto{
-    max-width:850px;
-    position:relative;
-    z-index:2;
 
-    border:none;
-    outline:none;
-    box-shadow:none;
-    background:transparent;
-    border-radius:0;
-    padding:0;
+.inicio-texto{
+
+    position: relative;
+
+    max-width: 900px;
+
+    margin: auto;
+
+    z-index: 2;
+
+}
+.inicio-texto::before{
+
+    content: "";
+
+    position: absolute;
+
+    top: 45%;
+    left: 50%;
+
+    width: 520px;
+    height: 520px;
+
+    transform: translate(-50%, -50%);
+
+    background: url("imagenes/logo.png") center center no-repeat;
+
+    background-size: contain;
+
+    opacity: .08;
+
+    filter: blur(4px);
+
+    z-index: -1;
+
+    pointer-events: none;
+
 }
 
 .inicio h1{
