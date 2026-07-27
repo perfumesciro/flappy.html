@@ -1,192 +1,166 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+/* ===================================
+   PEDRO CLEAN MARKET
+   SCRIPT.JS - PARTE 1
+=================================== */
 
-const menu = document.getElementById("menu");
-const startBtn = document.getElementById("startBtn");
-const gameOver = document.getElementById("gameOver");
-const scoreText = document.getElementById("scoreText");
+/* FILTRO DE PRODUCTOS */
 
-let gameRunning = false;
-let animationId;
+const botones = document.querySelectorAll(".categoria");
+const productos = document.querySelectorAll(".producto");
 
-const bird = {
-    x: 80,
-    y: 250,
-    width: 40,
-    height: 30,
-    velocity: 0,
-    gravity: 0.45,
-    jump: -8
-};
+botones.forEach(boton => {
 
-let score = 0;
+    boton.addEventListener("click", () => {
 
-const pipes = [];
-const pipeWidth = 70;
-const gap = 170;
-let pipeSpeed = 3;
+        botones.forEach(btn => btn.classList.remove("activo"));
+        boton.classList.add("activo");
 
-startBtn.addEventListener("click", () => {
-    menu.style.display = "none";
-    canvas.style.display = "block";
+        const categoria = boton.dataset.categoria;
 
-    gameRunning = true;
-    score = 0;
+        productos.forEach(producto => {
 
-    bird.y = 250;
-    bird.velocity = 0;
+            if (
+                categoria === "todos" ||
+                producto.dataset.categoria === categoria
+            ) {
 
-    pipes.length = 0;
+                producto.style.display = "block";
 
-    createPipe();
+            } else {
 
-    update();
-});
+                producto.style.display = "none";
 
-function jump() {
-    if (gameRunning) {
-        bird.velocity = bird.jump;
-    }
-}
+            }
 
-document.addEventListener("keydown", e => {
-    if (e.code === "Space") jump();
-});
+        });
 
-canvas.addEventListener("click", jump);
-
-function createPipe() {
-
-    const topHeight = Math.random() * 250 + 50;
-
-    pipes.push({
-        x: canvas.width,
-        top: topHeight,
-        bottom: topHeight + gap,
-        passed: false
     });
 
-}
+});
 
-setInterval(() => {
-    if (gameRunning)
-        createPipe();
-}, 1800);
 
-function drawBird() {
+/* BOTONES DE WHATSAPP */
 
-    ctx.fillStyle = "yellow";
+const botonesWhatsapp = document.querySelectorAll(".whatsapp");
 
-    ctx.beginPath();
-    ctx.arc(
-        bird.x + bird.width / 2,
-        bird.y + bird.height / 2,
-        bird.width / 2,
-        0,
-        Math.PI * 2
-    );
-    ctx.fill();
+botonesWhatsapp.forEach(boton => {
 
-    ctx.fillStyle = "black";
-    ctx.beginPath();
-    ctx.arc(bird.x + 28, bird.y + 12, 3, 0, Math.PI * 2);
-    ctx.fill();
+    boton.addEventListener("click", function(e){
 
-    ctx.fillStyle = "orange";
-    ctx.beginPath();
-    ctx.moveTo(bird.x + 40, bird.y + 15);
-    ctx.lineTo(bird.x + 50, bird.y + 18);
-    ctx.lineTo(bird.x + 40, bird.y + 22);
-    ctx.closePath();
-    ctx.fill();
+        e.preventDefault();
 
-}
+        const producto = this.dataset.producto;
 
-function drawPipes() {
+        const numero = "5491171005652";
 
-    ctx.fillStyle = "#1db954";
+        const mensaje =
+        `Hola 👋, me interesa el producto: ${producto}`;
 
-    pipes.forEach(pipe => {
+        window.open(
 
-        pipe.x -= pipeSpeed;
+        `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`,
 
-        // tubo superior
-        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+        "_blank"
 
-        // tubo inferior
-        ctx.fillRect(
-            pipe.x,
-            pipe.bottom,
-            pipeWidth,
-            canvas.height - pipe.bottom
         );
 
-        // sumar puntos
-        if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
-            pipe.passed = true;
-            score++;
-        }
+    });
 
-        // colisiones
-        if (
-            bird.x + bird.width > pipe.x &&
-            bird.x < pipe.x + pipeWidth &&
-            (
-                bird.y < pipe.top ||
-                bird.y + bird.height > pipe.bottom
-            )
-        ) {
-            endGame();
+});/* ===================================
+   PEDRO CLEAN MARKET
+   SCRIPT.JS - PARTE 2
+=================================== */
+
+/* EFECTO AL HACER SCROLL */
+
+const elementos = document.querySelectorAll(
+".beneficio, .producto"
+);
+
+const observer = new IntersectionObserver((entradas)=>{
+
+    entradas.forEach((entrada)=>{
+
+        if(entrada.isIntersecting){
+
+            entrada.target.classList.add("visible");
+
         }
 
     });
 
-    // eliminar tubos viejos
-    while (pipes.length && pipes[0].x < -pipeWidth) {
-        pipes.shift();
+},{
+    threshold:0.15
+});
+
+elementos.forEach((elemento)=>{
+
+    elemento.classList.add("oculto");
+
+    observer.observe(elemento);
+
+});
+
+
+/* HEADER */
+
+const header = document.querySelector("header");
+
+window.addEventListener("scroll",()=>{
+
+    if(window.scrollY > 50){
+
+        header.style.boxShadow =
+        "0 10px 30px rgba(0,0,0,.10)";
+
+    }else{
+
+        header.style.boxShadow =
+        "0 2px 10px rgba(0,0,0,.08)";
+
     }
 
-}
+});
 
-function update() {
 
-    if (!gameRunning) return;
+/* BOTÓN SUBIR */
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+const subir = document.createElement("button");
 
-    bird.velocity += bird.gravity;
-    bird.y += bird.velocity;
+subir.innerHTML = "⬆";
 
-    if (bird.y < 0) {
-        bird.y = 0;
-        bird.velocity = 0;
+subir.className = "subir";
+
+document.body.appendChild(subir);
+
+window.addEventListener("scroll",()=>{
+
+    if(window.scrollY > 500){
+
+        subir.style.display="flex";
+
+    }else{
+
+        subir.style.display="none";
+
     }
 
-    if (bird.y + bird.height >= canvas.height) {
-        endGame();
-        return;
-    }
+});
 
-    drawPipes();
-    drawBird();
+subir.addEventListener("click",()=>{
 
-    ctx.fillStyle = "black";
-    ctx.font = "30px Arial";
-    ctx.fillText("Puntos: " + score,20,40);
+    window.scrollTo({
 
-    animationId = requestAnimationFrame(update);
+        top:0,
 
-}
+        behavior:"smooth"
 
-function endGame() {
+    });
 
-    gameRunning = false;
+});window.addEventListener("load",()=>{
 
-    cancelAnimationFrame(animationId);
+    const loader = document.getElementById("loader");
 
-    canvas.style.display = "none";
-    gameOver.style.display = "block";
+    loader.style.display="none";
 
-    scoreText.innerText = "Puntaje: " + score;
-
-}
+});
