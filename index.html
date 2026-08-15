@@ -1,1 +1,1416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Football Draft</title>
 
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07111f;
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button{
+    border:0;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.screen{
+    min-height:100vh;
+    display:none;
+}
+
+.screen.active{
+    display:flex;
+}
+
+/* =========================
+   INICIO
+========================= */
+
+#home{
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+        radial-gradient(circle at 50% 20%,#164b8c,transparent 40%),
+        linear-gradient(135deg,#04101e,#092b4b);
+}
+
+.home-box{
+    width:min(900px,92%);
+}
+
+.logo{
+    font-size:70px;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:52px;
+    letter-spacing:2px;
+}
+
+.subtitle{
+    color:#b9cde2;
+    font-size:20px;
+    margin:15px 0 40px;
+}
+
+.main-btn{
+    background:#19d67b;
+    color:#04150d;
+    padding:18px 45px;
+    border-radius:14px;
+    font-size:21px;
+    box-shadow:0 8px 30px #19d67b44;
+}
+
+.main-btn:hover{
+    transform:scale(1.04);
+}
+
+/* =========================
+   MUNDIAL
+========================= */
+
+#draft{
+    flex-direction:column;
+    align-items:center;
+    background:
+        radial-gradient(circle at top,#12416b,#06111e 65%);
+    padding:25px;
+}
+
+.topbar{
+    width:min(1100px,100%);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.topbar h2{
+    font-size:28px;
+}
+
+.counter{
+    background:#101f32;
+    padding:10px 18px;
+    border-radius:10px;
+}
+
+.skip-count{
+    color:#ffd84a;
+}
+
+.draft-container{
+    width:min(1100px,100%);
+    display:grid;
+    grid-template-columns:1fr 1.4fr 1fr;
+    gap:20px;
+}
+
+.panel{
+    background:#0d1c2e;
+    border:1px solid #29435e;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 15px 40px #0005;
+}
+
+.panel-title{
+    color:#8caac5;
+    font-size:14px;
+    text-transform:uppercase;
+    margin-bottom:15px;
+}
+
+.country-box{
+    text-align:center;
+    padding:25px 10px;
+}
+
+.flag{
+    font-size:80px;
+    margin:10px;
+}
+
+.country-name{
+    font-size:31px;
+    font-weight:bold;
+}
+
+.dice{
+    width:85px;
+    height:85px;
+    margin:20px auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:55px;
+    background:white;
+    color:#111;
+    border-radius:18px;
+    box-shadow:0 8px 25px #0007;
+}
+
+.roll-btn{
+    background:#397cff;
+    color:white;
+    padding:13px 25px;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.skip-btn{
+    background:#343f4c;
+    color:#fff;
+    padding:13px 25px;
+    border-radius:10px;
+    margin-left:8px;
+}
+
+.players{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.player-card{
+    background:#14283e;
+    border:1px solid #28465f;
+    border-radius:13px;
+    padding:15px;
+    transition:.2s;
+}
+
+.player-card:hover{
+    transform:translateY(-3px);
+    border-color:#19d67b;
+}
+
+.player-name{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.position{
+    color:#8eaac3;
+    font-size:12px;
+    margin:4px 0 10px;
+}
+
+.stat{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.bar{
+    height:5px;
+    background:#263c51;
+    border-radius:5px;
+    overflow:hidden;
+    margin-top:3px;
+}
+
+.bar div{
+    height:100%;
+    background:#19d67b;
+}
+
+.select-btn{
+    width:100%;
+    padding:9px;
+    margin-top:12px;
+    background:#19d67b;
+    border-radius:8px;
+}
+
+.team-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    max-height:420px;
+    overflow:auto;
+}
+
+.team-player{
+    background:#14283e;
+    padding:10px;
+    border-radius:9px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.empty{
+    color:#657f97;
+    text-align:center;
+    padding:30px 5px;
+}
+
+.continue-btn{
+    margin-top:20px;
+    background:#ffd84a;
+    padding:15px 30px;
+    border-radius:10px;
+    font-size:16px;
+}
+
+/* =========================
+   PARTIDO
+========================= */
+
+#match{
+    flex-direction:column;
+    align-items:center;
+    background:#06101a;
+    padding:15px;
+}
+
+.scoreboard{
+    width:min(900px,100%);
+    background:#101e2d;
+    border-radius:15px;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.score{
+    font-size:38px;
+    font-weight:bold;
+}
+
+.minute{
+    color:#19d67b;
+    font-size:20px;
+}
+
+.pitch{
+    width:min(1100px,96vw);
+    aspect-ratio:1.7;
+    position:relative;
+    overflow:hidden;
+    border-radius:15px;
+    border:4px solid white;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #167c42 0px,
+            #167c42 70px,
+            #1a8749 70px,
+            #1a8749 140px
+        );
+}
+
+.pitch:before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    height:100%;
+    width:3px;
+    background:#ffffffcc;
+    transform:translateX(-50%);
+}
+
+.center-circle{
+    position:absolute;
+    width:150px;
+    height:150px;
+    border:3px solid white;
+    border-radius:50%;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.goal{
+    position:absolute;
+    top:37%;
+    width:25px;
+    height:26%;
+    border:3px solid white;
+}
+
+.goal.left{
+    left:-3px;
+}
+
+.goal.right{
+    right:-3px;
+}
+
+.player{
+    position:absolute;
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    border:2px solid white;
+    transform:translate(-50%,-50%);
+    z-index:3;
+    transition:all .35s linear;
+}
+
+.player.home{
+    background:#2087ff;
+}
+
+.player.away{
+    background:#e8344f;
+}
+
+.ball{
+    position:absolute;
+    width:13px;
+    height:13px;
+    background:white;
+    border-radius:50%;
+    box-shadow:0 0 8px #fff;
+    z-index:5;
+    transition:all .3s linear;
+}
+
+.event-log{
+    width:min(1100px,96vw);
+    background:#0d1b2a;
+    border-radius:12px;
+    margin-top:12px;
+    padding:12px;
+    height:100px;
+    overflow:auto;
+}
+
+.event{
+    margin:3px 0;
+    font-size:14px;
+}
+
+.final-box{
+    margin-top:15px;
+    display:none;
+    text-align:center;
+}
+
+.final-box button{
+    margin-top:10px;
+    padding:12px 25px;
+    border-radius:9px;
+    background:#19d67b;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:850px){
+    .draft-container{
+        grid-template-columns:1fr;
+    }
+
+    .players{
+        grid-template-columns:1fr 1fr;
+    }
+
+    h1{
+        font-size:38px;
+    }
+}
+
+@media(max-width:500px){
+    .players{
+        grid-template-columns:1fr;
+    }
+
+    .score{
+        font-size:27px;
+    }
+
+    .pitch{
+        aspect-ratio:1.3;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     INICIO
+========================= -->
+
+<section id="home" class="screen active">
+
+    <div class="home-box">
+
+        <div class="logo">🌎⚽</div>
+
+        <h1>WORLD FOOTBALL</h1>
+
+        <div class="subtitle">
+            Draft your squad. Play the World Cup.
+        </div>
+
+        <button class="main-btn" onclick="startGame()">
+            JUGAR MUNDIAL
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     DRAFT
+========================= -->
+
+<section id="draft" class="screen">
+
+    <div class="topbar">
+
+        <h2>🌎 DRAFT DEL MUNDIAL</h2>
+
+        <div class="counter">
+            SKIPS:
+            <span class="skip-count" id="skipCounter">4</span>
+        </div>
+
+    </div>
+
+
+    <div class="draft-container">
+
+        <!-- PAÍS -->
+
+        <div class="panel">
+
+            <div class="panel-title">
+                País seleccionado
+            </div>
+
+            <div class="country-box">
+
+                <div class="flag" id="flag">🎲</div>
+
+                <div class="country-name" id="countryName">
+                    Tirá el dado
+                </div>
+
+                <div class="dice" id="dice">
+                    🎲
+                </div>
+
+                <button class="roll-btn" onclick="rollCountry()">
+                    🎲 TIRAR DADO
+                </button>
+
+                <button class="skip-btn" onclick="skipCountry()">
+                    ⏭ SKIP
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- JUGADORES -->
+
+        <div class="panel">
+
+            <div class="panel-title">
+                Elegí un jugador
+            </div>
+
+            <div class="players" id="players">
+
+                <div class="empty">
+                    Tirale el dado para descubrir un país.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- EQUIPO -->
+
+        <div class="panel">
+
+            <div class="panel-title">
+                Tu selección
+            </div>
+
+            <div class="team-list" id="teamList">
+
+                <div class="empty">
+                    Todavía no elegiste jugadores.
+                </div>
+
+            </div>
+
+            <button
+                class="continue-btn"
+                id="startMatchBtn"
+                onclick="startMatch()"
+                style="display:none">
+                ⚽ SIMULAR PARTIDO
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PARTIDO
+========================= -->
+
+<section id="match" class="screen">
+
+    <div class="scoreboard">
+
+        <div id="homeTeam">
+            TU SELECCIÓN
+        </div>
+
+        <div class="score">
+            <span id="homeScore">0</span>
+            -
+            <span id="awayScore">0</span>
+        </div>
+
+        <div id="awayTeam">
+            RIVAL
+        </div>
+
+        <div class="minute">
+            <span id="minute">1</span>'
+        </div>
+
+    </div>
+
+
+    <div class="pitch">
+
+        <div class="center-circle"></div>
+
+        <div class="goal left"></div>
+        <div class="goal right"></div>
+
+        <div id="pitchPlayers"></div>
+
+        <div class="ball" id="ball"></div>
+
+    </div>
+
+
+    <div class="event-log" id="eventLog"></div>
+
+
+    <div class="final-box" id="finalBox">
+
+        <h2 id="finalTitle"></h2>
+
+        <p id="finalText"></p>
+
+        <button onclick="location.reload()">
+            🌎 JUGAR OTRO MUNDIAL
+        </button>
+
+    </div>
+
+</section>
+
+
+<script>
+
+/* ===================================
+   DATOS
+=================================== */
+
+const countries = [
+
+    {
+        name:"Argentina",
+        flag:"🇦🇷",
+        players:[
+            ["Messi","DEL",95,94,96,82],
+            ["Julián Álvarez","DEL",89,87,84,72],
+            ["Lautaro Martínez","DEL",88,91,82,70],
+            ["Enzo Fernández","MED",88,78,91,82],
+            ["Mac Allister","MED",85,79,90,80]
+        ]
+    },
+
+    {
+        name:"Brasil",
+        flag:"🇧🇷",
+        players:[
+            ["Vinícius Jr.","DEL",94,90,86,60],
+            ["Rodrygo","DEL",91,84,85,65],
+            ["Raphinha","DEL",90,83,82,64],
+            ["Bruno Guimarães","MED",86,72,88,84],
+            ["Casemiro","MED",75,70,78,90]
+        ]
+    },
+
+    {
+        name:"Francia",
+        flag:"🇫🇷",
+        players:[
+            ["Mbappé","DEL",97,94,88,55],
+            ["Dembélé","DEL",95,84,83,58],
+            ["Griezmann","DEL",88,85,91,65],
+            ["Camavinga","MED",88,68,85,88],
+            ["Tchouaméni","MED",79,69,80,91]
+        ]
+    },
+
+    {
+        name:"España",
+        flag:"🇪🇸",
+        players:[
+            ["Lamine Yamal","DEL",94,86,91,55],
+            ["Nico Williams","DEL",95,82,84,60],
+            ["Pedri","MED",85,76,94,65],
+            ["Rodri","MED",80,77,94,95],
+            ["Olmo","MED",85,80,88,67]
+        ]
+    },
+
+    {
+        name:"Inglaterra",
+        flag:"🏴",
+        players:[
+            ["Bellingham","MED",90,88,91,83],
+            ["Kane","DEL",79,94,86,55],
+            ["Saka","DEL",91,85,86,62],
+            ["Foden","DEL",90,87,91,56],
+            ["Rice","MED",80,68,82,91]
+        ]
+    },
+
+    {
+        name:"Portugal",
+        flag:"🇵🇹",
+        players:[
+            ["Cristiano Ronaldo","DEL",80,95,82,58],
+            ["Bruno Fernandes","MED",84,86,93,65],
+            ["Bernardo Silva","MED",89,82,94,62],
+            ["Rafael Leão","DEL",95,86,80,55],
+            ["Vitinha","MED",88,73,92,75]
+        ]
+    },
+
+    {
+        name:"Alemania",
+        flag:"🇩🇪",
+        players:[
+            ["Musiala","DEL",93,84,91,55],
+            ["Havertz","DEL",84,82,84,64],
+            ["Wirtz","MED",90,86,93,58],
+            ["Kimmich","MED",77,73,91,88],
+            ["Gündogan","MED",76,79,90,72]
+        ]
+    },
+
+    {
+        name:"Italia",
+        flag:"🇮🇹",
+        players:[
+            ["Barella","MED",87,76,87,88],
+            ["Chiesa","DEL",91,82,80,62],
+            ["Bastoni","DEF",75,60,82,93],
+            ["Donnarumma","POR",78,45,60,95],
+            ["Dimarco","DEF",88,62,86,80]
+        ]
+    },
+
+    {
+        name:"Países Bajos",
+        flag:"🇳🇱",
+        players:[
+            ["Van Dijk","DEF",75,55,76,96],
+            ["De Jong","MED",88,72,94,78],
+            ["Gakpo","DEL",89,84,80,62],
+            ["Simons","MED",91,78,89,58],
+            ["Depay","DEL",86,86,81,50]
+        ]
+    },
+
+    {
+        name:"Uruguay",
+        flag:"🇺🇾",
+        players:[
+            ["Valverde","MED",90,80,88,90],
+            ["Darwin Núñez","DEL",94,88,76,62],
+            ["Suárez","DEL",70,90,82,45],
+            ["Araújo","DEF",86,55,72,94],
+            ["Ugarte","MED",79,62,78,92]
+        ]
+    }
+
+];
+
+
+/* ===================================
+   VARIABLES
+=================================== */
+
+let currentCountry = null;
+
+let usedCountries = [];
+
+let skips = 4;
+
+let selectedPlayers = [];
+
+let homeScore = 0;
+let awayScore = 0;
+
+let matchMinute = 1;
+
+let matchInterval;
+
+let matchEvents = 0;
+
+
+/* ===================================
+   CAMBIAR PANTALLA
+=================================== */
+
+function showScreen(id){
+
+    document.querySelectorAll(".screen")
+        .forEach(s => s.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+}
+
+
+/* ===================================
+   INICIAR
+=================================== */
+
+function startGame(){
+
+    showScreen("draft");
+
+}
+
+
+/* ===================================
+   DADO
+=================================== */
+
+function rollCountry(){
+
+    if(usedCountries.length >= countries.length){
+
+        alert("Ya salieron todos los países.");
+
+        return;
+    }
+
+    let available = countries.filter(
+        c => !usedCountries.includes(c.name)
+    );
+
+    let country =
+        available[Math.floor(Math.random()*available.length)];
+
+    currentCountry = country;
+
+    usedCountries.push(country.name);
+
+    diceAnimation(country);
+
+}
+
+
+/* ===================================
+   ANIMACIÓN DADO
+=================================== */
+
+function diceAnimation(country){
+
+    let dice = document.getElementById("dice");
+
+    let counter = 0;
+
+    let animation = setInterval(()=>{
+
+        dice.textContent =
+            ["⚽","🎲","🌎","🏆","🎲"][Math.floor(Math.random()*5)];
+
+        counter++;
+
+        if(counter >= 10){
+
+            clearInterval(animation);
+
+            document.getElementById("flag")
+                .textContent = country.flag;
+
+            document.getElementById("countryName")
+                .textContent = country.name;
+
+            dice.textContent = "🎲";
+
+            showPlayers();
+
+        }
+
+    },80);
+
+}
+
+
+/* ===================================
+   SKIP
+=================================== */
+
+function skipCountry(){
+
+    if(skips <= 0){
+
+        alert("No te quedan skips.");
+
+        return;
+    }
+
+    skips--;
+
+    document.getElementById("skipCounter")
+        .textContent = skips;
+
+    rollCountry();
+
+}
+
+
+/* ===================================
+   MOSTRAR JUGADORES
+=================================== */
+
+function showPlayers(){
+
+    const container =
+        document.getElementById("players");
+
+    container.innerHTML = "";
+
+    currentCountry.players.forEach((p,index)=>{
+
+        const card = document.createElement("div");
+
+        card.className = "player-card";
+
+        card.innerHTML = `
+
+            <div class="player-name">
+                ${p[0]}
+            </div>
+
+            <div class="position">
+                ${p[1]}
+            </div>
+
+            ${makeStat("⚡ Velocidad",p[2])}
+            ${makeStat("🎯 Tiro",p[3])}
+            ${makeStat("🧠 Pase",p[4])}
+            ${makeStat("🛡 Defensa",p[5])}
+
+            <button
+                class="select-btn"
+                onclick="selectPlayer(${index})">
+
+                ELEGIR
+
+            </button>
+
+        `;
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+/* ===================================
+   ESTADÍSTICA
+=================================== */
+
+function makeStat(name,value){
+
+    return `
+
+        <div class="stat">
+            <span>${name}</span>
+            <span>${value}</span>
+        </div>
+
+        <div class="bar">
+            <div style="width:${value}%"></div>
+        </div>
+
+    `;
+
+}
+
+
+/* ===================================
+   ELEGIR JUGADOR
+=================================== */
+
+function selectPlayer(index){
+
+    const player =
+        currentCountry.players[index];
+
+    selectedPlayers.push({
+
+        name:player[0],
+        position:player[1],
+        speed:player[2],
+        shot:player[3],
+        pass:player[4],
+        defense:player[5],
+        country:currentCountry.name
+
+    });
+
+    updateTeam();
+
+    document.getElementById("players")
+        .innerHTML =
+        `<div class="empty">
+            ✅ ${player[0]} agregado a tu selección.
+        </div>`;
+
+}
+
+
+/* ===================================
+   ACTUALIZAR EQUIPO
+=================================== */
+
+function updateTeam(){
+
+    const list =
+        document.getElementById("teamList");
+
+    list.innerHTML = "";
+
+    selectedPlayers.forEach((p,i)=>{
+
+        const div =
+            document.createElement("div");
+
+        div.className = "team-player";
+
+        div.innerHTML = `
+
+            <span>
+                ${i+1}. ${p.name}
+            </span>
+
+            <small>
+                ${p.position}
+            </small>
+
+        `;
+
+        list.appendChild(div);
+
+    });
+
+
+    /*
+       Con 5 jugadores ya podemos
+       comenzar la simulación.
+    */
+
+    if(selectedPlayers.length >= 5){
+
+        document.getElementById("startMatchBtn")
+            .style.display = "block";
+
+    }
+
+}
+
+
+/* ===================================
+   PARTIDO
+=================================== */
+
+function startMatch(){
+
+    showScreen("match");
+
+    prepareMatch();
+
+    setTimeout(()=>{
+
+        runMatch();
+
+    },1000);
+
+}
+
+
+/* ===================================
+   PREPARAR CANCHA
+=================================== */
+
+function prepareMatch(){
+
+    const container =
+        document.getElementById("pitchPlayers");
+
+    container.innerHTML = "";
+
+    /*
+       5 jugadores tuyos
+    */
+
+    selectedPlayers.forEach((p,i)=>{
+
+        createPitchPlayer(
+            "home",
+            i,
+            20 + i*15,
+            25 + (i%3)*25
+        );
+
+    });
+
+
+    /*
+       5 rivales
+    */
+
+    for(let i=0;i<5;i++){
+
+        createPitchPlayer(
+            "away",
+            i,
+            80 - i*15,
+            25 + (i%3)*25
+        );
+
+    }
+
+    moveBall(50,50);
+
+}
+
+
+/* ===================================
+   CREAR JUGADOR
+=================================== */
+
+function createPitchPlayer(team,id,x,y){
+
+    const p =
+        document.createElement("div");
+
+    p.className =
+        "player " + team;
+
+    p.dataset.x = x;
+    p.dataset.y = y;
+
+    p.style.left = x + "%";
+    p.style.top = y + "%";
+
+    p.title =
+        team === "home"
+        ? selectedPlayers[id]?.name || "Jugador"
+        : "Rival";
+
+    document.getElementById("pitchPlayers")
+        .appendChild(p);
+
+}
+
+
+/* ===================================
+   MOVER PELOTA
+=================================== */
+
+function moveBall(x,y){
+
+    const ball =
+        document.getElementById("ball");
+
+    ball.style.left = x + "%";
+    ball.style.top = y + "%";
+
+}
+
+
+/* ===================================
+   PARTIDO RÁPIDO
+=================================== */
+
+function runMatch(){
+
+    matchMinute = 1;
+
+    homeScore = 0;
+    awayScore = 0;
+
+    matchEvents = 0;
+
+    document.getElementById("homeScore")
+        .textContent = 0;
+
+    document.getElementById("awayScore")
+        .textContent = 0;
+
+    addEvent("🏟️ ¡Comienza el partido!");
+
+    matchInterval = setInterval(()=>{
+
+        matchMinute += Math.floor(Math.random()*5)+1;
+
+        if(matchMinute > 90){
+
+            clearInterval(matchInterval);
+
+            finishMatch();
+
+            return;
+
+        }
+
+        document.getElementById("minute")
+            .textContent = matchMinute;
+
+        animatePlayers();
+
+        randomEvent();
+
+    },700);
+
+}
+
+
+/* ===================================
+   ANIMAR JUGADORES
+=================================== */
+
+function animatePlayers(){
+
+    const players =
+        document.querySelectorAll(".player");
+
+    players.forEach(p=>{
+
+        let x =
+            parseFloat(p.dataset.x);
+
+        let y =
+            parseFloat(p.dataset.y);
+
+        x += (Math.random()-0.5)*12;
+        y += (Math.random()-0.5)*12;
+
+        x = Math.max(5,Math.min(95,x));
+        y = Math.max(8,Math.min(92,y));
+
+        p.dataset.x = x;
+        p.dataset.y = y;
+
+        p.style.left = x+"%";
+        p.style.top = y+"%";
+
+    });
+
+
+    let bx =
+        Math.random()*80+10;
+
+    let by =
+        Math.random()*70+15;
+
+    moveBall(bx,by);
+
+}
+
+
+/* ===================================
+   EVENTOS
+=================================== */
+
+function randomEvent(){
+
+    let chance =
+        Math.random();
+
+    if(chance < 0.13){
+
+        homeScore++;
+
+        document.getElementById("homeScore")
+            .textContent = homeScore;
+
+        addEvent(
+            `⚽ ${matchMinute}' ¡GOOOOOOL DE TU EQUIPO!`
+        );
+
+        moveBall(90,50);
+
+    }
+
+    else if(chance < 0.25){
+
+        awayScore++;
+
+        document.getElementById("awayScore")
+            .textContent = awayScore;
+
+        addEvent(
+            `⚽ ${matchMinute}' ¡Gol del rival!`
+        );
+
+        moveBall(10,50);
+
+    }
+
+    else if(chance < 0.45){
+
+        let p =
+            selectedPlayers[
+                Math.floor(
+                    Math.random()*selectedPlayers.length
+                )
+            ];
+
+        addEvent(
+            `🎯 ${matchMinute}' ${p.name} intenta un pase`
+        );
+
+    }
+
+    else if(chance < 0.62){
+
+        addEvent(
+            `🏃 ${matchMinute}' Gran contraataque`
+        );
+
+    }
+
+    else if(chance < 0.72){
+
+        addEvent(
+            `🧤 ${matchMinute}' ¡ATAJADÓN DEL ARQUERO!`
+        );
+
+    }
+
+}
+
+
+/* ===================================
+   LOG
+=================================== */
+
+function addEvent(text){
+
+    const log =
+        document.getElementById("eventLog");
+
+    const event =
+        document.createElement("div");
+
+    event.className = "event";
+
+    event.textContent = text;
+
+    log.prepend(event);
+
+}
+
+
+/* ===================================
+   FINAL
+=================================== */
+
+function finishMatch(){
+
+    document.getElementById("minute")
+        .textContent = 90;
+
+    addEvent("🏁 ¡FINAL DEL PARTIDO!");
+
+    const box =
+        document.getElementById("finalBox");
+
+    box.style.display = "block";
+
+    const title =
+        document.getElementById("finalTitle");
+
+    const text =
+        document.getElementById("finalText");
+
+
+    if(homeScore > awayScore){
+
+        title.textContent =
+            "🏆 ¡VICTORIA!";
+
+        text.textContent =
+            `Ganaste ${homeScore} - ${awayScore}. ¡Avanzás en el Mundial!`;
+
+    }
+
+    else if(homeScore < awayScore){
+
+        title.textContent =
+            "❌ ELIMINADO";
+
+        text.textContent =
+            `Perdiste ${homeScore} - ${awayScore}.`;
+
+    }
+
+    else{
+
+        title.textContent =
+            "🤝 EMPATE";
+
+        text.textContent =
+            `Terminó ${homeScore} - ${awayScore}.`;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
