@@ -2,895 +2,978 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>World Cup Draft</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mundial Draft</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#06101b;
-    color:white;
-    overflow-x:hidden;
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ color:white;
+ background:#06111b;
 }
 
 button{
-    border:0;
-    cursor:pointer;
-    font-weight:800;
+ border:0;
+ border-radius:10px;
+ padding:12px 18px;
+ font-weight:bold;
+ cursor:pointer;
 }
 
-.screen{display:none;min-height:100vh}
-.screen.active{display:flex}
-
-/* ================= HOME ================= */
-
-#home{
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    background:
-      radial-gradient(circle at 50% 15%,#1760a0,transparent 42%),
-      linear-gradient(135deg,#03101d,#092d4a);
+.screen{
+ display:none;
+ min-height:100vh;
 }
 
-.homeBox{width:min(900px,92%)}
-
-.logo{
-    font-size:90px;
-    filter:drop-shadow(0 15px 25px #0008);
+.active{
+ display:flex;
 }
 
-.homeBox h1{
-    font-size:58px;
-    letter-spacing:4px;
-    margin:12px 0;
+/* ================= INICIO ================= */
+
+#inicio{
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ background:
+ radial-gradient(circle at 50% 20%,#17659b,#06111b 65%);
 }
 
-.homeBox p{
-    color:#b9ccdc;
-    font-size:19px;
-    margin-bottom:35px;
+.inicioBox{
+ width:min(800px,92%);
 }
 
-.greenBtn{
-    background:#19db78;
-    color:#03150d;
-    padding:17px 42px;
-    border-radius:13px;
-    font-size:19px;
+.inicioBox h1{
+ font-size:clamp(42px,8vw,80px);
+ margin:10px;
 }
+
+.inicioBox p{
+ color:#b8cbd8;
+ font-size:19px;
+}
+
+input{
+ width:min(420px,90%);
+ padding:14px;
+ border-radius:10px;
+ border:1px solid #45657d;
+ background:#0c2030;
+ color:white;
+ font-size:17px;
+}
+
+.btnVerde{background:#16db75;color:#03150c}
+.btnAzul{background:#347dff;color:white}
+.btnGris{background:#35495a;color:white}
 
 /* ================= DRAFT ================= */
 
 #draft{
-    flex-direction:column;
-    align-items:center;
-    padding:18px;
-    background:
-      radial-gradient(circle at top,#124d7b,#06111c 62%);
+ flex-direction:column;
+ padding:15px;
+ background:
+ radial-gradient(circle at top,#14547f,#06111b 65%);
 }
 
-.topbar{
-    width:min(1450px,100%);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
-}
-
-.topbar h2{font-size:27px}
-
-.skipBox{
-    background:#122437;
-    border:1px solid #29455d;
-    border-radius:10px;
-    padding:10px 17px;
-}
-
-#skipCount{
-    color:#ffd83e;
-    font-size:20px;
+.top{
+ width:min(1450px,100%);
+ margin:auto;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
 }
 
 .draftGrid{
-    width:min(1450px,100%);
-    display:grid;
-    grid-template-columns:245px 1fr 500px;
-    gap:14px;
+ width:min(1450px,100%);
+ margin:auto;
+ display:grid;
+ grid-template-columns:230px 1fr 600px;
+ gap:14px;
 }
 
 .panel{
-    background:#0b1a2a;
-    border:1px solid #29445c;
-    border-radius:15px;
-    padding:15px;
-    box-shadow:0 12px 35px #0005;
+ background:#0b1b29dd;
+ border:1px solid #29475d;
+ border-radius:15px;
+ padding:14px;
+ box-shadow:0 15px 40px #0007;
 }
-
-.panelTitle{
-    text-transform:uppercase;
-    color:#8da7bd;
-    font-size:12px;
-    letter-spacing:1px;
-    margin-bottom:12px;
-}
-
-/* country */
-
-.countryBox{text-align:center}
 
 .flag{
-    font-size:70px;
-    margin:5px;
+ font-size:70px;
+ text-align:center;
 }
 
-.countryName{
-    font-size:25px;
-    font-weight:900;
+.country{
+ font-size:23px;
+ text-align:center;
+ font-weight:bold;
 }
 
-.dice{
-    width:72px;
-    height:72px;
-    background:#fff;
-    color:#111;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:15px;
-    margin:17px auto;
-    font-size:42px;
+.dado{
+ width:75px;
+ height:75px;
+ background:white;
+ color:#111;
+ display:grid;
+ place-items:center;
+ font-size:45px;
+ margin:18px auto;
+ border-radius:15px;
 }
 
 .actions{
-    display:flex;
-    gap:7px;
-    justify-content:center;
+ display:flex;
+ gap:6px;
+ justify-content:center;
 }
 
-.rollBtn{
-    background:#397dff;
-    color:white;
-    padding:11px 14px;
-    border-radius:8px;
+.skip{
+ color:#ffd33d;
 }
-
-.skipBtn{
-    background:#3b4855;
-    color:white;
-    padding:11px 14px;
-    border-radius:8px;
-}
-
-.info{
-    color:#7891a7;
-    font-size:12px;
-    line-height:1.5;
-    margin-top:17px;
-}
-
-/* players */
 
 .players{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
-    max-height:590px;
-    overflow:auto;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:7px;
+ max-height:650px;
+ overflow:auto;
 }
 
-.playerCard{
-    background:#12273a;
-    border:1px solid #28455c;
-    border-radius:9px;
-    padding:10px;
-    position:relative;
+.card{
+ background:#122a3d;
+ border:1px solid #31536b;
+ border-radius:10px;
+ padding:9px;
 }
 
-.playerCard.locked{
-    opacity:.45;
-    filter:grayscale(.7);
+.card.lock{
+ opacity:.4;
 }
 
-.playerCard.available:hover{
-    border-color:#1be17b;
-    transform:translateY(-2px);
+.card button{
+ width:100%;
+ margin-top:7px;
+ padding:8px;
+ background:#18dc76;
 }
 
-.pName{
-    font-size:15px;
-    font-weight:900;
+.card.lock button{
+ background:#293b49;
+ color:#8193a0;
+ cursor:not-allowed;
 }
 
-.pCountry{
-    color:#849caf;
-    font-size:10px;
-    margin:3px 0;
+.nombre{
+ font-weight:bold;
 }
 
-.pPosition{
-    color:#6fe0ff;
-    font-size:12px;
+.pos{
+ color:#71d8ff;
+ font-size:12px;
 }
 
-.pRating{
-    color:#ffd83d;
-    font-weight:bold;
-    margin-top:3px;
+.media{
+ color:#ffd33d;
+ font-weight:bold;
 }
 
-.rarity{
-    position:absolute;
-    right:8px;
-    top:8px;
-    font-size:9px;
-    padding:3px 5px;
-    border-radius:5px;
-    background:#25384a;
+.small{
+ color:#91a8b9;
+ font-size:12px;
 }
 
-.chooseBtn{
-    width:100%;
-    padding:7px;
-    margin-top:7px;
-    border-radius:6px;
-    background:#19d978;
+/* ================= CANCHA ================= */
+
+.cancha{
+ position:relative;
+ width:100%;
+ aspect-ratio:1.5;
+ overflow:hidden;
+ border:4px solid white;
+ border-radius:14px;
+
+ background:
+ repeating-linear-gradient(
+  90deg,
+  #176d38 0px,
+  #176d38 55px,
+  #1b783e 55px,
+  #1b783e 110px
+ );
+ box-shadow:
+  inset 0 0 50px #001a0b,
+  0 15px 40px #0008;
 }
 
-.lockBtn{
-    width:100%;
-    padding:7px;
-    margin-top:7px;
-    border-radius:6px;
-    background:#273541;
-    color:#75899a;
-    cursor:not-allowed;
+/* líneas */
+
+.cancha:before{
+ content:"";
+ position:absolute;
+ left:50%;
+ top:0;
+ height:100%;
+ border-left:3px solid #ffffffaa;
 }
 
-.empty{
-    text-align:center;
-    color:#698197;
-    padding:35px 10px;
+.centro{
+ position:absolute;
+ width:90px;
+ height:90px;
+ border:3px solid #ffffffaa;
+ border-radius:50%;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
 }
 
-/* ================= FORMATION ================= */
-
-.formationWrap{
-    display:flex;
-    justify-content:center;
+.punto{
+ position:absolute;
+ width:10px;
+ height:10px;
+ background:white;
+ border-radius:50%;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
 }
 
-.formation{
-    position:relative;
-    width:100%;
-    max-width:470px;
-    aspect-ratio:1.45;
-    border-radius:12px;
-    overflow:hidden;
-    border:3px solid #fff;
-    background:
-      repeating-linear-gradient(
-        90deg,
-        #17783e 0,
-        #17783e 50px,
-        #1b8245 50px,
-        #1b8245 100px
-      );
-}
-
-.formation:before{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:0;
-    height:100%;
-    width:2px;
-    background:#ffffffbb;
-}
-
-.centerCircle{
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:90px;
-    height:90px;
-    border:2px solid white;
-    border-radius:50%;
-    transform:translate(-50%,-50%);
-}
+/* áreas */
 
 .area{
-    position:absolute;
-    width:15%;
-    height:45%;
-    top:27.5%;
-    border:2px solid white;
+ position:absolute;
+ width:17%;
+ height:45%;
+ top:27.5%;
+ border:3px solid #ffffffbb;
 }
 
-.area.left{left:0}
-.area.right{right:0}
+.area.izq{left:-3px}
+.area.der{right:-3px}
 
-.positionSpot{
-    position:absolute;
-    width:75px;
-    height:48px;
-    transform:translate(-50%,-50%);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    border:1px dashed #ffffff66;
-    border-radius:7px;
-    background:#0003;
-    font-size:9px;
-    text-align:center;
-    transition:.25s;
+.arco{
+ position:absolute;
+ width:35px;
+ height:22%;
+ top:39%;
+ border:3px solid white;
 }
 
-.positionSpot.filled{
-    background:#061b2dcc;
-    border:2px solid #1be17b;
+.arco.izq{
+ left:-8px;
+ border-left:0;
 }
 
-.spotPos{
-    color:#7be4ff;
-    font-size:9px;
+.arco.der{
+ right:-8px;
+ border-right:0;
 }
 
-.spotName{
-    font-size:10px;
-    font-weight:bold;
-    max-width:70px;
-    overflow:hidden;
-    white-space:nowrap;
+.esquina{
+ position:absolute;
+ width:25px;
+ height:25px;
+ border:2px solid #ffffffaa;
+ border-radius:50%;
 }
 
-.spotRating{
-    color:#ffd83d;
-    font-weight:bold;
+.e1{left:-13px;top:-13px}
+.e2{right:-13px;top:-13px}
+.e3{left:-13px;bottom:-13px}
+.e4{right:-13px;bottom:-13px}
+
+/* jugadores */
+
+.spot{
+ position:absolute;
+ transform:translate(-50%,-50%);
+ min-width:72px;
+ min-height:48px;
+ padding:4px;
+ border-radius:8px;
+ text-align:center;
+ background:#071725dd;
+ border:2px dashed #ffffff77;
+ font-size:9px;
+ transition:.3s;
 }
 
-/* ================= ERROR ================= */
-
-.errorBox{
-    display:none;
-    position:fixed;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-    width:min(430px,90%);
-    background:#101d2b;
-    border:2px solid #ff5151;
-    border-radius:16px;
-    padding:24px;
-    text-align:center;
-    z-index:100;
-    box-shadow:0 20px 70px #000b;
-    animation:errorPop .2s ease;
+.spot.filled{
+ border:2px solid #18df79;
+ box-shadow:0 0 15px #18df7988;
 }
 
-@keyframes errorPop{
-    from{transform:translate(-50%,-50%) scale(.8)}
-    to{transform:translate(-50%,-50%) scale(1)}
+.spot b{
+ display:block;
+ color:#72dfff;
 }
 
-.errorIcon{font-size:45px}
-
-.errorBox h3{
-    margin:10px 0;
-    color:#ff6767;
+.spot em{
+ display:block;
+ color:#ffd33d;
+ font-style:normal;
+ font-weight:bold;
 }
 
-.errorBox p{
-    color:#a9baca;
-    line-height:1.5;
+/* ================= CONFIGURACIÓN ================= */
+
+.config{
+ margin-top:12px;
+ text-align:center;
+ background:#0d2233;
+ border-radius:12px;
+ padding:13px;
+ border:1px solid #31536b;
 }
 
-.closeError{
-    background:#ff5151;
-    color:white;
-    padding:10px 25px;
-    border-radius:8px;
-    margin-top:15px;
+.configTitle{
+ font-size:20px;
+ font-weight:bold;
+ margin-bottom:8px;
 }
 
-/* ================= WORLD CUP ================= */
-
-#worldcup{
-    flex-direction:column;
-    align-items:center;
-    padding:25px;
-    background:
-      radial-gradient(circle at top,#14507c,#06101a 65%);
+.configGrid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:7px;
 }
 
-.wcTitle{
-    font-size:38px;
-    margin-bottom:20px;
+.select{
+ background:#132c40;
+ border:1px solid #35536a;
+ border-radius:8px;
+ padding:10px;
 }
 
-.phases{
-    width:min(1100px,100%);
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:10px;
-    margin-bottom:25px;
+select{
+ width:100%;
+ padding:8px;
+ background:#0a1925;
+ color:white;
+ border:1px solid #456277;
+ border-radius:7px;
 }
 
-.phase{
-    background:#102235;
-    border:1px solid #29465e;
-    padding:14px;
-    border-radius:10px;
-    text-align:center;
+/* ================= MUNDIAL ================= */
+
+#mundial{
+ flex-direction:column;
+ padding:25px;
+ background:
+ radial-gradient(circle at top,#14547f,#06111b 65%);
 }
 
-.phase.active{
-    border-color:#19db78;
-    background:#123a31;
+.mundialBox{
+ width:min(1250px,100%);
+ margin:auto;
 }
 
-.bracket{
-    width:min(1100px,100%);
-    background:#0b1b2b;
-    border:1px solid #29445d;
-    border-radius:15px;
-    padding:20px;
+.mundialBox h1{
+ text-align:center;
 }
 
-.bracket h3{
-    margin-bottom:15px;
+.fases{
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:7px;
 }
 
-.matches{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+.fase{
+ background:#10283a;
+ border:1px solid #29465d;
+ border-radius:8px;
+ padding:12px;
+ text-align:center;
 }
 
-.matchCard{
-    background:#142a3e;
-    padding:12px;
-    border-radius:8px;
+.fase.activa{
+ background:#123c31;
+ border-color:#18dc76;
 }
 
-.continueTournament{
-    background:#19db78;
-    padding:14px 30px;
-    border-radius:9px;
-    margin-top:20px;
+.partidos{
+ margin-top:15px;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
 }
 
-/* ================= MATCH ================= */
-
-#match{
-    flex-direction:column;
-    align-items:center;
-    padding:12px;
-    background:#050d15;
+.partido{
+ background:#122a3d;
+ padding:15px;
+ border-radius:9px;
 }
 
-.scoreboard{
-    width:min(1150px,97vw);
-    background:#0d1c2b;
-    border:1px solid #263e54;
-    border-radius:12px;
-    display:grid;
-    grid-template-columns:1fr auto 1fr auto;
-    align-items:center;
-    gap:20px;
-    padding:13px 20px;
-    margin-bottom:12px;
+.modos{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ margin-top:18px;
+ flex-wrap:wrap;
+}
+
+/* ================= PARTIDO ================= */
+
+#partido{
+ flex-direction:column;
+ align-items:center;
+ padding:12px;
+ background:#030a10;
+}
+
+.partidoBox{
+ width:min(1250px,98vw);
+}
+
+.marcador{
+ display:grid;
+ grid-template-columns:1fr auto 1fr;
+ align-items:center;
+ gap:15px;
+ background:#0c1e2d;
+ border-radius:12px;
+ padding:14px;
+}
+
+.equipoR{
+ text-align:right;
 }
 
 .score{
-    font-size:37px;
-    font-weight:900;
+ font-size:42px;
+ font-weight:900;
+ text-align:center;
 }
 
-.clock{
-    color:#1ce17c;
-    font-size:19px;
+.reloj{
+ color:#18dc76;
+ text-align:center;
 }
 
-.pitchLarge{
-    width:min(1200px,97vw);
-    aspect-ratio:1.78;
-    position:relative;
-    overflow:hidden;
-    border:4px solid white;
-    border-radius:12px;
-    background:
-      repeating-linear-gradient(
-        90deg,
-        #126d39 0,
-        #126d39 65px,
-        #177a40 65px,
-        #177a40 130px
-      );
+.canchaPartido{
+ position:relative;
+ width:100%;
+ aspect-ratio:1.8;
+ margin-top:10px;
+ border:4px solid white;
+ border-radius:12px;
+ overflow:hidden;
+
+ background:
+ repeating-linear-gradient(
+  90deg,
+  #126e39 0 70px,
+  #197a40 70px 140px
+ );
 }
 
-.pitchLarge:before{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:0;
-    height:100%;
-    width:3px;
-    background:#ffffffcc;
+.canchaPartido:before{
+ content:"";
+ position:absolute;
+ left:50%;
+ height:100%;
+ border-left:3px solid white;
 }
 
-.pitchCircle{
-    position:absolute;
-    width:145px;
-    height:145px;
-    border:3px solid white;
-    border-radius:50%;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
+.centroPartido{
+ position:absolute;
+ width:145px;
+ height:145px;
+ border:3px solid white;
+ border-radius:50%;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
 }
 
-.pitchArea{
-    position:absolute;
-    top:30%;
-    width:16%;
-    height:40%;
-    border:3px solid white;
+.areaPartido{
+ position:absolute;
+ width:16%;
+ height:42%;
+ top:29%;
+ border:3px solid white;
 }
 
-.pitchArea.left{left:-3px}
-.pitchArea.right{right:-3px}
+.areaPartido.izq{left:-3px}
+.areaPartido.der{right:-3px}
 
-.goalNet{
-    position:absolute;
-    top:38%;
-    width:20px;
-    height:24%;
-    border:3px solid white;
+.jugadorPartido{
+ position:absolute;
+ width:30px;
+ height:30px;
+ border-radius:50%;
+ transform:translate(-50%,-50%);
+ border:2px solid white;
+ z-index:5;
+ transition:left .4s linear,top .4s linear;
 }
 
-.goalNet.left{left:-4px}
-.goalNet.right{right:-4px}
-
-.matchPlayer{
-    position:absolute;
-    width:27px;
-    height:27px;
-    border:2px solid white;
-    border-radius:50%;
-    transform:translate(-50%,-50%);
-    z-index:5;
-    transition:
-      left .42s linear,
-      top .42s linear;
+.jugadorPartido.azul{
+ background:#277cff;
 }
 
-.matchPlayer.home{background:#267fff}
-.matchPlayer.away{background:#ed3c55}
-
-.playerNumber{
-    position:absolute;
-    font-size:8px;
-    top:25px;
-    left:50%;
-    transform:translateX(-50%);
-    white-space:nowrap;
+.jugadorPartido.rojo{
+ background:#e63d50;
 }
 
-.ball{
-    position:absolute;
-    width:14px;
-    height:14px;
-    background:white;
-    border-radius:50%;
-    box-shadow:0 0 10px white;
-    z-index:8;
-    transition:
-      left .4s linear,
-      top .4s linear;
+.jugadorPartido span{
+ position:absolute;
+ top:31px;
+ left:50%;
+ transform:translateX(-50%);
+ white-space:nowrap;
+ font-size:9px;
+ text-shadow:0 2px 3px #000;
 }
 
-.events{
-    width:min(1200px,97vw);
-    height:105px;
-    overflow:auto;
-    margin-top:10px;
-    background:#0b1927;
-    border-radius:10px;
-    padding:10px;
+.pelota{
+ position:absolute;
+ width:15px;
+ height:15px;
+ background:white;
+ border-radius:50%;
+ z-index:10;
+ box-shadow:0 0 12px white;
+ transition:left .35s linear,top .35s linear;
 }
 
-.event{
-    font-size:13px;
-    margin-bottom:5px;
+.eventos{
+ height:125px;
+ overflow:auto;
+ margin-top:10px;
+ background:#0b1926;
+ border-radius:9px;
+ padding:9px;
 }
 
-.finalBox{
-    display:none;
-    text-align:center;
-    margin-top:13px;
+.evento{
+ font-size:13px;
+ margin:4px;
 }
 
-.finalBox button{
-    background:#19db78;
-    padding:12px 25px;
-    border-radius:8px;
-    margin-top:10px;
+/* ================= GOLES ================= */
+
+#flashGol{
+ display:none;
+ position:fixed;
+ z-index:100;
+ inset:0;
+ place-items:center;
+ background:#18dc7633;
+ pointer-events:none;
 }
 
-/* ================= RESPONSIVE ================= */
+#flashGol.mostrar{
+ display:grid;
+ animation:flash .9s;
+}
 
-@media(max-width:1150px){
-    .draftGrid{
-        grid-template-columns:220px 1fr;
-    }
+.textoGol{
+ font-size:clamp(45px,9vw,100px);
+ font-weight:1000;
+ text-shadow:0 5px 20px black;
+ animation:pop .9s;
+}
 
-    .draftGrid .panel:last-child{
-        grid-column:1/-1;
-    }
+@keyframes flash{
+ 0%,100%{opacity:0}
+ 30%,70%{opacity:1}
+}
+
+@keyframes pop{
+ 0%{transform:scale(.3)}
+ 50%{transform:scale(1.15)}
+ 100%{transform:scale(1)}
+}
+
+/* confeti */
+
+#confeti{
+ position:fixed;
+ inset:0;
+ z-index:90;
+ pointer-events:none;
+ overflow:hidden;
+}
+
+.conf{
+ position:absolute;
+ top:-20px;
+ width:9px;
+ height:14px;
+ animation:caer 2.5s linear forwards;
+}
+
+@keyframes caer{
+ to{
+  transform:translateY(110vh) rotate(720deg);
+ }
+}
+
+/* ganador */
+
+.overlay{
+ display:none;
+ position:fixed;
+ z-index:200;
+ inset:0;
+ background:#02090dcc;
+ place-items:center;
+ text-align:center;
+}
+
+.boxFinal{
+ background:linear-gradient(#174e77,#0b1e2e);
+ padding:35px;
+ border-radius:20px;
+ box-shadow:0 20px 100px #000;
+}
+
+.trofeo{
+ font-size:100px;
+ animation:rebote 1s infinite alternate;
+}
+
+@keyframes rebote{
+ to{transform:translateY(-15px) scale(1.08)}
+}
+
+/* responsive */
+
+@media(max-width:1200px){
+ .draftGrid{
+  grid-template-columns:210px 1fr;
+ }
+ .draftGrid>.panel:last-child{
+  grid-column:1/-1;
+ }
 }
 
 @media(max-width:700px){
-    .draftGrid{
-        grid-template-columns:1fr;
-    }
+ .draftGrid{
+  grid-template-columns:1fr;
+ }
 
-    .players{
-        grid-template-columns:1fr;
-    }
+ .players{
+  grid-template-columns:1fr;
+ }
 
-    .homeBox h1{
-        font-size:38px;
-    }
+ .configGrid{
+  grid-template-columns:1fr 1fr;
+ }
 
-    .phases{
-        grid-template-columns:1fr;
-    }
+ .fases{
+  grid-template-columns:1fr;
+ }
 
-    .matches{
-        grid-template-columns:1fr;
-    }
+ .partidos{
+  grid-template-columns:1fr;
+ }
 
-    .scoreboard{
-        grid-template-columns:1fr auto 1fr;
-    }
+ .marcador{
+  grid-template-columns:1fr auto 1fr;
+ }
 
-    .clock{
-        grid-column:1/-1;
-        text-align:center;
-    }
+ .spot{
+  min-width:52px;
+  font-size:7px;
+ }
+
+ .jugadorPartido{
+  width:23px;
+  height:23px;
+ }
+
+ .jugadorPartido span{
+  font-size:7px;
+ }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     HOME
-===================================================== -->
+<!-- ================= INICIO ================= -->
 
-<section id="home" class="screen active">
+<section id="inicio" class="screen active">
 
-<div class="homeBox">
+<div class="inicioBox">
 
-    <div class="logo">🌎⚽🏆</div>
+<div style="font-size:80px">🌎⚽🏆</div>
 
-    <h1>WORLD CUP DRAFT</h1>
+<h1>WORLD CUP DRAFT</h1>
 
-    <p>
-        Construí tu XI. Elegí tus jugadores.
-        Ganá el Mundial.
-    </p>
+<p>
+Creá tu selección, elegí tus jugadores y tratá de ganar el Mundial.
+</p>
 
-    <button class="greenBtn" onclick="startGame()">
-        JUGAR MUNDIAL
-    </button>
+<input id="nombreEquipo"
+placeholder="Nombre de tu equipo"
+maxlength="25">
+
+<br><br>
+
+<button class="btnVerde" onclick="comenzar()">
+EMPEZAR MUNDIAL
+</button>
 
 </div>
 
 </section>
 
 
-<!-- =====================================================
-     DRAFT
-===================================================== -->
+<!-- ================= DRAFT ================= -->
 
 <section id="draft" class="screen">
 
-<div class="topbar">
+<div class="top">
 
-    <h2>🌎 DRAFT DEL MUNDIAL</h2>
+<h2>🌎 DRAFT</h2>
 
-    <div class="skipBox">
-        SKIPS:
-        <span id="skipCount">4</span>
-    </div>
+<div>
+SKIPS:
+<b id="cantidadSkips">4</b>
+</div>
 
 </div>
 
 
 <div class="draftGrid">
 
-<!-- PAÍS -->
+<!-- dado -->
 
 <div class="panel">
 
-    <div class="panelTitle">
-        Selección sorteada
-    </div>
+<div class="small">
+SELECCIÓN SORTEADA
+</div>
 
-    <div class="countryBox">
+<div id="bandera" class="flag">
+🎲
+</div>
 
-        <div class="flag" id="countryFlag">🎲</div>
+<div id="pais" class="country">
+Tirar dado
+</div>
 
-        <div class="countryName" id="countryName">
-            Tirar dado
-        </div>
+<div id="dado" class="dado">
+🎲
+</div>
 
-        <div class="dice" id="dice">
-            🎲
-        </div>
+<div class="actions">
 
-        <div class="actions">
+<button class="btnAzul" onclick="tirarDado()">
+🎲 DADO
+</button>
 
-            <button class="rollBtn" onclick="rollCountry()">
-                🎲 DADO
-            </button>
+<button class="btnGris skip" onclick="usarSkip()">
+⏭ SKIP
+</button>
 
-            <button class="skipBtn" onclick="skipCountry()">
-                ⏭ SKIP
-            </button>
+</div>
 
-        </div>
+<br>
 
-        <div class="info">
-            Cada selección muestra 20 jugadores.
-            <br><br>
-            Debés elegir un jugador antes
-            de volver a tirar.
-            <br><br>
-            Los jugadores quedan bloqueados
-            cuando ya no podés utilizarlos
-            por sus posiciones.
-        </div>
-
-    </div>
+<div class="small">
+Tenés que elegir un jugador antes de volver a tirar.
+</div>
 
 </div>
 
 
-<!-- 20 JUGADORES -->
+<!-- jugadores -->
 
 <div class="panel">
 
-    <div class="panelTitle">
-        20 jugadores de la selección
-    </div>
+<div class="small">
+20 JUGADORES DISPONIBLES
+</div>
 
-    <div id="players" class="players">
+<div id="listaJugadores" class="players">
 
-        <div class="empty">
-            Tirale al dado para comenzar.
-        </div>
+<div class="small">
+Tirá el dado para comenzar.
+</div>
 
-    </div>
+</div>
 
 </div>
 
 
-<!-- CANCHA -->
+<!-- cancha -->
 
 <div class="panel">
 
-    <div class="panelTitle">
-        Tu XI
-    </div>
+<div class="small">
+TU XI — <span id="contador">0</span>/11
+</div>
 
-    <div class="formationWrap">
+<br>
 
-        <div class="formation">
+<div class="cancha">
 
-            <div class="centerCircle"></div>
+<div class="centro"></div>
+<div class="punto"></div>
 
-            <div class="area left"></div>
-            <div class="area right"></div>
+<div class="area izq"></div>
+<div class="area der"></div>
 
-            <!-- PORTERO -->
+<div class="arco izq"></div>
+<div class="arco der"></div>
 
-            <div class="positionSpot" id="POR"
-                 style="left:7%;top:50%">
-                <span class="spotPos">POR</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="esquina e1"></div>
+<div class="esquina e2"></div>
+<div class="esquina e3"></div>
+<div class="esquina e4"></div>
 
-            <!-- DEFENSA -->
 
-            <div class="positionSpot" id="LI"
-                 style="left:25%;top:20%">
-                <span class="spotPos">LI</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<!-- posiciones -->
 
-            <div class="positionSpot" id="DFC1"
-                 style="left:25%;top:40%">
-                <span class="spotPos">DFC</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="POR" style="left:7%;top:50%">
+<b>POR</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="DFC2"
-                 style="left:25%;top:60%">
-                <span class="spotPos">DFC</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="LI" style="left:24%;top:18%">
+<b>LI</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="LD"
-                 style="left:25%;top:80%">
-                <span class="spotPos">LD</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="DFC1" style="left:24%;top:40%">
+<b>DFC</b>VACÍO
+</div>
 
-            <!-- MEDIO -->
+<div class="spot" id="DFC2" style="left:24%;top:60%">
+<b>DFC</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="MCD"
-                 style="left:45%;top:50%">
-                <span class="spotPos">MCD</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="LD" style="left:24%;top:82%">
+<b>LD</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="MC1"
-                 style="left:48%;top:30%">
-                <span class="spotPos">MC</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="MCD" style="left:44%;top:50%">
+<b>MCD</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="MC2"
-                 style="left:48%;top:70%">
-                <span class="spotPos">MC</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="MC1" style="left:48%;top:30%">
+<b>MC</b>VACÍO
+</div>
 
-            <!-- ATAQUE -->
+<div class="spot" id="MC2" style="left:48%;top:70%">
+<b>MC</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="EI"
-                 style="left:73%;top:20%">
-                <span class="spotPos">EI</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="EI" style="left:72%;top:18%">
+<b>EI</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="DC"
-                 style="left:78%;top:50%">
-                <span class="spotPos">DC</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="DC" style="left:80%;top:50%">
+<b>DC</b>VACÍO
+</div>
 
-            <div class="positionSpot" id="ED"
-                 style="left:73%;top:80%">
-                <span class="spotPos">ED</span>
-                <span class="spotName">VACÍO</span>
-                <span class="spotRating"></span>
-            </div>
+<div class="spot" id="ED" style="left:72%;top:82%">
+<b>ED</b>VACÍO
+</div>
 
-        </div>
+</div>
 
-    </div>
 
-    <div id="teamCounter"
-         style="text-align:center;color:#8ca4b8;margin-top:10px">
-        0 / 11
-    </div>
+<!-- configuración debajo de la cancha -->
+
+<div class="config">
+
+<div class="configTitle">
+⚙️ CONFIGURACIÓN DEL EQUIPO
+</div>
+
+<div class="configGrid">
+
+<div class="select">
+
+<div class="small">📋 FORMACIÓN</div>
+
+<select id="formacion" onchange="cambiarFormacion()">
+
+<option value="4-3-3">4-3-3</option>
+<option value="4-4-2">4-4-2</option>
+<option value="4-2-3-1">4-2-3-1</option>
+<option value="4-3-2-1">4-3-2-1</option>
+<option value="3-4-3">3-4-3</option>
+<option value="3-5-2">3-5-2</option>
+<option value="5-3-2">5-3-2</option>
+<option value="5-4-1">5-4-1</option>
+
+</select>
+
+</div>
+
+
+<div class="select">
+
+<div class="small">👑 CAPITÁN</div>
+
+<select id="capitan">
+
+<option>
+Elegí después de completar el XI
+</option>
+
+</select>
+
+</div>
+
+
+<div class="select">
+
+<div class="small">⚔️ ESTILO</div>
+
+<select id="estilo">
+
+<option value="equilibrado">
+⚖️ Equilibrado
+</option>
+
+<option value="ofensivo">
+🔴 Ofensivo
+</option>
+
+<option value="defensivo">
+🔵 Defensivo
+</option>
+
+</select>
+
+</div>
+
+
+<div class="select">
+
+<div class="small">🏆 EQUIPO</div>
+
+<div id="nombreMostrado">
+Mi equipo
+</div>
+
+</div>
+
+</div>
+
+<br>
+
+<button
+id="btnMundial"
+class="btnVerde"
+style="display:none"
+onclick="entrarMundial()">
+
+🏆 COMENZAR MUNDIAL
+
+</button>
+
+</div>
 
 </div>
 
@@ -899,184 +982,261 @@ button{
 </section>
 
 
-<!-- =====================================================
-     ERROR
-===================================================== -->
+<!-- error -->
 
-<div id="errorBox" class="errorBox">
+<div id="error" class="overlay">
 
-    <div class="errorIcon">⚠️</div>
+<div class="boxFinal">
 
-    <h3>DRAFT BLOQUEADO</h3>
+<h2>⚠️ DRAFT BLOQUEADO</h2>
 
-    <p id="errorText">
-        Primero tenés que elegir un jugador.
-    </p>
+<p id="textoError"></p>
 
-    <button class="closeError" onclick="closeError()">
-        ENTENDIDO
-    </button>
+<button class="btnGris" onclick="cerrarError()">
+ENTENDIDO
+</button>
+
+</div>
 
 </div>
 
 
-<!-- =====================================================
-     MUNDIAL
-===================================================== -->
+<!-- ================= MUNDIAL ================= -->
 
-<section id="worldcup" class="screen">
+<section id="mundial" class="screen">
 
-    <div class="wcTitle">
-        🏆 MUNDIAL
-    </div>
+<div class="mundialBox">
 
-    <div class="phases">
+<h1>
+🏆 MUNDIAL — <span id="tituloEquipo"></span>
+</h1>
 
-        <div class="phase active" id="phaseGroups">
-            FASE DE GRUPOS
-        </div>
+<div class="fases">
 
-        <div class="phase" id="phaseRound16">
-            OCTAVOS
-        </div>
+<div id="fase0" class="fase activa">
+GRUPOS
+</div>
 
-        <div class="phase" id="phaseQuarter">
-            CUARTOS
-        </div>
+<div id="fase1" class="fase">
+OCTAVOS
+</div>
 
-        <div class="phase" id="phaseSemi">
-            SEMIFINAL
-        </div>
+<div id="fase2" class="fase">
+CUARTOS
+</div>
 
-        <div class="phase" id="phaseFinal">
-            FINAL
-        </div>
+<div id="fase3" class="fase">
+SEMIFINAL
+</div>
 
-    </div>
-
-    <div class="bracket">
-
-        <h3 id="tournamentTitle">
-            Fase de grupos
-        </h3>
-
-        <div class="matches" id="matches"></div>
-
-    </div>
-
-    <button
-        class="continueTournament"
-        onclick="startTournamentMatch()">
-
-        ⚽ JUGAR PARTIDO
-
-    </button>
-
-</section>
-
-
-<!-- =====================================================
-     PARTIDO
-===================================================== -->
-
-<section id="match" class="screen">
-
-<div class="scoreboard">
-
-    <div id="myTeamName">
-        TU SELECCIÓN
-    </div>
-
-    <div class="score">
-        <span id="myScore">0</span>
-        -
-        <span id="enemyScore">0</span>
-    </div>
-
-    <div id="enemyName">
-        RIVAL
-    </div>
-
-    <div class="clock">
-        <span id="matchClock">1</span>'
-    </div>
+<div id="fase4" class="fase">
+FINAL
+</div>
 
 </div>
 
 
-<div class="pitchLarge">
+<div class="panel">
 
-    <div class="pitchCircle"></div>
+<h2 id="tituloFase">
+FASE DE GRUPOS
+</h2>
 
-    <div class="pitchArea left"></div>
-    <div class="pitchArea right"></div>
-
-    <div class="goalNet left"></div>
-    <div class="goalNet right"></div>
-
-    <div id="matchPlayers"></div>
-
-    <div id="ball" class="ball"></div>
+<div id="partidosMundial" class="partidos"></div>
 
 </div>
 
 
-<div id="events" class="events"></div>
+<div class="modos">
 
+<button class="btnAzul" onclick="simular(true)">
+⚡ SIMULAR MUNDIAL RÁPIDO
+</button>
 
-<div id="finalBox" class="finalBox">
+<button class="btnVerde" onclick="simular(false)">
+🏟️ SIMULAR MUNDIAL
+</button>
 
-    <h2 id="finalTitle"></h2>
+</div>
 
-    <p id="finalText"></p>
-
-    <button onclick="goTournament()">
-        CONTINUAR MUNDIAL
-    </button>
+<p style="text-align:center;color:#91a8b9">
+Solo podés avanzar si ganás el partido.
+</p>
 
 </div>
 
 </section>
+
+
+<!-- ================= PARTIDO ================= -->
+
+<section id="partido" class="screen">
+
+<div class="partidoBox">
+
+<div class="marcador">
+
+<div id="nombreLocal">
+MI EQUIPO
+</div>
+
+<div>
+
+<div class="score">
+<span id="golesLocal">0</span>
+-
+<span id="golesVisitante">0</span>
+</div>
+
+<div class="reloj">
+<span id="minuto">0</span>'
+</div>
+
+</div>
+
+<div id="nombreVisitante" class="equipoR">
+RIVAL
+</div>
+
+</div>
+
+
+<div class="canchaPartido">
+
+<div class="centroPartido"></div>
+
+<div class="areaPartido izq"></div>
+<div class="areaPartido der"></div>
+
+<div id="jugadoresPartido"></div>
+
+<div id="pelota" class="pelota"></div>
+
+</div>
+
+
+<div id="eventos" class="eventos"></div>
+
+</div>
+
+</section>
+
+
+<!-- GOL -->
+
+<div id="flashGol">
+
+<div id="textoGol" class="textoGol">
+⚽ ¡GOOOOOOOL!
+</div>
+
+</div>
+
+
+<div id="confeti"></div>
+
+
+<!-- GANADOR -->
+
+<div id="ganador" class="overlay">
+
+<div class="boxFinal">
+
+<div class="trofeo">
+🏆
+</div>
+
+<h1>
+¡CAMPEÓN DEL MUNDO!
+</h1>
+
+<h2 id="ganadorNombre"></h2>
+
+<p>
+🎉 ¡Ganaste el Mundial! 🎉
+</p>
+
+<button class="btnVerde" onclick="location.reload()">
+NUEVO MUNDIAL
+</button>
+
+</div>
+
+</div>
+
+
+<!-- PERDEDOR -->
+
+<div id="perdedor" class="overlay">
+
+<div class="boxFinal">
+
+<div style="font-size:70px">
+❌
+</div>
+
+<h1>
+MUNDIAL TERMINADO
+</h1>
+
+<p>
+Perdiste el partido.
+</p>
+
+<p>
+Tenés que empezar un nuevo Mundial y volver a formar tu equipo.
+</p>
+
+<button class="btnVerde" onclick="location.reload()">
+NUEVO MUNDIAL
+</button>
+
+</div>
+
+</div>
 
 
 <script>
 
-/* =====================================================
-   BASE DE DATOS
-===================================================== */
+/* =========================================================
+   DATOS DE JUGADORES
+========================================================= */
 
-const countries = [
+const selecciones=[
 
 {
-name:"Argentina",flag:"🇦🇷",
-players:[
-["Lionel Messi","ED/MP",95],
-["Diego Maradona","MP/ED",98],
-["Julián Álvarez","DC/SD",89],
+pais:"Argentina",
+bandera:"🇦🇷",
+jugadores:[
+["Messi","ED/MP",95],
+["Maradona","MP/ED",98],
+["Di María","ED/EI",89],
+["Julián Álvarez","DC",89],
 ["Lautaro Martínez","DC",88],
-["Ángel Di María","ED/EI",89],
-["Sergio Agüero","DC",93],
-["Gabriel Batistuta","DC",94],
-["Hernán Crespo","DC",91],
-["Juan Román Riquelme","MP",91],
-["Javier Zanetti","LD/LI",90],
-["Javier Mascherano","MCD/DFC",87],
-["Fernando Redondo","MCD/MC",90],
-["Juan Sebastián Verón","MC/MP",88],
-["Gabriel Heinze","DFC/LI",85],
-["Daniel Passarella","DFC",93],
-["Roberto Ayala","DFC",88],
-["Jorge Valdano","DC",89],
-["Mario Kempes","DC",94],
-["Claudio Caniggia","ED/DC",91],
+["Agüero","DC",93],
+["Batistuta","DC",94],
+["Riquelme","MP",91],
+["Zanetti","LD/LI",90],
+["Mascherano","MCD/DFC",87],
+["Redondo","MCD/MC",90],
+["Passarella","DFC",93],
+["Ayala","DFC",88],
+["Kempes","DC",94],
+["Caniggia","ED/DC",91],
+["Crespo","DC",91],
+["Verón","MC/MP",88],
+["Heinze","DFC/LI",85],
+["Valdano","DC",89],
 ["Emiliano Martínez","POR",88]
-]},
+]
+},
 
 {
-name:"Brasil",flag:"🇧🇷",
-players:[
+pais:"Brasil",
+bandera:"🇧🇷",
+jugadores:[
 ["Pelé","DC/MP",99],
-["Ronaldo Nazário","DC",97],
+["Ronaldo","DC",97],
 ["Ronaldinho","MP/EI",96],
 ["Neymar","EI/MP",95],
 ["Vinícius Jr.","EI/ED",94],
@@ -1086,1584 +1246,1967 @@ players:[
 ["Cafu","LD",94],
 ["Roberto Carlos","LI",94],
 ["Thiago Silva","DFC",90],
-["Lucio","DFC",90],
+["Lúcio","DFC",90],
 ["Casemiro","MCD",88],
-["Dunga","MCD/MC",87],
 ["Zico","MP",95],
 ["Garrincha","ED",97],
 ["Adriano","DC",92],
 ["Bebeto","DC/ED",91],
 ["Marcelo","LI",90],
-["Alisson","POR",90]
-]},
+["Alisson","POR",90],
+["Dunga","MCD/MC",87]
+]
+},
 
 {
-name:"Francia",flag:"🇫🇷",
-players:[
-["Kylian Mbappé","EI/DC",97],
-["Zinedine Zidane","MP/MC",96],
-["Thierry Henry","DC/EI",96],
-["Michel Platini","MP/MC",96],
-["Antoine Griezmann","MP/DC",91],
-["Ousmane Dembélé","ED/EI",90],
-["Karim Benzema","DC",94],
-["Olivier Giroud","DC",88],
-["Franck Ribéry","EI",91],
-["Patrick Vieira","MCD/MC",92],
-["N'Golo Kanté","MCD/MC",90],
-["Claude Makélélé","MCD",90],
-["Lilian Thuram","LD/DFC",91],
-["Raphaël Varane","DFC",88],
-["Laurent Blanc","DFC",92],
-["Marcel Desailly","DFC/MCD",93],
-["Éric Cantona","DC/MP",93],
-["Robert Pirès","EI/MP",89],
-["Paul Pogba","MC/MP",88],
-["Hugo Lloris","POR",89]
-]},
+pais:"Francia",
+bandera:"🇫🇷",
+jugadores:[
+["Mbappé","EI/DC",97],
+["Zidane","MP/MC",96],
+["Henry","DC/EI",96],
+["Platini","MP/MC",96],
+["Griezmann","MP/DC",91],
+["Dembélé","ED/EI",90],
+["Benzema","DC",94],
+["Giroud","DC",88],
+["Ribéry","EI",91],
+["Vieira","MCD/MC",92],
+["Kanté","MCD/MC",90],
+["Makélélé","MCD",90],
+["Thuram","LD/DFC",91],
+["Varane","DFC",88],
+["Blanc","DFC",92],
+["Desailly","DFC/MCD",93],
+["Cantona","DC/MP",93],
+["Pirès","EI/MP",89],
+["Pogba","MC/MP",88],
+["Lloris","POR",89]
+]
+},
 
 {
-name:"España",flag:"🇪🇸",
-players:[
+pais:"España",
+bandera:"🇪🇸",
+jugadores:[
 ["Lamine Yamal","ED",89],
 ["Xavi","MC/MP",96],
-["Andrés Iniesta","MC/MP",96],
-["Iker Casillas","POR",93],
+["Iniesta","MC/MP",96],
+["Casillas","POR",93],
 ["Sergio Ramos","DFC/LD",92],
-["Carles Puyol","DFC",91],
-["Fernando Torres","DC",91],
+["Puyol","DFC",91],
+["Torres","DC",91],
 ["David Villa","DC/EI",94],
 ["Raúl","DC/MP",92],
 ["Xabi Alonso","MCD/MC",91],
-["Sergio Busquets","MCD",91],
+["Busquets","MCD",91],
 ["David Silva","MP/EI",92],
-["Cesc Fàbregas","MC/MP",89],
-["Fernando Hierro","DFC/MCD",91],
-["Gerard Piqué","DFC",90],
+["Cesc","MC/MP",89],
+["Hierro","DFC/MCD",91],
+["Piqué","DFC",90],
 ["Jordi Alba","LI",89],
 ["Pedro","ED/EI",88],
 ["Rodri","MCD/MC",94],
-["Fernando Morientes","DC",88],
-["David de Gea","POR",88]
-]},
+["Morientes","DC",88],
+["De Gea","POR",88]
+]
+},
 
 {
-name:"Alemania",flag:"🇩🇪",
-players:[
-["Franz Beckenbauer","DFC/MCD",97],
+pais:"Alemania",
+bandera:"🇩🇪",
+jugadores:[
+["Beckenbauer","DFC/MCD",97],
 ["Gerd Müller","DC",97],
-["Lothar Matthäus","MC/MCD",96],
-["Miroslav Klose","DC",92],
+["Matthäus","MC/MCD",96],
+["Klose","DC",92],
 ["Thomas Müller","MP/DC",90],
-["Toni Kroos","MC/MCD",94],
-["Mesut Özil","MP",91],
-["Bastian Schweinsteiger","MC/MCD",91],
-["Manuel Neuer","POR",94],
-["Philipp Lahm","LD/LI",93],
-["Mats Hummels","DFC",89],
-["Michael Ballack","MC/MP",92],
-["Rudi Völler","DC",91],
-["Karl-Heinz Rummenigge","DC",95],
-["Jürgen Klinsmann","DC",91],
-["Oliver Kahn","POR",94],
-["Thomas Hässler","MP/MC",88],
-["Jamal Musiala","MP/EI",91],
-["Mario Götze","MP",85],
-["Berti Vogts","LD/DFC",89]
-]},
+["Kroos","MC/MCD",94],
+["Özil","MP",91],
+["Schweinsteiger","MC/MCD",91],
+["Neuer","POR",94],
+["Lahm","LD/LI",93],
+["Hummels","DFC",89],
+["Ballack","MC/MP",92],
+["Rummenigge","DC",95],
+["Klinsmann","DC",91],
+["Kahn","POR",94],
+["Musiala","MP/EI",91],
+["Götze","MP",85],
+["Vogts","LD/DFC",89],
+["Völler","DC",91],
+["Netzer","MC/MP",93]
+]
+},
 
 {
-name:"Italia",flag:"🇮🇹",
-players:[
-["Paolo Maldini","LI/DFC",97],
-["Franco Baresi","DFC",96],
-["Roberto Baggio","MP/DC",95],
-["Alessandro Del Piero","DC/MP",94],
-["Francesco Totti","MP/DC",94],
-["Andrea Pirlo","MC/MCD",94],
-["Gianluigi Buffon","POR",96],
-["Fabio Cannavaro","DFC",93],
-["Giorgio Chiellini","DFC",90],
-["Marco Verratti","MC",88],
-["Daniele De Rossi","MCD/MC",88],
-["Gennaro Gattuso","MCD",87],
-["Filippo Inzaghi","DC",90],
-["Christian Vieri","DC",91],
-["Luca Toni","DC",88],
-["Gianfranco Zola","MP/DC",90],
-["Federico Chiesa","ED/EI",87],
-["Dino Zoff","POR",94],
-["Alessandro Nesta","DFC",94],
-["Sandro Mazzola","MP/DC",93]
-]},
+pais:"Italia",
+bandera:"🇮🇹",
+jugadores:[
+["Maldini","LI/DFC",97],
+["Baresi","DFC",96],
+["Baggio","MP/DC",95],
+["Del Piero","DC/MP",94],
+["Totti","MP/DC",94],
+["Pirlo","MC/MCD",94],
+["Buffon","POR",96],
+["Cannavaro","DFC",93],
+["Chiellini","DFC",90],
+["Verratti","MC",88],
+["De Rossi","MCD/MC",88],
+["Gattuso","MCD",87],
+["Inzaghi","DC",90],
+["Vieri","DC",91],
+["Toni","DC",88],
+["Zola","MP/DC",90],
+["Chiesa","ED/EI",87],
+["Zoff","POR",94],
+["Nesta","DFC",94],
+["Mazzola","MP/DC",93]
+]
+},
 
 {
-name:"Portugal",flag:"🇵🇹",
-players:[
+pais:"Portugal",
+bandera:"🇵🇹",
+jugadores:[
 ["Cristiano Ronaldo","DC/EI",97],
 ["Eusébio","DC",98],
-["Luís Figo","ED/MP",95],
+["Figo","ED/MP",95],
 ["Rui Costa","MP/MC",92],
 ["Bernardo Silva","MP/ED",91],
 ["Bruno Fernandes","MP/MC",91],
 ["Deco","MC/MP",91],
 ["Pepe","DFC",91],
 ["Ricardo Carvalho","DFC",90],
-["João Cancelo","LD/LI",88],
+["Cancelo","LD/LI",88],
 ["Nani","ED/EI",87],
-["Ricardo Quaresma","ED",88],
-["Paulo Futre","EI",91],
+["Quaresma","ED",88],
+["Futre","EI",91],
 ["Simão","EI/ED",87],
-["João Moutinho","MC",86],
+["Moutinho","MC",86],
 ["William Carvalho","MCD",84],
 ["Rui Patrício","POR",86],
 ["Vítor Baía","POR",90],
 ["Fernando Couto","DFC",89],
 ["Rafael Leão","EI/DC",89]
-]},
+]
+},
 
 {
-name:"Inglaterra",flag:"🏴",
-players:[
-["Harry Kane","DC",94],
-["Jude Bellingham","MC/MP",93],
-["David Beckham","ED/MC",93],
-["Wayne Rooney","DC/MP",94],
-["Steven Gerrard","MC",92],
-["Frank Lampard","MC/MP",92],
+pais:"Inglaterra",
+bandera:"🏴",
+jugadores:[
+["Kane","DC",94],
+["Bellingham","MC/MP",93],
+["Beckham","ED/MC",93],
+["Rooney","DC/MP",94],
+["Gerrard","MC",92],
+["Lampard","MC/MP",92],
 ["Bobby Charlton","MP/MC",96],
-["Gary Lineker","DC",93],
-["Michael Owen","DC",91],
-["Alan Shearer","DC",94],
-["Paul Scholes","MC/MP",92],
-["John Terry","DFC",90],
-["Rio Ferdinand","DFC",90],
+["Lineker","DC",93],
+["Owen","DC",91],
+["Shearer","DC",94],
+["Scholes","MC/MP",92],
+["Terry","DFC",90],
+["Ferdinand","DFC",90],
 ["Ashley Cole","LI",91],
-["Kyle Walker","LD/DFC",88],
+["Walker","LD/DFC",88],
 ["John Barnes","EI/MP",91],
-["Kevin Keegan","DC/MP",91],
-["Peter Shilton","POR",93],
-["Bukayo Saka","ED",88],
-["Phil Foden","MP/EI",90]
-]},
+["Keegan","DC/MP",91],
+["Shilton","POR",93],
+["Saka","ED",88],
+["Foden","MP/EI",90]
+]
+},
 
 {
-name:"Uruguay",flag:"🇺🇾",
-players:[
-["Luis Suárez","DC",94],
-["Diego Forlán","DC/EI",93],
-["Edinson Cavani","DC",91],
-["Enzo Francescoli","MP/DC",93],
-["Diego Godín","DFC",90],
-["Federico Valverde","MC/MCD",91],
-["Ronald Araújo","DFC/LD",88],
+pais:"Uruguay",
+bandera:"🇺🇾",
+jugadores:[
+["Suárez","DC",94],
+["Forlán","DC/EI",93],
+["Cavani","DC",91],
+["Francescoli","MP/DC",93],
+["Godín","DFC",90],
+["Valverde","MC/MCD",91],
+["Araújo","DFC/LD",88],
 ["Obdulio Varela","MCD/MC",94],
-["Juan Alberto Schiaffino","MP/DC",94],
-["José Nasazzi","DFC",94],
-["Héctor Scarone","ED/DC",95],
-["Alcides Ghiggia","ED",93],
-["Álvaro Recoba","MP/EI",89],
-["Diego Lugano","DFC",87],
-["Sebastián Abreu","DC",86],
-["Fernando Muslera","POR",87],
+["Schiaffino","MP/DC",94],
+["Nasazzi","DFC",94],
+["Scarone","ED/DC",95],
+["Ghiggia","ED",93],
+["Recoba","MP/EI",89],
+["Lugano","DFC",87],
+["Abreu","DC",86],
+["Muslera","POR",87],
 ["Darwin Núñez","DC",89],
-["Giorgian De Arrascaeta","MP",88],
-["José María Giménez","DFC",87],
-["Juan Sebastián Verón","MC",88]
-]},
+["De Arrascaeta","MP",88],
+["Giménez","DFC",87],
+["Héctor Castro","DC",86]
+]
+},
 
 {
-name:"Países Bajos",flag:"🇳🇱",
-players:[
-["Johan Cruyff","DC/MP",98],
-["Marco van Basten","DC",97],
-["Ruud Gullit","MP/DC",95],
-["Dennis Bergkamp","DC/MP",94],
-["Arjen Robben","ED",94],
-["Wesley Sneijder","MP/MC",92],
-["Frank Rijkaard","MCD/DFC",94],
-["Clarence Seedorf","MC/MP",92],
-["Edgar Davids","MC/MCD",90],
-["Virgil van Dijk","DFC",92],
-["Ronald Koeman","DFC/MCD",94],
-["Ruud van Nistelrooy","DC",93],
-["Robin van Persie","DC/EI",93],
-["Patrick Kluivert","DC",90],
-["Marc Overmars","EI/ED",90],
-["Edwin van der Sar","POR",93],
-["Jaap Stam","DFC",90],
-["Frenkie de Jong","MC/MCD",89],
-["Memphis Depay","DC/EI",87],
-["Rafael van der Vaart","MP/MC",88]
-]},
-
-/* países adicionales */
-
-{
-name:"India",flag:"🇮🇳",
-players:[
-["Sunil Chhetri","DC",78],["Gurpreet Singh","POR",75],
-["Bhaichung Bhutia","DC",82],["IM Vijayan","DC",80],
-["Anirudh Thapa","MC",74],["Sandesh Jhingan","DFC",76],
-["Jeje Lalpekhlua","DC",73],["Brandon Fernandes","MP",75],
-["Jackichand Singh","ED",72],["Pronay Halder","MCD",71],
-["Subrata Pal","POR",74],["Mehtab Hossain","MCD",70],
-["Mohammed Rafique","MC",70],["Rowllin Borges","MCD",72],
-["Udanta Singh","ED",73],["Lalrindika Ralte","MC",68],
-["Denzil Franco","LD",68],["Pritam Kotal","LD",71],
-["Anas Edathodika","DFC",72],["Sandesh Jhingan Jr.","DFC",69]
-]},
+pais:"Países Bajos",
+bandera:"🇳🇱",
+jugadores:[
+["Cruyff","DC/MP",98],
+["Van Basten","DC",97],
+["Gullit","MP/DC",95],
+["Bergkamp","DC/MP",94],
+["Robben","ED",94],
+["Sneijder","MP/MC",92],
+["Rijkaard","MCD/DFC",94],
+["Seedorf","MC/MP",92],
+["Davids","MC/MCD",90],
+["Van Dijk","DFC",92],
+["Koeman","DFC/MCD",94],
+["Van Nistelrooy","DC",93],
+["Van Persie","DC/EI",93],
+["Kluivert","DC",90],
+["Overmars","EI/ED",90],
+["Van der Sar","POR",93],
+["Stam","DFC",90],
+["De Jong","MC/MCD",89],
+["Depay","DC/EI",87],
+["Van der Vaart","MP/MC",88]
+]
+},
 
 {
-name:"Chad",flag:"🇹🇩",
-players:[
-["Ezechiel N'Douassel","DC",73],["Karl Max Barthelemy","ED",69],
-["Marius Mouandilmadji","DC",72],["Casimir Ninga","EI/DC",75],
-["Ndouassel Junior","DC",66],["Mahamat Ahmat","MC",64],
-["Abakar Mahamat","DFC",66],["Mbaïssé","MCD",65],
-["Youssouf Mahamat","DFC",63],["Moustapha Djibrine","MC",64],
-["Idriss Carlos Kameni","POR",68],["Adoum Djibrine","LD",62],
-["Hassan Ibrahim","MC",63],["Mamadou Kébé","DFC",64],
-["Ali Mahamat","DC",65],["Oumar Mahamat","EI",63],
-["Haroun Tchari","MC",62],["Abdelkerim Mahamat","DFC",61],
-["Moussa Faki","ED",60],["Zakaria Issa","POR",62]
-]},
+pais:"India",
+bandera:"🇮🇳",
+jugadores:[
+["Sunil Chhetri","DC",78],
+["Bhaichung Bhutia","DC",82],
+["IM Vijayan","DC",80],
+["Gurpreet Singh","POR",75],
+["Anirudh Thapa","MC",74],
+["Sandesh Jhingan","DFC",76],
+["Jeje Lalpekhlua","DC",73],
+["Brandon Fernandes","MP",75],
+["Jackichand Singh","ED",72],
+["Pronay Halder","MCD",71],
+["Subrata Pal","POR",74],
+["Mehtab Hossain","MCD",70],
+["Mohammed Rafique","MC",70],
+["Rowllin Borges","MCD",72],
+["Udanta Singh","ED",73],
+["Lalrindika Ralte","MC",68],
+["Denzil Franco","LD",68],
+["Pritam Kotal","LD",71],
+["Anas Edathodika","DFC",72],
+["Rahul Bheke","DFC",69]
+]
+},
 
 {
-name:"Jordania",flag:"🇯🇴",
-players:[
-["Musa Al-Taamari","ED",79],["Yazan Al-Naimat","DC",78],
-["Baha' Abdel-Rahman","MC",75],["Amer Shafi","POR",77],
-["Ahmad Hayel","DC",74],["Odai Al-Saify","EI",72],
-["Anas Bani Yaseen","DFC",74],["Ibrahim Sadeh","MC",69],
-["Mohammad Abu Zrayq","ED",72],["Nour Al-Din","MC",68],
-["Tareq Khattab","DFC",71],["Yousef Rawashdeh","EI",70],
-["Mahmoud Al-Mardi","EI",73],["Hamad Al-Najjar","POR",65],
-["Ali Alwan","DC",74],["Faisal Ibrahim","MC",67],
-["Amer Deeb","MC",68],["Hussein Zaidan","DFC",66],
-["Anas Al-Battat","LD",65],["Khaled Saad","LI",67]
-]},
+pais:"Chad",
+bandera:"🇹🇩",
+jugadores:[
+["Ezechiel N'Douassel","DC",73],
+["Karl Max Barthelemy","ED",69],
+["Marius Mouandilmadji","DC",72],
+["Casimir Ninga","EI/DC",75],
+["Mahamat Ahmat","MC",64],
+["Abakar Mahamat","DFC",66],
+["Mbaïssé","MCD",65],
+["Youssouf Mahamat","DFC",63],
+["Moustapha Djibrine","MC",64],
+["Idriss Carlos Kameni","POR",68],
+["Adoum Djibrine","LD",62],
+["Hassan Ibrahim","MC",63],
+["Mamadou Kébé","DFC",64],
+["Ali Mahamat","DC",65],
+["Oumar Mahamat","EI",63],
+["Haroun Tchari","MC",62],
+["Abdelkerim Mahamat","DFC",61],
+["Moussa Faki","ED",60],
+["Zakaria Issa","POR",62],
+["Ngarlemdana","DFC",64]
+]
+},
 
 {
-name:"Japón",flag:"🇯🇵",
-players:[
-["Keisuke Honda","MP",85],["Hidetoshi Nakata","MP/MC",90],
-["Shinji Kagawa","MP",86],["Takefusa Kubo","ED/MP",86],
-["Kaoru Mitoma","EI",85],["Shunsuke Nakamura","MP",88],
-["Yuto Nagatomo","LI",83],["Maya Yoshida","DFC",82],
-["Makoto Hasebe","MCD/DFC",84],["Shinji Okazaki","DC",82],
-["Kazuyoshi Miura","DC",84],["Eiji Kawashima","POR",80],
-["Takumi Minamino","MP/DC",83],["Wataru Endo","MCD",84],
-["Ritsu Doan","ED",81],["Junichi Inamoto","MC",80],
-["Masato Nakayama","DC",79],["Atsuto Uchida","LD",80],
-["Yuji Nakazawa","DFC",82],["Daichi Kamada","MP/MC",83]
-]},
+pais:"Jordania",
+bandera:"🇯🇴",
+jugadores:[
+["Musa Al-Taamari","ED",79],
+["Yazan Al-Naimat","DC",78],
+["Baha Abdel-Rahman","MC",75],
+["Amer Shafi","POR",77],
+["Ahmad Hayel","DC",74],
+["Odai Al-Saify","EI",72],
+["Anas Bani Yaseen","DFC",74],
+["Ibrahim Sadeh","MC",69],
+["Mohammad Abu Zrayq","ED",72],
+["Nour Al-Din","MC",68],
+["Tareq Khattab","DFC",71],
+["Yousef Rawashdeh","EI",70],
+["Mahmoud Al-Mardi","EI",73],
+["Hamad Al-Najjar","POR",65],
+["Ali Alwan","DC",74],
+["Faisal Ibrahim","MC",67],
+["Amer Deeb","MC",68],
+["Hussein Zaidan","DFC",66],
+["Anas Al-Battat","LD",65],
+["Khaled Saad","LI",67]
+]
+},
 
 {
-name:"Marruecos",flag:"🇲🇦",
-players:[
-["Achraf Hakimi","LD/LI",89],["Hakim Ziyech","ED/MP",86],
-["Sofyan Amrabat","MCD",84],["Youssef En-Nesyri","DC",84],
-["Noureddine Naybet","DFC",89],["Mustapha Hadji","MP",88],
-["Badou Zaki","POR",88],["Medhi Benatia","DFC",88],
-["Houssine Kharja","MC",81],["Marouane Chamakh","DC",82],
-["Youssef Chippo","MC",80],["Abdeljalil Hadda","DC",79],
-["Nabil Dirar","ED",78],["Romain Saïss","DFC",80],
-["Amine Harit","MP",80],["Sofiane Boufal","EI",82],
-["Munir Mohamedi","POR",77],["Nordin Amrabat","ED",80],
-["Younès Belhanda","MP",82],["Noussair Mazraoui","LD/LI",84]
-]},
+pais:"Japón",
+bandera:"🇯🇵",
+jugadores:[
+["Honda","MP",85],
+["Nakata","MP/MC",90],
+["Kagawa","MP",86],
+["Kubo","ED/MP",86],
+["Mitoma","EI",85],
+["Nakamura","MP",88],
+["Nagatomo","LI",83],
+["Yoshida","DFC",82],
+["Hasebe","MCD/DFC",84],
+["Okazaki","DC",82],
+["Miura","DC",84],
+["Kawashima","POR",80],
+["Minamino","MP/DC",83],
+["Endo","MCD",84],
+["Doan","ED",81],
+["Inamoto","MC",80],
+["Nakayama","DC",79],
+["Uchida","LD",80],
+["Nakazawa","DFC",82],
+["Kamada","MP/MC",83]
+]
+},
 
 {
-name:"Nigeria",flag:"🇳🇬",
-players:[
-["Jay-Jay Okocha","MP",93],["Nwankwo Kanu","DC/MP",90],
-["Victor Osimhen","DC",90],["Finidi George","ED",88],
-["Rashidi Yekini","DC",91],["Daniel Amokachi","DC",85],
-["Sunday Oliseh","MCD",86],["John Obi Mikel","MC/MCD",84],
-["Joseph Yobo","DFC",82],["Vincent Enyeama","POR",86],
-["Ahmed Musa","EI/ED",80],["Victor Moses","ED/LD",81],
-["Wilfred Ndidi","MCD",84],["Taribo West","DFC",85],
-["Kelechi Iheanacho","DC/MP",80],["Alex Iwobi","MP",80],
-["Emmanuel Amunike","EI",84],["Stephen Keshi","DFC",84],
-["Celestine Babayaro","LI",82],["Peter Odemwingie","DC/ED",80]
-]},
+pais:"Marruecos",
+bandera:"🇲🇦",
+jugadores:[
+["Hakimi","LD/LI",89],
+["Ziyech","ED/MP",86],
+["Amrabat","MCD",84],
+["En-Nesyri","DC",84],
+["Naybet","DFC",89],
+["Mustapha Hadji","MP",88],
+["Badou Zaki","POR",88],
+["Benatia","DFC",88],
+["Kharja","MC",81],
+["Chamakh","DC",82],
+["Chippo","MC",80],
+["Hadda","DC",79],
+["Dirar","ED",78],
+["Saïss","DFC",80],
+["Harit","MP",80],
+["Boufal","EI",82],
+["Munir","POR",77],
+["Nordin Amrabat","ED",80],
+["Belhanda","MP",82],
+["Mazraoui","LD/LI",84]
+]
+},
 
 {
-name:"México",flag:"🇲🇽",
-players:[
-["Hugo Sánchez","DC",95],["Rafael Márquez","DFC/MCD",91],
-["Jorge Campos","POR",88],["Cuauhtémoc Blanco","MP/DC",88],
-["Javier Hernández","DC",86],["Rafa Márquez","DFC",91],
-["Jared Borgetti","DC",87],["Hirving Lozano","EI",84],
-["Guillermo Ochoa","POR",85],["Andrés Guardado","MC",84],
-["Claudio Suárez","DFC",87],["Luis Hernández","DC",85],
-["Ramón Ramírez","EI",84],["Gerardo Torrado","MCD",82],
-["Oswaldo Sánchez","POR",83],["Carlos Vela","ED/DC",85],
-["Javier Aguirre","DC",78],["Benjamín Galindo","MP",83],
-["Alberto García Aspe","MC",84],["Luis García","DC",82]
-]},
+pais:"Nigeria",
+bandera:"🇳🇬",
+jugadores:[
+["Okocha","MP",93],
+["Kanu","DC/MP",90],
+["Osimhen","DC",90],
+["Finidi George","ED",88],
+["Yekini","DC",91],
+["Amokachi","DC",85],
+["Oliseh","MCD",86],
+["Mikel","MC/MCD",84],
+["Yobo","DFC",82],
+["Enyeama","POR",86],
+["Musa","EI/ED",80],
+["Moses","ED/LD",81],
+["Ndidi","MCD",84],
+["Taribo West","DFC",85],
+["Iheanacho","DC/MP",80],
+["Iwobi","MP",80],
+["Amunike","EI",84],
+["Keshi","DFC",84],
+["Babayaro","LI",82],
+["Odemwingie","DC/ED",80]
+]
+},
 
 {
-name:"Colombia",flag:"🇨🇴",
-players:[
-["Carlos Valderrama","MP",93],["Radamel Falcao","DC",91],
-["James Rodríguez","MP/MC",89],["René Higuita","POR",89],
-["Faustino Asprilla","DC",88],["Juan Cuadrado","ED/LD",86],
-["Mario Yepes","DFC",86],["Freddy Rincón","MC/MCD",88],
-["Iván Córdoba","DFC",88],["Adolfo Valencia","DC",84],
-["Arnoldo Iguarán","DC",86],["David Ospina","POR",82],
-["Yerry Mina","DFC",80],["Luis Díaz","EI",87],
-["Jhon Arias","ED",82],["Víctor Aristizábal","DC",87],
-["Carlos Bacca","DC",83],["Abel Aguilar","MC",81],
-["Juan Pablo Ángel","DC",82],["Faiver Mercado","DC",78]
-]},
+pais:"México",
+bandera:"🇲🇽",
+jugadores:[
+["Hugo Sánchez","DC",95],
+["Rafa Márquez","DFC/MCD",91],
+["Jorge Campos","POR",88],
+["Cuauhtémoc Blanco","MP/DC",88],
+["Chicharito","DC",86],
+["Borgetti","DC",87],
+["Lozano","EI",84],
+["Ochoa","POR",85],
+["Guardado","MC",84],
+["Claudio Suárez","DFC",87],
+["Luis Hernández","DC",85],
+["Ramón Ramírez","EI",84],
+["Torrado","MCD",82],
+["Carlos Vela","ED/DC",85],
+["Benjamín Galindo","MP",83],
+["García Aspe","MC",84],
+["Luis García","DC",82],
+["Oswaldo Sánchez","POR",83],
+["Rafa Puente","DFC",75],
+["Alberto García","DFC",76]
+]
+},
 
 {
-name:"Estados Unidos",flag:"🇺🇸",
-players:[
-["Landon Donovan","MP/ED",88],["Clint Dempsey","MP/DC",87],
-["Christian Pulisic","EI/ED",87],["Tim Howard","POR",87],
-["DaMarcus Beasley","LI/EI",82],["Michael Bradley","MC",82],
-["Claudio Reyna","MP/MC",86],["Cobi Jones","ED",82],
-["Jozy Altidore","DC",80],["Carlos Bocanegra","DFC",81],
-["Brian McBride","DC",82],["Alexi Lalas","DFC",78],
-["Weston McKennie","MC",82],["Tyler Adams","MCD",81],
-["DeAndre Yedlin","LD",79],["Jozy Altidore","DC",80],
-["Kasey Keller","POR",84],["Eddie Pope","DFC",82],
-["DaMarcus Beasley","LI",82],["Gio Reyna","MP",80]
-]},
-
-/* HISTÓRICAS */
-
-{
-name:"Yugoslavia",flag:"🏳️",
-players:[
-["Dragan Džajić","EI",94],["Dejan Savićević","MP/EI",92],
-["Robert Prosinečki","MP/MC",91],["Zvonimir Boban","MP/MC",91],
-["Davor Šuker","DC",93],["Predrag Mijatović","DC/MP",89],
-["Safet Sušić","MP",93],["Dragan Stojković","MP",92],
-["Josip Skoblar","DC",91],["Vladimir Beara","POR",92],
-["Velibor Vasović","DFC",90],["Branko Zebec","EI/DC",90],
-["Milan Galić","DC",89],["Ivica Osim","MP",89],
-["Vujadin Boškov","DFC",87],["Slaven Bilić","DFC",86],
-["Srečko Katanec","MCD/DFC",87],["Darko Pančev","DC",91],
-["Zlatko Vujović","DC",87],["Vladimir Durković","LD",87]
-]},
+pais:"Colombia",
+bandera:"🇨🇴",
+jugadores:[
+["Valderrama","MP",93],
+["Falcao","DC",91],
+["James Rodríguez","MP/MC",89],
+["Higuita","POR",89],
+["Asprilla","DC",88],
+["Cuadrado","ED/LD",86],
+["Yepes","DFC",86],
+["Rincón","MC/MCD",88],
+["Iván Córdoba","DFC",88],
+["Adolfo Valencia","DC",84],
+["Iguarán","DC",86],
+["Ospina","POR",82],
+["Yerry Mina","DFC",80],
+["Luis Díaz","EI",87],
+["Jhon Arias","ED",82],
+["Aristizábal","DC",87],
+["Bacca","DC",83],
+["Abel Aguilar","MC",81],
+["Juan Pablo Ángel","DC",82],
+["Carlos Sánchez","MCD",80]
+]
+},
 
 {
-name:"Unión Soviética",flag:"☭",
-players:[
-["Lev Yashin","POR",98],["Oleg Blokhin","EI/DC",95],
-["Valentin Ivanov","DC",91],["Eduard Streltsov","DC/MP",94],
-["Igor Netto","MC/MCD",91],["Valery Voronin","MCD",90],
-["Rinat Dasayev","POR",94],["Viktor Ponedelnik","DC",90],
-["Gennadiy Litovchenko","MC",88],["Andrei Kanchelskis","ED",89],
-["Viktor Kolotov","MC",89],["Anatoli Byshovets","DC",88],
-["Albert Shesternyov","DFC",92],["Vladimir Muntyan","MP",90],
-["Mikhail Semichastniy","LD",85],["Anatoliy Maslyonkin","DFC",88],
-["Valeri Lobanovskyi","MP",85],["Yuri Voinov","MC",87],
-["Aleksandr Mostovoi","MP/MC",88],["Viktor Onopko","DFC",87]
-]},
+pais:"Estados Unidos",
+bandera:"🇺🇸",
+jugadores:[
+["Donovan","MP/ED",88],
+["Dempsey","MP/DC",87],
+["Pulisic","EI/ED",87],
+["Tim Howard","POR",87],
+["Beasley","LI/EI",82],
+["Bradley","MC",82],
+["Claudio Reyna","MP/MC",86],
+["Cobi Jones","ED",82],
+["Altidore","DC",80],
+["Bocanegra","DFC",81],
+["McBride","DC",82],
+["Lalas","DFC",78],
+["McKennie","MC",82],
+["Adams","MCD",81],
+["Yedlin","LD",79],
+["Keller","POR",84],
+["Eddie Pope","DFC",82],
+["Gio Reyna","MP",80],
+["Jozy Jr","DC",75],
+["Pope Jr","DFC",74]
+]
+},
 
 {
-name:"Checoslovaquia",flag:"🇨🇿",
-players:[
-["Josef Masopust","MC/MP",94],["Antonín Panenka","MP/MC",91],
-["Pavel Nedvěd","MC/EI",94],["Karel Poborský","ED/MP",88],
-["Tomáš Skuhravý","DC",88],["Ivo Viktor","POR",92],
-["Ján Popluhár","DFC",90],["Ladislav Novák","LI/DFC",88],
-["Josef Bican","DC",98],["Oldřich Nejedlý","DC",93],
-["František Plánička","POR",94],["Svatopluk Pluskal","MCD/DFC",87],
-["Andrej Kvašňák","MP",88],["Jozef Adamec","DC",89],
-["Karol Dobiáš","LD",87],["Zdeněk Nehoda","DC",88],
-["Antonín Kramerius","DFC",84],["Ladislav Kuna","MC",85],
-["Miroslav Koubek","MC",84],["Josef Bican II","DC",82]
-]}
+pais:"Yugoslavia",
+bandera:"🏳️",
+jugadores:[
+["Džajić","EI",94],
+["Savićević","MP/EI",92],
+["Prosinečki","MP/MC",91],
+["Boban","MP/MC",91],
+["Šuker","DC",93],
+["Mijatović","DC/MP",89],
+["Sušić","MP",93],
+["Stojković","MP",92],
+["Skoblar","DC",91],
+["Vladimir Beara","POR",92],
+["Vasović","DFC",90],
+["Zebec","EI/DC",90],
+["Galić","DC",89],
+["Osim","MP",89],
+["Boškov","DFC",87],
+["Bilić","DFC",86],
+["Katanec","MCD/DFC",87],
+["Pančev","DC",91],
+["Vujović","DC",87],
+["Durković","LD",87]
+]
+},
+
+{
+pais:"Unión Soviética",
+bandera:"☭",
+jugadores:[
+["Yashin","POR",98],
+["Blokhin","EI/DC",95],
+["Ivanov","DC",91],
+["Streltsov","DC/MP",94],
+["Netto","MC/MCD",91],
+["Voronin","MCD",90],
+["Dasayev","POR",94],
+["Ponedelnik","DC",90],
+["Litovchenko","MC",88],
+["Kanchelskis","ED",89],
+["Kolotov","MC",89],
+["Byshovets","DC",88],
+["Shesternyov","DFC",92],
+["Muntyan","MP",90],
+["Mostovoi","MP/MC",88],
+["Onopko","DFC",87],
+["Voinov","MC",87],
+["Maslyonkov","DFC",88],
+["Semichastniy","LD",85],
+["Kholmov","MC",86]
+]
+},
+
+{
+pais:"Checoslovaquia",
+bandera:"🇨🇿",
+jugadores:[
+["Josef Bican","DC",98],
+["Masopust","MC/MP",94],
+["Panenka","MP/MC",91],
+["Nedvěd","MC/EI",94],
+["Poborský","ED/MP",88],
+["Skuhravý","DC",88],
+["Ivo Viktor","POR",92],
+["Popluhár","DFC",90],
+["Novák","LI/DFC",88],
+["Plánička","POR",94],
+["Pluskal","MCD/DFC",87],
+["Kvašňák","MP",88],
+["Adamec","DC",89],
+["Dobiáš","LD",87],
+["Nehoda","DC",88],
+["Koubek","MC",84],
+["Kuna","MC",85],
+["Kramerius","DFC",84],
+["Bican Jr","DC",82],
+["Viktor Jr","POR",80]
+]
+}
+
+];
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let nombreEquipo="";
+let paisActual=null;
+let usados=[];
+let skips=4;
+let jugadoresElegidos=[];
+let esperando=true;
+
+let formacion="4-3-3";
+let capitan="";
+let estilo="equilibrado";
+
+let fase=0;
+
+let rival="";
+let modoRapido=false;
+
+let golesLocal=0;
+let golesVisitante=0;
+let minuto=0;
+
+let tiempoExtra=false;
+let intervalo=null;
+
+let jugadoresLocal=[];
+let jugadoresRival=[];
+
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
+function mostrar(id){
+
+ document.querySelectorAll(".screen")
+ .forEach(e=>e.classList.remove("active"));
+
+ document.getElementById(id)
+ .classList.add("active");
+
+}
+
+function error(texto){
+
+ document.getElementById("textoError").textContent=texto;
+
+ document.getElementById("error").style.display="grid";
+
+}
+
+function cerrarError(){
+
+ document.getElementById("error").style.display="none";
+
+}
+
+
+/* =========================================================
+   COMENZAR
+========================================================= */
+
+function comenzar(){
+
+ nombreEquipo=
+ document.getElementById("nombreEquipo").value.trim();
+
+ if(!nombreEquipo)
+ nombreEquipo="MI SELECCIÓN";
+
+ document.getElementById("nombreMostrado").textContent=
+ nombreEquipo;
+
+ mostrar("draft");
+
+}
+
+
+/* =========================================================
+   POSICIONES
+========================================================= */
+
+function posicionDisponible(jugador){
+
+ let posiciones=jugador[1].split("/");
+
+ for(let p of posiciones){
+
+  if(p==="POR" &&
+  !jugadoresElegidos.some(x=>x.slot==="POR"))
+  return "POR";
+
+  if(p==="LI" &&
+  !jugadoresElegidos.some(x=>x.slot==="LI"))
+  return "LI";
+
+  if(p==="LD" &&
+  !jugadoresElegidos.some(x=>x.slot==="LD"))
+  return "LD";
+
+  if(p==="DFC"){
+
+   if(!jugadoresElegidos.some(x=>x.slot==="DFC1"))
+   return "DFC1";
+
+   if(!jugadoresElegidos.some(x=>x.slot==="DFC2"))
+   return "DFC2";
+
+  }
+
+  if(p==="MCD" &&
+  !jugadoresElegidos.some(x=>x.slot==="MCD"))
+  return "MCD";
+
+  if(p==="MC"){
+
+   if(!jugadoresElegidos.some(x=>x.slot==="MC1"))
+   return "MC1";
+
+   if(!jugadoresElegidos.some(x=>x.slot==="MC2"))
+   return "MC2";
+
+  }
+
+  if(p==="EI" &&
+  !jugadoresElegidos.some(x=>x.slot==="EI"))
+  return "EI";
+
+  if(p==="ED" &&
+  !jugadoresElegidos.some(x=>x.slot==="ED"))
+  return "ED";
+
+  if((p==="DC"||p==="MP") &&
+  !jugadoresElegidos.some(x=>x.slot==="DC"))
+  return "DC";
+
+ }
+
+ return null;
+
+}
+
+
+/* =========================================================
+   DADO
+========================================================= */
+
+function tirarDado(){
+
+ if(!esperando){
+
+  error(
+   "No podés tirar el dado todavía. Primero tenés que elegir un jugador."
+  );
+
+  return;
+
+ }
+
+ if(jugadoresElegidos.length>=11){
+
+  error("Ya tenés los 11 jugadores.");
+
+  return;
+
+ }
+
+ let disponibles=
+ selecciones.filter(
+  s=>!usados.includes(s.pais)
+ );
+
+ if(disponibles.length===0){
+
+  usados=[];
+
+  disponibles=selecciones;
+
+ }
+
+ paisActual=
+ disponibles[
+ Math.floor(Math.random()*disponibles.length)
+ ];
+
+ usados.push(paisActual.pais);
+
+ esperando=false;
+
+ let dado=document.getElementById("dado");
+
+ let contador=0;
+
+ let anim=setInterval(()=>{
+
+  dado.textContent=
+  ["⚽","🌎","🎲","🏆","🇦🇷","🇧🇷"][
+  Math.floor(Math.random()*6)
+  ];
+
+  contador++;
+
+  if(contador>10){
+
+   clearInterval(anim);
+
+   dado.textContent="🎲";
+
+   document.getElementById("bandera")
+   .textContent=paisActual.bandera;
+
+   document.getElementById("pais")
+   .textContent=paisActual.pais;
+
+   mostrarJugadores();
+
+  }
+
+ },70);
+
+}
+
+
+/* =========================================================
+   SKIP
+========================================================= */
+
+function usarSkip(){
+
+ if(esperando){
+
+  error("Primero tenés que tirar el dado.");
+
+  return;
+
+ }
+
+ if(skips<=0){
+
+  error(
+   "No te quedan SKIPS. Elegí un jugador antes de poder continuar."
+  );
+
+  return;
+
+ }
+
+ skips--;
+
+ document.getElementById("cantidadSkips").textContent=skips;
+
+ esperando=true;
+
+ tirarDado();
+
+}
+
+
+/* =========================================================
+   MOSTRAR JUGADORES
+========================================================= */
+
+function mostrarJugadores(){
+
+ let caja=
+ document.getElementById("listaJugadores");
+
+ caja.innerHTML="";
+
+ /*
+    Mezclamos los jugadores para que los mejores
+    puedan aparecer al principio, medio o final.
+ */
+
+ let mezclados=
+ [...paisActual.jugadores]
+ .sort(()=>Math.random()-.5);
+
+ mezclados.forEach((j,i)=>{
+
+  let slot=posicionDisponible(j);
+
+  let card=document.createElement("div");
+
+  card.className=
+  "card "+(!slot?"lock":"");
+
+  card.innerHTML=`
+
+   <div class="nombre">
+   ${j[0]}
+   </div>
+
+   <div class="small">
+   ${paisActual.pais}
+   </div>
+
+   <div class="pos">
+   ${j[1]}
+   </div>
+
+   <div class="media">
+   MEDIA ${j[2]}
+   </div>
+
+   ${
+    slot
+    ?
+    `<button onclick="elegirJugador(${paisActual.jugadores.indexOf(j)})">
+       ELEGIR
+     </button>`
+    :
+    `<button disabled>
+       🔒 POSICIÓN OCUPADA
+     </button>`
+   }
+
+  `;
+
+  caja.appendChild(card);
+
+ });
+
+}
+
+
+/* =========================================================
+   ELEGIR JUGADOR
+========================================================= */
+
+function elegirJugador(indice){
+
+ if(esperando){
+
+  error("Primero tirá el dado.");
+
+  return;
+
+ }
+
+ let jugador=
+ paisActual.jugadores[indice];
+
+ let slot=
+ posicionDisponible(jugador);
+
+ if(!slot){
+
+  error(
+   "Ese jugador no puede entrar porque sus posiciones ya están ocupadas."
+  );
+
+  return;
+
+ }
+
+ jugadoresElegidos.push({
+
+  name:jugador[0],
+  pos:jugador[1],
+  rating:jugador[2],
+  pais:paisActual.pais,
+  slot:slot
+
+ });
+
+ esperando=true;
+
+ actualizarCancha();
+
+ document.getElementById("contador")
+ .textContent=jugadoresElegidos.length;
+
+ document.getElementById("listaJugadores").innerHTML=`
+
+ <div class="small">
+
+ ✅ ${jugador[0]} seleccionado.
+
+ <br><br>
+
+ Tirás el dado para buscar al siguiente jugador.
+
+ </div>
+
+ `;
+
+
+ if(jugadoresElegidos.length===11){
+
+  prepararCapitan();
+
+ }
+
+}
+
+
+/* =========================================================
+   CANCHA
+========================================================= */
+
+function actualizarCancha(){
+
+ document.querySelectorAll(".spot")
+ .forEach(e=>{
+
+  let b=e.querySelector("b");
+
+  e.classList.remove("filled");
+
+  e.innerHTML=
+  `<b>${b.textContent}</b>VACÍO`;
+
+ });
+
+
+ jugadoresElegidos.forEach(j=>{
+
+  let e=
+  document.getElementById(j.slot);
+
+  if(!e)return;
+
+  e.classList.add("filled");
+
+  e.innerHTML=`
+
+   <b>${j.pos}</b>
+
+   ${j.name}
+
+   <em>${j.rating}</em>
+
+  `;
+
+ });
+
+}
+
+
+/* =========================================================
+   CAPITÁN
+========================================================= */
+
+function prepararCapitan(){
+
+ let select=
+ document.getElementById("capitan");
+
+ select.innerHTML="";
+
+ jugadoresElegidos.forEach(j=>{
+
+  let option=
+  document.createElement("option");
+
+  option.value=j.name;
+
+  option.textContent=
+  `${j.name} — ${j.rating}`;
+
+  select.appendChild(option);
+
+ });
+
+ document.getElementById("btnMundial")
+ .style.display="inline-block";
+
+}
+
+
+/* =========================================================
+   FORMACIÓN
+========================================================= */
+
+function cambiarFormacion(){
+
+ formacion=
+ document.getElementById("formacion").value;
+
+ /*
+   En esta versión la formación se muestra y se usa
+   también para modificar el comportamiento del equipo.
+ */
+
+}
+
+
+/* =========================================================
+   ENTRAR AL MUNDIAL
+========================================================= */
+
+function entrarMundial(){
+
+ if(jugadoresElegidos.length!==11){
+
+  error("Necesitás completar los 11 jugadores.");
+
+  return;
+
+ }
+
+ capitan=
+ document.getElementById("capitan").value;
+
+ estilo=
+ document.getElementById("estilo").value;
+
+ document.getElementById("tituloEquipo")
+ .textContent=nombreEquipo;
+
+ mostrar("mundial");
+
+ actualizarMundial();
+
+}
+
+
+/* =========================================================
+   MUNDIAL
+========================================================= */
+
+function actualizarMundial(){
+
+ let nombres=[
+ "FASE DE GRUPOS",
+ "OCTAVOS DE FINAL",
+ "CUARTOS DE FINAL",
+ "SEMIFINAL",
+ "FINAL"
+ ];
+
+ document.getElementById("tituloFase")
+ .textContent=nombres[fase];
+
+ for(let i=0;i<5;i++){
+
+  document
+  .getElementById("fase"+i)
+  .classList.toggle("activa",i===fase);
+
+ }
+
+ let cantidad=
+ fase===0 ? 4 :
+ fase===1 ? 8 :
+ fase===2 ? 4 :
+ fase===3 ? 2 : 1;
+
+ let caja=
+ document.getElementById("partidosMundial");
+
+ caja.innerHTML="";
+
+ for(let i=0;i<cantidad;i++){
+
+  let r=
+  obtenerRival();
+
+  caja.innerHTML+=`
+
+   <div class="partido">
+
+   <b>
+   ${nombreEquipo}
+   </b>
+
+   🆚
+
+   <b>
+   ${r.pais}
+   </b>
+
+   <br><br>
+
+   <span class="small">
+   Partido ${i+1} · 11 jugadores
+   </span>
+
+   </div>
+
+  `;
+
+ }
+
+}
+
+
+/* =========================================================
+   RIVALES
+========================================================= */
+
+function obtenerRival(){
+
+ return selecciones[
+ Math.floor(Math.random()*selecciones.length)
+ ];
+
+}
+
+
+/* =========================================================
+   SIMULACIÓN
+========================================================= */
+
+function simular(rapido){
+
+ modoRapido=rapido;
+
+ let r=
+ obtenerRival();
+
+ rival=r.pais;
+
+ comenzarPartido();
+
+}
+
+
+/* =========================================================
+   COMENZAR PARTIDO
+========================================================= */
+
+function comenzarPartido(){
+
+ mostrar("partido");
+
+ golesLocal=0;
+ golesVisitante=0;
+ minuto=0;
+ tiempoExtra=false;
+
+ document.getElementById("golesLocal")
+ .textContent=0;
+
+ document.getElementById("golesVisitante")
+ .textContent=0;
+
+ document.getElementById("minuto")
+ .textContent=0;
+
+ document.getElementById("nombreLocal")
+ .textContent=nombreEquipo;
+
+ document.getElementById("nombreVisitante")
+ .textContent=rival;
+
+ document.getElementById("eventos")
+ .innerHTML="";
+
+ crearJugadoresPartido();
+
+ agregarEvento(
+ `🏟️ Comienza ${formacion} · ${estilo.toUpperCase()} · 👑 Capitán: ${capitan}`
+ );
+
+ clearInterval(intervalo);
+
+ intervalo=
+ setInterval(
+ avanzarPartido,
+ modoRapido ? 240 : 650
+ );
+
+}
+
+
+/* =========================================================
+   POSICIONES DEL PARTIDO
+========================================================= */
+
+const posicionesPartido=[
+
+ [7,50],
+ [22,15],
+ [22,38],
+ [22,62],
+ [22,85],
+ [43,30],
+ [43,50],
+ [43,70],
+ [68,15],
+ [78,50],
+ [68,85]
 
 ];
 
 
-/* =====================================================
-   VARIABLES
-===================================================== */
+/* =========================================================
+   CREAR JUGADORES PARTIDO
+========================================================= */
 
-let currentCountry=null;
-let usedCountries=[];
-let skips=4;
-let squad=[];
-let waitingForChoice=true;
+function crearJugadoresPartido(){
 
-let tournamentPhase="groups";
-let currentOpponent="";
-let matchTimer=null;
+ let caja=
+ document.getElementById("jugadoresPartido");
 
-let homeScore=0;
-let awayScore=0;
-let minute=0;
-let extraTime=false;
+ caja.innerHTML="";
 
-let homeMatchPlayers=[];
-let awayMatchPlayers=[];
-let currentBallOwner=null;
+ jugadoresLocal=[];
+ jugadoresRival=[];
+
+ jugadoresElegidos.forEach((j,i)=>{
+
+  let p=
+  posicionesPartido[i];
+
+  let el=
+  document.createElement("div");
+
+  el.className=
+  "jugadorPartido azul";
+
+  el.style.left=p[0]+"%";
+  el.style.top=p[1]+"%";
+
+  el.innerHTML=
+  `<span>${j.name}</span>`;
+
+  caja.appendChild(el);
+
+  jugadoresLocal.push({
+
+   el:el,
+   x:p[0],
+   y:p[1],
+   jugador:j
+
+  });
+
+ });
 
 
-/* =====================================================
-   UTILIDADES
-===================================================== */
+ for(let i=0;i<11;i++){
 
-function showScreen(id){
-    document.querySelectorAll(".screen")
-        .forEach(x=>x.classList.remove("active"));
+  let p=posicionesPartido[i];
 
-    document.getElementById(id)
-        .classList.add("active");
+  let el=
+  document.createElement("div");
+
+  el.className=
+  "jugadorPartido rojo";
+
+  el.style.left=
+  (100-p[0])+"%";
+
+  el.style.top=
+  p[1]+"%";
+
+  el.innerHTML=
+  `<span>Jugador ${i+1}</span>`;
+
+  caja.appendChild(el);
+
+  jugadoresRival.push({
+
+   el:el,
+   x:100-p[0],
+   y:p[1]
+
+  });
+
+ }
+
+ moverPelota(50,50);
+
 }
 
-function startGame(){
-    showScreen("draft");
+
+/* =========================================================
+   SIMULACIÓN DE PARTIDO
+========================================================= */
+
+function avanzarPartido(){
+
+ let incremento=
+ modoRapido
+ ? Math.floor(Math.random()*5)+1
+ : Math.floor(Math.random()*3)+1;
+
+ minuto+=incremento;
+
+ if(minuto>=90 && !tiempoExtra){
+
+  minuto=90;
+
+  document.getElementById("minuto")
+  .textContent=90;
+
+  clearInterval(intervalo);
+
+  agregarEvento(
+   "⏱️ Terminaron los 90 minutos."
+  );
+
+  if(golesLocal===golesVisitante){
+
+   tiempoExtra=true;
+
+   agregarEvento(
+    "🤝 Empate. Se juega tiempo extra."
+   );
+
+   setTimeout(()=>{
+
+    intervalo=
+    setInterval(
+     avanzarExtra,
+     modoRapido?250:650
+    );
+
+   },700);
+
+  }else{
+
+   terminarPartido();
+
+  }
+
+  return;
+
+ }
+
+ document.getElementById("minuto")
+ .textContent=minuto;
+
+ jugada();
+
 }
 
-function positionList(position){
-    return position.split("/");
+
+/* =========================================================
+   TIEMPO EXTRA
+========================================================= */
+
+function avanzarExtra(){
+
+ minuto+=modoRapido?4:2;
+
+ if(minuto>=120){
+
+  minuto=120;
+
+  document.getElementById("minuto")
+  .textContent=120;
+
+  clearInterval(intervalo);
+
+  if(golesLocal===golesVisitante){
+
+   agregarEvento(
+    "🎯 Empate después del tiempo extra. Penales."
+   );
+
+   setTimeout(penales,600);
+
+  }else{
+
+   terminarPartido();
+
+  }
+
+  return;
+
+ }
+
+ document.getElementById("minuto")
+ .textContent=minuto;
+
+ jugada();
+
 }
 
-function usedPosition(pos){
-    return squad.some(p=>p.slot===pos);
+
+/* =========================================================
+   FUERZA DEL EQUIPO
+========================================================= */
+
+function fuerzaEquipo(){
+
+ let promedio=
+ jugadoresElegidos
+ .reduce((a,b)=>a+b.rating,0)/11;
+
+ /*
+   Estilo:
+   ofensivo = más posibilidades de gol
+   defensivo = menos goles pero más resistencia
+ */
+
+ if(estilo==="ofensivo")
+ promedio+=3;
+
+ if(estilo==="defensivo")
+ promedio+=1;
+
+ return promedio;
+
 }
+
+
+/* =========================================================
+   JUGADA
+========================================================= */
+
+function jugada(){
+
+ let equipoLocal=
+ Math.random()<
+ (
+  .5+
+  (fuerzaEquipo()-80)/300+
+  (estilo==="ofensivo"?.07:0)
+ );
+
+ let equipo=
+ equipoLocal
+ ? jugadoresLocal
+ : jugadoresRival;
+
+ let desde=
+ equipo[
+ Math.floor(Math.random()*equipo.length)
+ ];
+
+ let hacia=
+ equipo[
+ Math.floor(Math.random()*equipo.length)
+ ];
+
+ if(desde===hacia)
+ hacia=
+ equipo[
+ (equipo.indexOf(desde)+1)%equipo.length
+ ];
+
+ moverPelota(desde.x,desde.y);
+
+ agregarEvento(
+ `${minuto}' ${desde.jugador?desde.jugador.name:"Jugador"} recibe la pelota.`
+ );
+
+ setTimeout(()=>{
+
+  hacia.x=
+  Math.max(
+   5,
+   Math.min(
+    95,
+    hacia.x+
+    (equipoLocal?5:-5)
+   )
+  );
+
+  hacia.y=
+  Math.max(
+   7,
+   Math.min(
+    93,
+    hacia.y+(Math.random()*8-4)
+   )
+  );
+
+  hacia.el.style.left=
+  hacia.x+"%";
+
+  hacia.el.style.top=
+  hacia.y+"%";
+
+  moverPelota(
+   hacia.x,
+   hacia.y
+  );
+
+  agregarEvento(
+   `${minuto}' Pase hacia ${hacia.jugador?hacia.jugador.name:"un compañero"}.`
+  );
+
+  if(Math.random()<.25){
+
+   remate(equipoLocal,hacia);
+
+  }
+
+ },modoRapido?80:250);
+
+}
+
+
+/* =========================================================
+   REMATE
+========================================================= */
+
+function remate(esLocal,jugador){
+
+ let fuerza=
+ esLocal
+ ? fuerzaEquipo()
+ : 75+Math.random()*18;
+
+ let estiloBonus=
+ esLocal && estilo==="ofensivo"
+ ? .08
+ : 0;
+
+ let probabilidad=
+ .12+
+ (fuerza-70)/300+
+ estiloBonus;
+
+ if(Math.random()<probabilidad){
+
+  if(esLocal){
+
+   golesLocal++;
+
+   document.getElementById("golesLocal")
+   .textContent=golesLocal;
+
+   marcarGol(
+    true,
+    jugador
+   );
+
+  }else{
+
+   golesVisitante++;
+
+   document.getElementById("golesVisitante")
+   .textContent=golesVisitante;
+
+   marcarGol(
+    false,
+    jugador
+   );
+
+  }
+
+ }else{
+
+  agregarEvento(
+   `${minuto}' 🧤 ¡ATAJADA!`
+  );
+
+ }
+
+}
+
+
+/* =========================================================
+   GOL
+========================================================= */
+
+function marcarGol(esNuestro,jugador){
+
+ agregarEvento(
+  `${minuto}' ⚽ ¡GOL!`
+ );
+
+ mostrarGol(esNuestro);
+
+ if(esNuestro){
+
+  lanzarConfeti(100);
+
+  hablar(
+   "¡GOOOOOOOL!"
+  );
+
+ }else{
+
+  hablar(
+   "¡Ohhh, qué mal!"
+  );
+
+ }
+
+}
+
+
+/* =========================================================
+   ANIMACIÓN GOL
+========================================================= */
+
+function mostrarGol(esNuestro){
+
+ let flash=
+ document.getElementById("flashGol");
+
+ let texto=
+ document.getElementById("textoGol");
+
+ texto.textContent=
+ esNuestro
+ ? "⚽ ¡GOOOOOOOL!"
+ : "😱 ¡GOL DEL RIVAL!";
+
+ flash.style.background=
+ esNuestro
+ ? "#19dc7633"
+ : "#ff303033";
+
+ flash.classList.remove("mostrar");
+
+ void flash.offsetWidth;
+
+ flash.classList.add("mostrar");
+
+}
+
+
+/* =========================================================
+   VOZ
+========================================================= */
+
+function hablar(texto){
+
+ if(!("speechSynthesis" in window))
+ return;
+
+ speechSynthesis.cancel();
+
+ let voz=
+ new SpeechSynthesisUtterance(texto);
+
+ voz.lang="es-ES";
+ voz.rate=.9;
+ voz.pitch=1;
+
+ speechSynthesis.speak(voz);
+
+}
+
+
+/* =========================================================
+   CONFETI
+========================================================= */
+
+function lanzarConfeti(cantidad){
+
+ let caja=
+ document.getElementById("confeti");
+
+ for(let i=0;i<cantidad;i++){
+
+  let pieza=
+  document.createElement("i");
+
+  pieza.className="conf";
+
+  pieza.style.left=
+  Math.random()*100+"%";
+
+  pieza.style.background=
+  `hsl(${Math.random()*360},90%,60%)`;
+
+  pieza.style.animationDelay=
+  Math.random()*.5+"s";
+
+  caja.appendChild(pieza);
+
+  setTimeout(
+   ()=>pieza.remove(),
+   3000
+  );
+
+ }
+
+}
+
+
+/* =========================================================
+   PELOTA
+========================================================= */
+
+function moverPelota(x,y){
+
+ let pelota=
+ document.getElementById("pelota");
+
+ pelota.style.left=x+"%";
+ pelota.style.top=y+"%";
+
+}
+
+
+/* =========================================================
+   EVENTOS
+========================================================= */
+
+function agregarEvento(texto){
+
+ let caja=
+ document.getElementById("eventos");
+
+ let e=
+ document.createElement("div");
+
+ e.className="evento";
+
+ e.textContent=texto;
+
+ caja.prepend(e);
+
+}
+
+
+/* =========================================================
+   PENALES
+========================================================= */
+
+function penales(){
+
+ let nuestro=0;
+ let rivalPenales=0;
+
+ for(let i=0;i<5;i++){
+
+  if(Math.random()<.76)
+  nuestro++;
+
+  if(Math.random()<.70)
+  rivalPenales++;
+
+ }
+
+ while(nuestro===rivalPenales){
+
+  if(Math.random()<.5)
+  nuestro++;
+  else
+  rivalPenales++;
+
+ }
+
+ agregarEvento(
+  `🎯 Penales: ${nuestro} - ${rivalPenales}`
+ );
+
+ if(nuestro>rivalPenales){
+
+  golesLocal=nuestro;
+  golesVisitante=rivalPenales;
+
+  terminarPartido();
+
+ }else{
+
+  perder();
+
+ }
+
+}
+
+
+/* =========================================================
+   TERMINAR PARTIDO
+========================================================= */
+
+function terminarPartido(){
+
+ clearInterval(intervalo);
+
+ if(golesLocal>golesVisitante){
+
+  ganar();
+
+ }else{
+
+  perder();
+
+ }
+
+}
+
+
+/* =========================================================
+   GANAR
+========================================================= */
+
+function ganar(){
+
+ if(fase===4){
+
+  mostrarCampeon();
+
+  return;
+
+ }
+
+ fase++;
+
+ setTimeout(()=>{
+
+  mostrar("mundial");
+
+  actualizarMundial();
+
+ },1000);
+
+}
+
+
+/* =========================================================
+   PERDER
+========================================================= */
+
+function perder(){
+
+ clearInterval(intervalo);
+
+ document.getElementById("perdedor")
+ .style.display="grid";
+
+ hablar(
+  "Oh no. Mundial terminado."
+ );
+
+}
+
+
+/* =========================================================
+   CAMPEÓN
+========================================================= */
+
+function mostrarCampeon(){
+
+ clearInterval(intervalo);
+
+ document.getElementById("ganadorNombre")
+ .textContent=nombreEquipo;
+
+ document.getElementById("ganador")
+ .style.display="grid";
+
+ lanzarConfeti(200);
+
+ hablar(
+  "¡Campeón del mundo! ¡Ganaste el Mundial!"
+ );
+
+}
+
+
+/* =========================================================
+   FORMACIONES VISUALES
+========================================================= */
 
 /*
-    Encuentra si un jugador puede ocupar
-    alguna posición que todavía esté libre.
+   Estas posiciones sirven como referencia para que
+   las formaciones puedan modificarse posteriormente.
 */
 
-function availablePosition(player){
-
-    const positions=positionList(player[1]);
-
-    return positions.find(pos=>{
-
-        if(pos==="MP") return !usedPosition("MP");
-        if(pos==="SD") return !usedPosition("DC");
-
-        return !usedPosition(pos);
-
-    });
-}
-
-
-/* =====================================================
-   DADO
-===================================================== */
-
-function rollCountry(){
-
-    if(waitingForChoice===false){
-        showError(
-            "Primero tenés que elegir uno de los 20 jugadores."
-        );
-        return;
-    }
-
-    if(squad.length>=11){
-        showError("Ya completaste tu XI.");
-        return;
-    }
-
-    let available=countries.filter(
-        c=>!usedCountries.includes(c.name)
-    );
-
-    if(!available.length){
-        usedCountries=[];
-        available=countries;
-    }
-
-    currentCountry=
-        available[Math.floor(Math.random()*available.length)];
-
-    usedCountries.push(currentCountry.name);
-
-    waitingForChoice=false;
-
-    animateDice();
-}
-
-function animateDice(){
-
-    const dice=document.getElementById("dice");
-
-    let i=0;
-
-    const timer=setInterval(()=>{
-
-        dice.textContent=
-            ["⚽","🌎","🎲","🏆","⚽"]
-            [Math.floor(Math.random()*5)];
-
-        i++;
-
-        if(i>=12){
-
-            clearInterval(timer);
-
-            dice.textContent="🎲";
-
-            document.getElementById("countryFlag")
-                .textContent=currentCountry.flag;
-
-            document.getElementById("countryName")
-                .textContent=currentCountry.name;
-
-            showPlayers();
-
-        }
-
-    },70);
-}
-
-
-/* =====================================================
-   SKIP
-===================================================== */
-
-function skipCountry(){
-
-    if(waitingForChoice){
-        showError(
-            "Primero tenés que tirar el dado."
-        );
-        return;
-    }
-
-    if(skips<=0){
-
-        showError(
-            "No te quedan SKIPS. Debés elegir un jugador antes de continuar."
-        );
-
-        return;
-    }
-
-    skips--;
-
-    document.getElementById("skipCount")
-        .textContent=skips;
-
-    waitingForChoice=true;
-
-    rollCountry();
-}
-
-
-/* =====================================================
-   MOSTRAR 20 JUGADORES
-===================================================== */
-
-function showPlayers(){
-
-    const container=document.getElementById("players");
-
-    container.innerHTML="";
-
-    currentCountry.players.slice(0,20)
-    .forEach((p,index)=>{
-
-        const possible=availablePosition(p);
-
-        const card=document.createElement("div");
-
-        card.className=
-            "playerCard "+(possible?"available":"locked");
-
-        let rarity=
-            p[2]>=95?"ICONO":
-            p[2]>=90?"LEGENDARIO":
-            p[2]>=85?"ÉPICO":
-            p[2]>=78?"RARO":
-            "COMÚN";
-
-        if(possible){
-
-            card.innerHTML=`
-
-                <span class="rarity">
-                    ${rarity}
-                </span>
-
-                <div class="pName">
-                    ${p[0]}
-                </div>
-
-                <div class="pCountry">
-                    ${currentCountry.name}
-                </div>
-
-                <div class="pPosition">
-                    POS: ${p[1]}
-                </div>
-
-                <div class="pRating">
-                    MEDIA ${p[2]}
-                </div>
-
-                <button
-                    class="chooseBtn"
-                    onclick="choosePlayer(${index})">
-                    ELEGIR
-                </button>
-            `;
-
-        }else{
-
-            card.innerHTML=`
-
-                <span class="rarity">
-                    ${rarity}
-                </span>
-
-                <div class="pName">
-                    ${p[0]}
-                </div>
-
-                <div class="pCountry">
-                    ${currentCountry.name}
-                </div>
-
-                <div class="pPosition">
-                    POS: ${p[1]}
-                </div>
-
-                <div class="pRating">
-                    MEDIA ${p[2]}
-                </div>
-
-                <button class="lockBtn" disabled>
-                    🔒 POSICIÓN OCUPADA
-                </button>
-            `;
-        }
-
-        container.appendChild(card);
-
-    });
-}
-
-
-/* =====================================================
-   ELEGIR JUGADOR
-===================================================== */
-
-function choosePlayer(index){
-
-    if(waitingForChoice){
-        showError("Primero tirá el dado.");
-        return;
-    }
-
-    if(squad.length>=11){
-        showError("Ya tenés 11 jugadores.");
-        return;
-    }
-
-    const p=currentCountry.players[index];
-
-    let slot=availablePosition(p);
-
-    if(!slot){
-
-        showError(
-            "No podés elegir este jugador porque todas sus posiciones ya están ocupadas."
-        );
-
-        return;
-    }
-
-    /*
-       MP se coloca como MC si todavía
-       no hay una posición MP visual.
-    */
-
-    if(slot==="MP"){
-
-        if(!usedPosition("MC1"))
-            slot="MC1";
-        else if(!usedPosition("MC2"))
-            slot="MC2";
-        else
-            slot="DC";
-
-    }
-
-    if(slot==="SD"){
-        slot="DC";
-    }
-
-    squad.push({
-        name:p[0],
-        position:p[1],
-        rating:p[2],
-        country:currentCountry.name,
-        slot:slot
-    });
-
-    waitingForChoice=true;
-
-    updateFormation();
-
-    document.getElementById("teamCounter")
-        .textContent=
-        squad.length+" / 11";
-
-    if(squad.length===11){
-
-        document.getElementById("players")
-            .innerHTML=`
-                <div class="empty">
-                    🏆 ¡XI COMPLETO!<br><br>
-                    Preparando el Mundial...
-                </div>
-            `;
-
-        setTimeout(startWorldCup,900);
-
-    }else{
-
-        document.getElementById("players")
-            .innerHTML=`
-                <div class="empty">
-                    ✅ ${p[0]} fue elegido.<br><br>
-                    Tirale al dado para continuar.
-                </div>
-            `;
-
-    }
-}
-
-
-/* =====================================================
-   FORMACION
-===================================================== */
-
-function updateFormation(){
-
-    /*
-       Reset visual
-    */
-
-    document.querySelectorAll(".positionSpot")
-        .forEach(spot=>{
-
-            spot.classList.remove("filled");
-
-            spot.querySelector(".spotName")
-                .textContent="VACÍO";
-
-            spot.querySelector(".spotRating")
-                .textContent="";
-
-        });
-
-    squad.forEach(p=>{
-
-        let element=document.getElementById(p.slot);
-
-        /*
-           Si es DFC1/DFC2 ya existe.
-        */
-
-        if(!element){
-
-            if(p.slot==="DFC")
-                element=document.getElementById("DFC1");
-
-            if(p.slot==="MC")
-                element=document.getElementById("MC1");
-
-        }
-
-        if(element){
-
-            element.classList.add("filled");
-
-            element.querySelector(".spotName")
-                .textContent=p.name;
-
-            element.querySelector(".spotRating")
-                .textContent=p.rating;
-
-        }
-
-    });
-}
-
-
-/* =====================================================
-   ERROR BONITO
-===================================================== */
-
-function showError(text){
-
-    document.getElementById("errorText")
-        .textContent=text;
-
-    document.getElementById("errorBox")
-        .style.display="block";
-}
-
-function closeError(){
-
-    document.getElementById("errorBox")
-        .style.display="none";
-}
-
-
-/* =====================================================
-   MUNDIAL
-===================================================== */
-
-function startWorldCup(){
-
-    tournamentPhase="groups";
-
-    showScreen("worldcup");
-
-    renderTournament();
-}
-
-function renderTournament(){
-
-    document.querySelectorAll(".phase")
-        .forEach(x=>x.classList.remove("active"));
-
-    const phaseMap={
-        groups:"phaseGroups",
-        round16:"phaseRound16",
-        quarter:"phaseQuarter",
-        semi:"phaseSemi",
-        final:"phaseFinal"
-    };
-
-    document.getElementById(
-        phaseMap[tournamentPhase]
-    ).classList.add("active");
-
-    const names={
-        groups:"FASE DE GRUPOS",
-        round16:"OCTAVOS DE FINAL",
-        quarter:"CUARTOS DE FINAL",
-        semi:"SEMIFINAL",
-        final:"FINAL"
-    };
-
-    document.getElementById("tournamentTitle")
-        .textContent=names[tournamentPhase];
-
-    const matches=document.getElementById("matches");
-
-    matches.innerHTML="";
-
-    let number=
-        tournamentPhase==="groups"?4:
-        tournamentPhase==="round16"?8:
-        tournamentPhase==="quarter"?4:
-        tournamentPhase==="semi"?2:1;
-
-    for(let i=0;i<number;i++){
-
-        const opponent=
-            randomOpponent();
-
-        const card=document.createElement("div");
-
-        card.className="matchCard";
-
-        card.innerHTML=`
-            <b>${squad[0].country}</b>
-            <br>
-            vs
-            <br>
-            <b>${opponent}</b>
-        `;
-
-        matches.appendChild(card);
-
-    }
-}
-
-function randomOpponent(){
-
-    const country=
-        countries[
-            Math.floor(
-                Math.random()*countries.length
-            )
-        ];
-
-    return country.name;
-}
-
-function startTournamentMatch(){
-
-    currentOpponent=randomOpponent();
-
-    showScreen("match");
-
-    startMatchSimulation();
-}
-
-function goTournament(){
-
-    /*
-       Avanza la fase automáticamente
-       después de ganar.
-    */
-
-    if(tournamentPhase==="groups")
-        tournamentPhase="round16";
-
-    else if(tournamentPhase==="round16")
-        tournamentPhase="quarter";
-
-    else if(tournamentPhase==="quarter")
-        tournamentPhase="semi";
-
-    else if(tournamentPhase==="semi")
-        tournamentPhase="final";
-
-    else{
-
-        alert("🏆 ¡GANASTE EL MUNDIAL!");
-
-        location.reload();
-
-        return;
-    }
-
-    renderTournament();
-    showScreen("worldcup");
-}
-
-
-/* =====================================================
-   PARTIDO
-===================================================== */
-
-function startMatchSimulation(){
-
-    homeScore=0;
-    awayScore=0;
-    minute=0;
-    extraTime=false;
-
-    document.getElementById("myScore")
-        .textContent=0;
-
-    document.getElementById("enemyScore")
-        .textContent=0;
-
-    document.getElementById("matchClock")
-        .textContent=0;
-
-    document.getElementById("myTeamName")
-        .textContent=squad[0].country;
-
-    document.getElementById("enemyName")
-        .textContent=currentOpponent;
-
-    document.getElementById("events")
-        .innerHTML="";
-
-    document.getElementById("finalBox")
-        .style.display="none";
-
-    createMatchPlayers();
-
-    addEvent("🏟️ ¡Comienza el partido!");
-
-    if(matchTimer)
-        clearInterval(matchTimer);
-
-    matchTimer=setInterval(simulateMatchTick,480);
-}
-
-
-/* =====================================================
-   JUGADORES DE PARTIDO
-===================================================== */
-
-function createMatchPlayers(){
-
-    const container=document.getElementById("matchPlayers");
-
-    container.innerHTML="";
-
-    homeMatchPlayers=[];
-    awayMatchPlayers=[];
-
-    /*
-       Formación 4-3-3
-    */
-
-    const positions=[
-        [7,50],
-        [22,15],
-        [22,38],
-        [22,62],
-        [22,85],
-        [43,30],
-        [43,50],
-        [43,70],
-        [68,15],
-        [68,50],
-        [68,85]
-    ];
-
-    squad.forEach((p,i)=>{
-
-        const el=document.createElement("div");
-
-        el.className="matchPlayer home";
-
-        el.style.left=positions[i][0]+"%";
-        el.style.top=positions[i][1]+"%";
-
-        el.innerHTML=`
-            <span class="playerNumber">
-                ${shortName(p.name)}
-            </span>
-        `;
-
-        container.appendChild(el);
-
-        homeMatchPlayers.push({
-            el:el,
-            x:positions[i][0],
-            y:positions[i][1],
-            player:p
-        });
-
-    });
-
-    /*
-       Rivales
-    */
-
-    const reverse=[
-        [93,50],
-        [78,15],
-        [78,38],
-        [78,62],
-        [78,85],
-        [57,30],
-        [57,50],
-        [57,70],
-        [32,15],
-        [32,50],
-        [32,85]
-    ];
-
-    for(let i=0;i<11;i++){
-
-        const el=document.createElement("div");
-
-        el.className="matchPlayer away";
-
-        el.style.left=reverse[i][0]+"%";
-        el.style.top=reverse[i][1]+"%";
-
-        el.innerHTML=`
-            <span class="playerNumber">
-                ${i+1}
-            </span>
-        `;
-
-        container.appendChild(el);
-
-        awayMatchPlayers.push({
-            el:el,
-            x:reverse[i][0],
-            y:reverse[i][1]
-        });
-
-    }
-
-    moveBall(50,50);
-}
-
-
-/* =====================================================
-   SIMULACION
-===================================================== */
-
-function simulateMatchTick(){
-
-    minute+=Math.floor(Math.random()*3)+1;
-
-    if(minute>=90 && !extraTime){
-
-        minute=90;
-
-        document.getElementById("matchClock")
-            .textContent=90;
-
-        clearInterval(matchTimer);
-
-        addEvent("⏱️ ¡FINAL DE LOS 90 MINUTOS!");
-
-        if(homeScore===awayScore){
-
-            extraTime=true;
-
-            addEvent(
-                "🤝 ¡EMPATE! COMIENZA EL TIEMPO EXTRA."
-            );
-
-            setTimeout(startExtraTime,900);
-
-        }else{
-
-            finishMatch();
-
-        }
-
-        return;
-    }
-
-    if(extraTime && minute>=120){
-
-        minute=120;
-
-        document.getElementById("matchClock")
-            .textContent=120;
-
-        clearInterval(matchTimer);
-
-        addEvent("⏱️ ¡FINAL DEL TIEMPO EXTRA!");
-
-        if(homeScore===awayScore){
-
-            addEvent(
-                "🎯 ¡SIGUEN EMPATADOS! PENALTIS."
-            );
-
-            setTimeout(penalties,900);
-
-        }else{
-
-            finishMatch();
-
-        }
-
-        return;
-    }
-
-    document.getElementById("matchClock")
-        .textContent=minute;
-
-    playSequence();
-}
-
-
-/* =====================================================
-   JUGADA REALISTA
-===================================================== */
-
-function playSequence(){
-
-    const attackingHome=Math.random()<.53;
-
-    const team=
-        attackingHome
-        ?homeMatchPlayers
-        :awayMatchPlayers;
-
-    /*
-       Elegimos un jugador real.
-    */
-
-    const from=
-        team[
-            Math.floor(
-                Math.random()*team.length
-            )
-        ];
-
-    /*
-       Elegimos receptor cercano.
-    */
-
-    let receiver=
-        team[
-            Math.floor(
-                Math.random()*team.length
-            )
-        ];
-
-    if(receiver===from){
-
-        receiver=
-            team[
-                (team.indexOf(from)+1)%team.length
-            ];
-
-    }
-
-    currentBallOwner=from;
-
-    /*
-       1. jugador recibe
-    */
-
-    moveBall(from.x,from.y);
-
-    /*
-       2. receptor se mueve hacia la pelota
-    */
-
-    setTimeout(()=>{
-
-        movePlayer(
-            receiver,
-            from.x + (attackingHome?5:-5),
-            from.y + (Math.random()*10-5)
-        );
-
-        /*
-           3. pase
-        */
-
-        setTimeout(()=>{
-
-            moveBall(
-                receiver.x,
-                receiver.y
-            );
-
-            addEvent(
-                `${minute}' ⚽ Pase preciso entre jugadores`
-            );
-
-            /*
-               4. posibilidad de ataque
-            */
-
-            if(Math.random()<.38){
-
-                setTimeout(
-                    ()=>attackPlay(
-                        receiver,
-                        attackingHome
-                    ),
-                    250
-                );
-
-            }
-
-        },220);
-
-    },180);
-}
-
-
-/* =====================================================
-   ATAQUE
-===================================================== */
-
-function attackPlay(player,home){
-
-    const direction=home?1:-1;
-
-    let x=
-        parseFloat(player.el.style.left);
-
-    let y=
-        parseFloat(player.el.style.top);
-
-    x+=direction*(8+Math.random()*7);
-
-    x=Math.max(5,Math.min(95,x));
-
-    player.x=x;
-    player.y=y;
-
-    movePlayer(player,x,y);
-    moveBall(x,y);
-
-    addEvent(
-        `${minute}' 🏃 El jugador avanza con la pelota`
-    );
-
-    /*
-       Cerca del área → tiro
-    */
-
-    if(
-        (home && x>76) ||
-        (!home && x<24)
-    ){
-
-        setTimeout(
-            ()=>shoot(player,home),
-            250
-        );
-
-    }
-}
-
-
-/* =====================================================
-   TIRO
-===================================================== */
-
-function shoot(player,home){
-
-    addEvent(
-        `${minute}' 🎯 ¡Tiro al arco!`
-    );
-
-    moveBall(
-        home?96:4,
-        50+(Math.random()*12-6)
-    );
-
-    setTimeout(()=>{
-
-        const chance=Math.random();
-
-        if(chance<.30){
-
-            if(home){
-
-                homeScore++;
-
-                document.getElementById("myScore")
-                    .textContent=homeScore;
-
-                addEvent(
-                    `${minute}' ⚽ ¡GOOOOOOOL DE ${squad[0].country}!`
-                );
-
-            }else{
-
-                awayScore++;
-
-                document.getElementById("enemyScore")
-                    .textContent=awayScore;
-
-                addEvent(
-                    `${minute}' ⚽ ¡GOL DE ${currentOpponent}!`
-                );
-
-            }
-
-        }else if(chance<.67){
-
-            addEvent(
-                `${minute}' 🧤 ¡ATAJADÓN!`
-            );
-
-        }else{
-
-            addEvent(
-                `${minute}' ❌ ¡El tiro se fue afuera!`
-            );
-
-        }
-
-    },350);
-}
-
-
-/* =====================================================
-   TIEMPO EXTRA
-===================================================== */
-
-function startExtraTime(){
-
-    minute=90;
-
-    matchTimer=setInterval(()=>{
-
-        minute+=2;
-
-        if(minute>120)
-            minute=120;
-
-        document.getElementById("matchClock")
-            .textContent=minute;
-
-        playSequence();
-
-        if(minute>=120){
-
-            clearInterval(matchTimer);
-
-            setTimeout(()=>{
-
-                if(homeScore===awayScore){
-
-                    addEvent("🎯 ¡PENALES!");
-
-                    penalties();
-
-                }else{
-
-                    finishMatch();
-
-                }
-
-            },500);
-
-        }
-
-    },500);
-}
-
-
-/* =====================================================
-   PENALES
-===================================================== */
-
-function penalties(){
-
-    let mine=0;
-    let enemy=0;
-
-    for(let i=0;i<5;i++){
-
-        if(Math.random()<.76)
-            mine++;
-
-        if(Math.random()<.74)
-            enemy++;
-
-    }
-
-    while(mine===enemy){
-
-        if(Math.random()<.76)
-            mine++;
-
-        if(Math.random()<.74)
-            enemy++;
-
-    }
-
-    addEvent(
-        `🎯 PENALTIS: ${mine} - ${enemy}`
-    );
-
-    if(mine>enemy){
-
-        finishWin(
-            "🏆 ¡GANASTE POR PENALES!"
-        );
-
-    }else{
-
-        finishLose(
-            "❌ ELIMINADO POR PENALES"
-        );
-
-    }
-}
-
-
-/* =====================================================
-   FINAL
-===================================================== */
-
-function finishMatch(){
-
-    if(homeScore>awayScore){
-
-        finishWin("🏆 ¡VICTORIA!");
-
-    }else{
-
-        finishLose("❌ DERROTA");
-
-    }
-}
-
-function finishWin(title){
-
-    document.getElementById("finalBox")
-        .style.display="block";
-
-    document.getElementById("finalTitle")
-        .textContent=title;
-
-    document.getElementById("finalText")
-        .textContent=
-        `${homeScore} - ${awayScore}`;
-
-    addEvent("🏆 ¡Ganaste el partido!");
-
-}
-
-function finishLose(title){
-
-    document.getElementById("finalBox")
-        .style.display="block";
-
-    document.getElementById("finalTitle")
-        .textContent=title;
-
-    document.getElementById("finalText")
-        .textContent=
-        `${homeScore} - ${awayScore}`;
-
-    addEvent("🏁 El partido terminó.");
-
-}
-
-
-/* =====================================================
-   MOVIMIENTO
-===================================================== */
-
-function movePlayer(player,x,y){
-
-    player.x=x;
-    player.y=y;
-
-    player.el.style.left=x+"%";
-    player.el.style.top=y+"%";
-}
-
-function moveBall(x,y){
-
-    const ball=document.getElementById("ball");
-
-    ball.style.left=x+"%";
-    ball.style.top=y+"%";
-}
-
-function shortName(name){
-
-    const parts=name.split(" ");
-
-    if(parts.length===1)
-        return parts[0];
-
-    return parts[parts.length-1];
-
-}
-
-function addEvent(text){
-
-    const log=document.getElementById("events");
-
-    const div=document.createElement("div");
-
-    div.className="event";
-
-    div.textContent=text;
-
-    log.prepend(div);
-}
+const formaciones={
+
+ "4-3-3":[
+  "POR","LI","DFC1","DFC2","LD",
+  "MC1","MCD","MC2",
+  "EI","DC","ED"
+ ],
+
+ "4-4-2":[
+  "POR","LI","DFC1","DFC2","LD",
+  "EI","MC1","MC2","ED",
+  "DC","DC"
+ ],
+
+ "4-2-3-1":[
+  "POR","LI","DFC1","DFC2","LD",
+  "MCD","MCD",
+  "EI","MP","ED",
+  "DC"
+ ],
+
+ "4-3-2-1":[
+  "POR","LI","DFC1","DFC2","LD",
+  "MC1","MCD","MC2",
+  "MP","MP","DC"
+ ],
+
+ "3-4-3":[
+  "POR","DFC1","DFC2","DFC1",
+  "LI","MC1","MC2","LD",
+  "EI","DC","ED"
+ ],
+
+ "3-5-2":[
+  "POR","DFC1","DFC2","DFC1",
+  "LI","MC1","MCD","MC2","LD",
+  "DC","DC"
+ ],
+
+ "5-3-2":[
+  "POR","LI","DFC1","DFC2","LD",
+  "MC1","MCD","MC2",
+  "DC","DC","EI"
+ ],
+
+ "5-4-1":[
+  "POR","LI","DFC1","DFC2","LD",
+  "EI","MC1","MC2","ED",
+  "DC","MCD"
+ ]
+
+};
 
 </script>
 
