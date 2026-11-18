@@ -2,666 +2,734 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Creator Hub</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-:root {
-  --bg:#0c0d12;
-  --panel:#14151d;
-  --panel2:#1b1c26;
-  --border:#282936;
-  --text:#f3f3f8;
-  --muted:#858797;
-  --accent:#9471ff;
-  --green:#42d6a0;
-  --red:#ff657e;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:Inter,Arial,sans-serif;
-  min-height:100vh;
-}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.app{display:flex;min-height:100vh}
-.sidebar{
-  width:245px;background:#101117;
-  border-right:1px solid var(--border);
-  padding:25px 16px;position:fixed;
-  top:0;bottom:0;left:0;z-index:5;
-}
-.logo{font-size:22px;font-weight:800;margin:0 10px 38px}
-.logo span{color:var(--accent)}
-.section-label{
-  color:#666979;font-size:10px;font-weight:700;
-  letter-spacing:1.5px;margin:24px 10px 10px
-}
-.nav-item{
-  width:100%;display:flex;gap:12px;
-  align-items:center;padding:12px;
-  color:var(--muted);border:0;
-  background:none;border-radius:9px;
-  text-align:left;margin-bottom:4px;
-  font-size:13px;transition:.2s
-}
-.nav-item:hover,.nav-item.active{
-  background:#242033;color:white
-}
-.nav-item.active{border-left:3px solid var(--accent)}
-.nav-icon{width:19px;text-align:center;font-size:16px}
-.sidebar-bottom{
-  position:absolute;bottom:22px;left:17px;right:17px
-}
-.upgrade{
-  background:linear-gradient(140deg,#30234f,#1c1930);
-  border:1px solid #514078;border-radius:12px;
-  padding:15px;font-size:12px;line-height:1.6
-}
-.upgrade button{
-  margin-top:12px;width:100%;padding:9px;
-  background:var(--accent);border:0;
-  color:white;border-radius:7px;font-weight:700
-}
-.main{margin-left:245px;width:calc(100% - 245px);padding:30px 36px}
-.topbar{
-  display:flex;align-items:center;
-  justify-content:space-between;margin-bottom:34px
-}
-.welcome small{color:var(--muted);font-size:12px}
-.welcome h1{font-size:25px;margin-top:6px}
-.top-actions{display:flex;align-items:center;gap:12px}
-.avatar{
-  width:38px;height:38px;border-radius:50%;
-  background:#49376d;display:grid;place-items:center;
-  font-weight:800
-}
-.btn{
-  padding:10px 15px;border:1px solid var(--border);
-  background:var(--panel2);color:white;border-radius:8px;
-  font-size:12px;font-weight:600
-}
-.btn.primary{background:var(--accent);border-color:var(--accent)}
-.page{display:none}
-.page.active{display:block}
-.grid{display:grid;gap:17px}
-.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:20px}
-.card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:12px;padding:19px;min-width:0
-}
-.stat-label{color:var(--muted);font-size:12px}
-.stat-value{font-size:27px;font-weight:800;margin:14px 0 8px}
-.stat-change{font-size:11px;color:var(--green)}
-.muted{color:var(--muted)}
-.content-grid{grid-template-columns:1.6fr 1fr;margin-bottom:20px}
-.card-head{
-  display:flex;justify-content:space-between;
-  align-items:center;margin-bottom:20px;gap:10px
-}
-.card-head h3{font-size:14px}
-.card-head small{font-size:11px;color:var(--muted)}
-.chart{height:215px;width:100%;position:relative}
-.chart canvas{width:100%;height:100%}
-.chart-legend{display:flex;gap:17px;margin-top:12px}
-.legend{font-size:11px;color:var(--muted)}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
-.video-row{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 0;border-bottom:1px solid var(--border)
-}
-.video-row:last-child{border:0}
-.thumb{
-  width:75px;height:48px;border-radius:7px;
-  background:linear-gradient(135deg,#46376c,#24283d);
-  display:grid;place-items:center;font-size:20px
-}
-.video-info{flex:1;min-width:0}
-.video-info strong{font-size:11px;display:block}
-.video-info small{color:var(--muted);font-size:10px}
-.video-views{font-size:12px;font-weight:700}
-.bottom-grid{grid-template-columns:1fr 1fr}
-.activity{
-  padding:12px 0;border-bottom:1px solid var(--border);
-  font-size:12px
-}
-.activity small{display:block;color:var(--muted);margin-top:5px}
-.page-title{font-size:23px;margin-bottom:7px}
-.page-description{color:var(--muted);font-size:12px;margin-bottom:23px}
-.toolbar{display:flex;gap:10px;margin-bottom:17px;flex-wrap:wrap}
-.input{
-  background:#101119;color:white;
-  border:1px solid var(--border);border-radius:8px;
-  padding:11px 12px;outline:none;width:100%
-}
-.input:focus{border-color:var(--accent)}
-.toolbar .input{max-width:280px}
-.data-table{width:100%;border-collapse:collapse;font-size:12px}
-.data-table th{text-align:left;color:var(--muted);padding:13px 10px;font-weight:500}
-.data-table td{padding:15px 10px;border-top:1px solid var(--border)}
-.tag{padding:5px 8px;border-radius:5px;font-size:10px;background:#28243c;color:#b9a4ff}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.field{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
-.field label{font-size:11px;color:var(--muted)}
-.full{grid-column:1/-1}
-.idea-card{margin-bottom:12px}
-.idea-card h3{font-size:14px;margin-bottom:9px}
-.idea-card p{font-size:12px;color:var(--muted);line-height:1.6}
-.idea-actions{display:flex;justify-content:space-between;margin-top:14px}
-.delete{color:var(--red);background:none;border:0;font-size:11px}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
-.day{
-  min-height:88px;background:var(--panel2);
-  border:1px solid var(--border);border-radius:8px;
-  padding:9px;font-size:11px;color:var(--muted)
-}
-.day strong{color:white}
-.day.event{border-color:#7054c0;background:#211c32}
-.day small{display:block;color:#b99fff;margin-top:10px}
-.result-box{
-  background:#211b33;border:1px solid #49366e;
-  border-radius:10px;padding:20px;margin-top:17px
-}
-.result-box strong{font-size:30px;display:block;margin:9px 0}
-.empty{padding:35px;text-align:center;color:var(--muted);font-size:12px}
-.mobile-menu{display:none}
-@media(max-width:1050px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .content-grid{grid-template-columns:1fr}
-}
-@media(max-width:700px){
-  .sidebar{transform:translateX(-100%);transition:.25s}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0;width:100%;padding:20px 15px}
-  .mobile-menu{display:block}
-  .topbar{gap:10px}
-  .welcome h1{font-size:19px}
-  .top-actions .btn{display:none}
-  .stats{gap:9px}
-  .card{padding:14px}
-  .stat-value{font-size:22px}
-  .bottom-grid{grid-template-columns:1fr}
-  .form-grid{grid-template-columns:1fr}
-  .full{grid-column:auto}
-  .calendar{gap:3px}
-  .day{min-height:65px;padding:5px;font-size:9px}
-  .data-table{min-width:560px}
-  .table-wrap{overflow-x:auto}
-}
-</style>
+  <meta name="theme-color" content="#0c0d12">
+  <meta name="description" content="Creator Hub: tu centro de control para administrar y hacer crecer tu canal de YouTube.">
+
+  <title>Creator Hub | Creator Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="script.js" defer></script>
 </head>
+
 <body>
+
 <div class="app">
 
-<aside class="sidebar" id="sidebar">
-  <div class="logo">CREATOR<span>HUB</span></div>
-  <div class="section-label">GENERAL</div>
-  <button class="nav-item active" data-page="dashboard"><span class="nav-icon">▦</span> Inicio</button>
-  <button class="nav-item" data-page="channel"><span class="nav-icon">◉</span> Mi canal</button>
-  <button class="nav-item" data-page="videos"><span class="nav-icon">▶</span> Mis videos</button>
-  <button class="nav-item" data-page="calendar"><span class="nav-icon">▦</span> Calendario</button>
-  <div class="section-label">HERRAMIENTAS</div>
-  <button class="nav-item" data-page="ideas"><span class="nav-icon">✧</span> Ideas y guiones</button>
-  <button class="nav-item" data-page="analytics"><span class="nav-icon">⌁</span> Analíticas</button>
-  <button class="nav-item" data-page="earnings"><span class="nav-icon">$</span> Ingresos</button>
-  <div class="sidebar-bottom">
-    <div class="upgrade">
-      <strong>CREATOR PRO</strong>
-      <p class="muted">Próximamente, herramientas avanzadas para tu canal.</p>
-      <button onclick="alert('Los planes estarán disponibles próximamente.')">Descubrir planes</button>
-    </div>
-  </div>
-</aside>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
 
-<main class="main">
-  <header class="topbar">
-    <div class="welcome">
-      <button class="btn mobile-menu" onclick="toggleMenu()">☰</button>
-      <small id="dateLabel">PANEL DE CONTROL</small>
-      <h1 id="greeting">Bienvenido a Creator Hub</h1>
-    </div>
-    <div class="top-actions">
-      <button class="btn" onclick="exportData()">↓ Exportar datos</button>
-      <div class="avatar">C</div>
-    </div>
-  </header>
-
-  <!-- DASHBOARD -->
-  <section class="page active" id="dashboard">
-    <div class="grid stats">
-      <div class="card">
-        <div class="stat-label">Suscriptores</div>
-        <div class="stat-value" id="subStat">5.700</div>
-        <div class="stat-change">Datos de demostración</div>
-      </div>
-      <div class="card">
-        <div class="stat-label">Visualizaciones</div>
-        <div class="stat-value" id="viewStat">128.450</div>
-        <div class="stat-change">Datos de demostración</div>
-      </div>
-      <div class="card">
-        <div class="stat-label">Videos publicados</div>
-        <div class="stat-value" id="videoStat">24</div>
-        <div class="stat-change">En tu registro</div>
-      </div>
-      <div class="card">
-        <div class="stat-label">Ingresos estimados</div>
-        <div class="stat-value" id="incomeStat">$0</div>
-        <div class="stat-change">Calculados manualmente</div>
-      </div>
+    <div class="logo">
+      CREATOR<span>HUB</span>
     </div>
 
-    <div class="grid content-grid">
+    <div class="section-label">GENERAL</div>
+
+    <button class="nav-item active" data-page="dashboard">
+      <span class="nav-icon">▦</span>
+      Inicio
+    </button>
+
+    <button class="nav-item" data-page="channel">
+      <span class="nav-icon">◉</span>
+      Mi canal
+    </button>
+
+    <button class="nav-item" data-page="videos">
+      <span class="nav-icon">▶</span>
+      Mis videos
+    </button>
+
+    <button class="nav-item" data-page="calendar">
+      <span class="nav-icon">▦</span>
+      Calendario
+    </button>
+
+    <div class="section-label">HERRAMIENTAS</div>
+
+    <button class="nav-item" data-page="ideas">
+      <span class="nav-icon">✧</span>
+      Ideas y guiones
+    </button>
+
+    <button class="nav-item" data-page="analytics">
+      <span class="nav-icon">⌁</span>
+      Analíticas
+    </button>
+
+    <button class="nav-item" data-page="earnings">
+      <span class="nav-icon">$</span>
+      Ingresos
+    </button>
+
+    <!-- PLAN PREMIUM -->
+    <div class="sidebar-bottom">
+
+      <div class="upgrade">
+        <strong>CREATOR PRO</strong>
+
+        <p class="muted">
+          Herramientas avanzadas para hacer crecer tu canal.
+        </p>
+
+        <button onclick="alert('Próximamente disponibles.')">
+          Descubrir planes
+        </button>
+      </div>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+      <div class="welcome">
+
+        <button
+          class="btn mobile-menu"
+          onclick="toggleMenu()"
+          aria-label="Abrir menú">
+          ☰
+        </button>
+
+        <small id="dateLabel">
+          PANEL DE CONTROL
+        </small>
+
+        <h1 id="greeting">
+          Bienvenido a Creator Hub
+        </h1>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button class="btn" onclick="exportData()">
+          ↓ Exportar datos
+        </button>
+
+        <div class="avatar">
+          C
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================== -->
+
+    <section class="page active" id="dashboard">
+
+      <div class="grid stats">
+
+        <div class="card">
+          <div class="stat-label">Suscriptores</div>
+          <div class="stat-value" id="subStat">5.700</div>
+          <div class="stat-change">Datos de demostración</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Visualizaciones</div>
+          <div class="stat-value" id="viewStat">128.450</div>
+          <div class="stat-change">Datos de demostración</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Videos publicados</div>
+          <div class="stat-value" id="videoStat">24</div>
+          <div class="stat-change">En tu registro</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Ingresos estimados</div>
+          <div class="stat-value" id="incomeStat">$0</div>
+          <div class="stat-change">Calculados manualmente</div>
+        </div>
+
+      </div>
+
+
+      <div class="grid content-grid">
+
+        <!-- GRÁFICO -->
+        <div class="card">
+
+          <div class="card-head">
+
+            <h3>Rendimiento del canal</h3>
+
+            <small>Últimos 7 días · Ejemplo</small>
+
+          </div>
+
+          <div class="chart">
+            <canvas id="mainChart"></canvas>
+          </div>
+
+          <div class="chart-legend">
+
+            <span class="legend">
+              <i class="dot" style="background:#9471ff"></i>
+              Visualizaciones
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ÚLTIMOS VIDEOS -->
+        <div class="card">
+
+          <div class="card-head">
+            <h3>Últimos videos</h3>
+            <small>Tu contenido</small>
+          </div>
+
+          <div id="recentVideos"></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid bottom-grid">
+
+        <div class="card">
+
+          <div class="card-head">
+            <h3>Actividad reciente</h3>
+          </div>
+
+          <div class="activity">
+            ✧ Bienvenido a Creator Hub
+            <small>Tu espacio de trabajo está listo</small>
+          </div>
+
+          <div class="activity">
+            ▦ Organizá tus publicaciones
+            <small>Planificá tus próximos videos</small>
+          </div>
+
+          <div class="activity">
+            ↗ Revisá tus resultados
+            <small>Registrá tus estadísticas</small>
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-head">
+            <h3>Próximo objetivo</h3>
+          </div>
+
+          <div class="stat-value">10.000</div>
+
+          <div class="stat-label">
+            Suscriptores objetivo
+          </div>
+
+          <div style="background:#292638;height:8px;border-radius:8px;margin:17px 0;overflow:hidden">
+
+            <div
+              id="goalProgress"
+              style="width:57%;background:var(--accent);height:100%;border-radius:8px">
+            </div>
+
+          </div>
+
+          <small class="muted" id="goalText">
+            5.700 de 10.000 suscriptores
+          </small>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         MI CANAL
+    ========================== -->
+
+    <section class="page" id="channel">
+
+      <h2 class="page-title">Mi canal</h2>
+
+      <p class="page-description">
+        Configurá la información de tu canal y tus estadísticas.
+      </p>
+
       <div class="card">
+
+        <div class="field">
+
+          <label for="channelName">
+            Nombre del canal
+          </label>
+
+          <input
+            class="input"
+            id="channelName"
+            value="Mi canal de YouTube">
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label for="channelSubs">
+              Suscriptores actuales
+            </label>
+
+            <input
+              class="input"
+              id="channelSubs"
+              type="number"
+              min="0"
+              value="5700">
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="channelViews">
+              Visualizaciones totales
+            </label>
+
+            <input
+              class="input"
+              id="channelViews"
+              type="number"
+              min="0"
+              value="128450">
+
+          </div>
+
+        </div>
+
+
+        <button class="btn primary" onclick="saveChannel()">
+          Guardar información
+        </button>
+
+        <p class="muted" style="font-size:10px;margin-top:12px">
+          Estos valores son manuales. Todavía no existe conexión con YouTube.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         VIDEOS
+    ========================== -->
+
+    <section class="page" id="videos">
+
+      <h2 class="page-title">Mis videos</h2>
+
+      <p class="page-description">
+        Administrá tu contenido y su rendimiento.
+      </p>
+
+
+      <div class="toolbar">
+
+        <button class="btn primary" onclick="openVideoForm()">
+          + Nuevo video
+        </button>
+
+        <input
+          class="input"
+          id="videoSearch"
+          placeholder="Buscar videos..."
+          oninput="renderVideos()">
+
+      </div>
+
+
+      <div class="card" id="videoForm" style="display:none;margin-bottom:18px">
+
+        <h3 style="margin-bottom:16px">
+          Agregar video
+        </h3>
+
+        <div class="form-grid">
+
+          <div class="field full">
+
+            <label for="vTitle">Título</label>
+
+            <input
+              class="input"
+              id="vTitle"
+              placeholder="Título del video">
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="vViews">Visualizaciones</label>
+
+            <input
+              class="input"
+              type="number"
+              min="0"
+              id="vViews"
+              value="0">
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="vStatus">Estado</label>
+
+            <select class="input" id="vStatus">
+
+              <option>Publicado</option>
+              <option>En producción</option>
+              <option>Idea</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <button class="btn primary" onclick="addVideo()">
+          Guardar video
+        </button>
+
+        <button class="btn" onclick="closeVideoForm()">
+          Cancelar
+        </button>
+
+      </div>
+
+
+      <div class="card table-wrap">
+
+        <table class="data-table">
+
+          <thead>
+
+            <tr>
+              <th>VIDEO</th>
+              <th>VISITAS</th>
+              <th>ESTADO</th>
+              <th>ACCIÓN</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="videoTable"></tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CALENDARIO
+    ========================== -->
+
+    <section class="page" id="calendar">
+
+      <h2 class="page-title">Calendario de contenido</h2>
+
+      <p class="page-description">
+        Organizá tus próximas publicaciones.
+      </p>
+
+
+      <div class="card">
+
         <div class="card-head">
-          <h3>Rendimiento del canal</h3>
-          <small>Últimos 7 días · Ejemplo</small>
-        </div>
-        <div class="chart"><canvas id="mainChart"></canvas></div>
-        <div class="chart-legend">
-          <span class="legend"><i class="dot" style="background:#9471ff"></i>Visualizaciones</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Últimos videos</h3><small>Tu contenido</small></div>
-        <div id="recentVideos"></div>
-      </div>
-    </div>
 
-    <div class="grid bottom-grid">
-      <div class="card">
-        <div class="card-head"><h3>Actividad reciente</h3></div>
-        <div class="activity">✧ Bienvenido a Creator Hub<small>Tu espacio de trabajo está listo</small></div>
-        <div class="activity">▦ Organizá tus publicaciones<small>Planificá tus próximos videos</small></div>
-        <div class="activity">↗ Revisá tus resultados<small>Registrá tus estadísticas</small></div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Próximo objetivo</h3></div>
-        <div class="stat-value">10.000</div>
-        <div class="stat-label">Suscriptores objetivo</div>
-        <div style="background:#292638;height:8px;border-radius:8px;margin:17px 0;overflow:hidden">
-          <div id="goalProgress" style="width:57%;background:var(--accent);height:100%;border-radius:8px"></div>
-        </div>
-        <small class="muted" id="goalText">5.700 de 10.000 suscriptores</small>
-      </div>
-    </div>
-  </section>
+          <button class="btn" onclick="changeMonth(-1)">
+            ←
+          </button>
 
-  <!-- CHANNEL -->
-  <section class="page" id="channel">
-    <h2 class="page-title">Mi canal</h2>
-    <p class="page-description">Configurá la información de tu canal y tus estadísticas.</p>
-    <div class="card">
-      <div class="field">
-        <label>Nombre del canal</label>
-        <input class="input" id="channelName" value="Mi canal de YouTube">
+          <h3 id="monthLabel"></h3>
+
+          <button class="btn" onclick="changeMonth(1)">
+            →
+          </button>
+
+        </div>
+
+        <div class="calendar" id="calendarGrid"></div>
+
       </div>
-      <div class="form-grid">
+
+
+      <div class="card" style="margin-top:18px">
+
+        <h3 style="margin-bottom:15px">
+          Agregar publicación
+        </h3>
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label for="eventTitle">Título</label>
+
+            <input
+              class="input"
+              id="eventTitle"
+              placeholder="Nombre del video">
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="eventDate">Fecha</label>
+
+            <input
+              class="input"
+              type="date"
+              id="eventDate">
+
+          </div>
+
+        </div>
+
+        <button class="btn primary" onclick="addEvent()">
+          Agregar al calendario
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         IDEAS Y GUIONES
+    ========================== -->
+
+    <section class="page" id="ideas">
+
+      <h2 class="page-title">Ideas y guiones</h2>
+
+      <p class="page-description">
+        Guardá tus ideas para futuros contenidos.
+      </p>
+
+
+      <div class="card" style="margin-bottom:18px">
+
         <div class="field">
-          <label>Suscriptores actuales</label>
-          <input class="input" id="channelSubs" type="number" value="5700">
+
+          <label for="ideaTitle">
+            Título de la idea
+          </label>
+
+          <input
+            class="input"
+            id="ideaTitle"
+            placeholder="Ej: 10 futbolistas que desaparecieron">
+
         </div>
+
+
         <div class="field">
-          <label>Visualizaciones totales</label>
-          <input class="input" id="channelViews" type="number" value="128450">
+
+          <label for="ideaDescription">
+            Descripción o guion
+          </label>
+
+          <textarea
+            class="input"
+            id="ideaDescription"
+            rows="4"
+            placeholder="Desarrollá tu idea...">
+          </textarea>
+
         </div>
-      </div>
-      <button class="btn primary" onclick="saveChannel()">Guardar información</button>
-      <p class="muted" style="font-size:10px;margin-top:12px">Estos valores son manuales. Todavía no existe conexión con YouTube.</p>
-    </div>
-  </section>
 
-  <!-- VIDEOS -->
-  <section class="page" id="videos">
-    <h2 class="page-title">Mis videos</h2>
-    <p class="page-description">Administrá tu contenido y su rendimiento.</p>
-    <div class="toolbar">
-      <button class="btn primary" onclick="openVideoForm()">+ Nuevo video</button>
-      <input class="input" id="videoSearch" placeholder="Buscar videos..." oninput="renderVideos()">
-    </div>
-    <div class="card" id="videoForm" style="display:none;margin-bottom:18px">
-      <h3 style="margin-bottom:16px">Agregar video</h3>
-      <div class="form-grid">
-        <div class="field full"><label>Título</label><input class="input" id="vTitle" placeholder="Título del video"></div>
-        <div class="field"><label>Visualizaciones</label><input class="input" type="number" id="vViews" value="0"></div>
-        <div class="field"><label>Estado</label>
-          <select class="input" id="vStatus"><option>Publicado</option><option>En producción</option><option>Idea</option></select>
+
+        <button class="btn primary" onclick="addIdea()">
+          Guardar idea
+        </button>
+
+      </div>
+
+
+      <div id="ideasList"></div>
+
+    </section>
+
+
+    <!-- =========================
+         ANALÍTICAS
+    ========================== -->
+
+    <section class="page" id="analytics">
+
+      <h2 class="page-title">Analíticas</h2>
+
+      <p class="page-description">
+        Registrá y compará las métricas de tus publicaciones.
+      </p>
+
+
+      <div class="grid stats">
+
+        <div class="card">
+          <div class="stat-label">Total de videos</div>
+          <div class="stat-value" id="analyticsVideos">0</div>
         </div>
-      </div>
-      <button class="btn primary" onclick="addVideo()">Guardar video</button>
-      <button class="btn" onclick="closeVideoForm()">Cancelar</button>
-    </div>
-    <div class="card table-wrap">
-      <table class="data-table">
-        <thead><tr><th>VIDEO</th><th>VISITAS</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead>
-        <tbody id="videoTable"></tbody>
-      </table>
-    </div>
-  </section>
 
-  <!-- CALENDAR -->
-  <section class="page" id="calendar">
-    <h2 class="page-title">Calendario de contenido</h2>
-    <p class="page-description">Organizá tus próximas publicaciones.</p>
-    <div class="card">
-      <div class="card-head">
-        <button class="btn" onclick="changeMonth(-1)">←</button>
-        <h3 id="monthLabel"></h3>
-        <button class="btn" onclick="changeMonth(1)">→</button>
-      </div>
-      <div class="calendar" id="calendarGrid"></div>
-    </div>
-    <div class="card" style="margin-top:18px">
-      <h3 style="margin-bottom:15px">Agregar publicación</h3>
-      <div class="form-grid">
-        <div class="field"><label>Título</label><input class="input" id="eventTitle" placeholder="Nombre del video"></div>
-        <div class="field"><label>Fecha</label><input class="input" type="date" id="eventDate"></div>
-      </div>
-      <button class="btn primary" onclick="addEvent()">Agregar al calendario</button>
-    </div>
-  </section>
+        <div class="card">
+          <div class="stat-label">Visitas registradas</div>
+          <div class="stat-value" id="analyticsViews">0</div>
+        </div>
 
-  <!-- IDEAS -->
-  <section class="page" id="ideas">
-    <h2 class="page-title">Ideas y guiones</h2>
-    <p class="page-description">Guardá tus ideas para futuros contenidos.</p>
-    <div class="card" style="margin-bottom:18px">
-      <div class="field"><label>Título de la idea</label><input class="input" id="ideaTitle" placeholder="Ej: 10 futbolistas que desaparecieron"></div>
-      <div class="field"><label>Descripción o guion</label><textarea class="input" id="ideaDescription" rows="4" placeholder="Desarrollá tu idea..."></textarea></div>
-      <button class="btn primary" onclick="addIdea()">Guardar idea</button>
-    </div>
-    <div id="ideasList"></div>
-  </section>
+        <div class="card">
+          <div class="stat-label">Promedio por video</div>
+          <div class="stat-value" id="analyticsAverage">0</div>
+        </div>
 
-  <!-- ANALYTICS -->
-  <section class="page" id="analytics">
-    <h2 class="page-title">Analíticas</h2>
-    <p class="page-description">Registrá y compará las métricas de tus publicaciones.</p>
-    <div class="grid stats">
-      <div class="card"><div class="stat-label">Total de videos</div><div class="stat-value" id="analyticsVideos">0</div></div>
-      <div class="card"><div class="stat-label">Visitas registradas</div><div class="stat-value" id="analyticsViews">0</div></div>
-      <div class="card"><div class="stat-label">Promedio por video</div><div class="stat-value" id="analyticsAverage">0</div></div>
-      <div class="card"><div class="stat-label">Ideas guardadas</div><div class="stat-value" id="analyticsIdeas">0</div></div>
-    </div>
-    <div class="card">
-      <div class="card-head"><h3>Comparación de videos</h3></div>
-      <div class="chart"><canvas id="analyticsChart"></canvas></div>
-    </div>
-  </section>
+        <div class="card">
+          <div class="stat-label">Ideas guardadas</div>
+          <div class="stat-value" id="analyticsIdeas">0</div>
+        </div>
 
-  <!-- EARNINGS -->
-  <section class="page" id="earnings">
-    <h2 class="page-title">Calculadora de ingresos</h2>
-    <p class="page-description">Simulá posibles ingresos según las visitas y el RPM.</p>
-    <div class="card" style="max-width:650px">
-      <div class="field">
-        <label>Visualizaciones mensuales</label>
-        <input class="input" id="calcViews" type="number" value="100000">
       </div>
-      <div class="field">
-        <label>RPM estimado (USD por cada 1.000 visitas)</label>
-        <input class="input" id="calcRPM" type="number" value="1.5" step="0.1">
-      </div>
-      <button class="btn primary" onclick="calculate()">Calcular ingresos</button>
-      <div class="result-box">
-        <span class="muted">Ingresos mensuales estimados</span>
-        <strong id="earningsResult">USD 150.00</strong>
-        <small class="muted">Estimación orientativa, no representa ingresos garantizados.</small>
-      </div>
-      <div style="margin-top:18px;font-size:12px;line-height:1.8;color:var(--muted)">
-        Fórmula: (visualizaciones ÷ 1.000) × RPM.
-        <br>El RPM real varía según audiencia, formato, país, temática y monetización.
-      </div>
-    </div>
-  </section>
 
-</main>
+
+      <div class="card">
+
+        <div class="card-head">
+          <h3>Comparación de videos</h3>
+        </div>
+
+        <div class="chart">
+          <canvas id="analyticsChart"></canvas>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         INGRESOS
+    ========================== -->
+
+    <section class="page" id="earnings">
+
+      <h2 class="page-title">Calculadora de ingresos</h2>
+
+      <p class="page-description">
+        Simulá posibles ingresos según las visitas y el RPM.
+      </p>
+
+
+      <div class="card" style="max-width:650px">
+
+        <div class="field">
+
+          <label for="calcViews">
+            Visualizaciones mensuales
+          </label>
+
+          <input
+            class="input"
+            id="calcViews"
+            type="number"
+            min="0"
+            value="100000">
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="calcRPM">
+            RPM estimado (USD por cada 1.000 visitas)
+          </label>
+
+          <input
+            class="input"
+            id="calcRPM"
+            type="number"
+            min="0"
+            step="0.1"
+            value="1.5">
+
+        </div>
+
+
+        <button class="btn primary" onclick="calculate()">
+          Calcular ingresos
+        </button>
+
+
+        <div class="result-box">
+
+          <span class="muted">
+            Ingresos mensuales estimados
+          </span>
+
+          <strong id="earningsResult">
+            USD 150.00
+          </strong>
+
+          <small class="muted">
+            Estimación orientativa, no representa ingresos garantizados.
+          </small>
+
+        </div>
+
+
+        <div style="margin-top:18px;font-size:12px;line-height:1.8;color:var(--muted)">
+
+          Fórmula: (visualizaciones ÷ 1.000) × RPM.
+
+          <br>
+
+          El RPM real varía según audiencia, formato, país, temática y monetización.
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
 </div>
 
-<script>
-// ESTADO DE LA APLICACIÓN
-let videos = [
- {id:1,title:"La historia que nadie te contó",views:45000,status:"Publicado"},
- {id:2,title:"10 promesas que decepcionaron",views:28000,status:"Publicado"},
- {id:3,title:"Los secretos del fútbol",views:15000,status:"En producción"}
-];
-
-let ideas = [];
-let events = [];
-let monthDate = new Date();
-
-const $ = id => document.getElementById(id);
-const format = n => Number(n||0).toLocaleString("es-AR");
-
-function toggleMenu(){
- $("sidebar").classList.toggle("open");
-}
-
-// NAVEGACIÓN
-document.querySelectorAll(".nav-item").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  btn.classList.add("active");
-  $(btn.dataset.page).classList.add("active");
-  $("greeting").textContent=btn.textContent.trim();
-  $("sidebar").classList.remove("open");
-  if(btn.dataset.page==="analytics") renderAnalytics();
- });
-});
-
-// CANAL
-function saveChannel(){
- const name=$("channelName").value.trim();
- const subs=Math.max(0,Number($("channelSubs").value)||0);
- const views=Math.max(0,Number($("channelViews").value)||0);
- if(!name){alert("Ingresá el nombre del canal");return}
- $("greeting").textContent=name;
- $("subStat").textContent=format(subs);
- $("viewStat").textContent=format(views);
- $("goalProgress").style.width=Math.min(100,subs/10000*100)+"%";
- $("goalText").textContent=format(subs)+" de 10.000 suscriptores";
- alert("Información guardada.");
-}
-
-// VIDEOS
-function openVideoForm(){$("videoForm").style.display="block"}
-function closeVideoForm(){$("videoForm").style.display="none"}
-
-function addVideo(){
- const title=$("vTitle").value.trim();
- const views=Math.max(0,Number($("vViews").value)||0);
- if(!title){alert("Ingresá un título");return}
- videos.unshift({id:Date.now(),title,views,status:$("vStatus").value});
- $("vTitle").value="";
- $("vViews").value=0;
- closeVideoForm();
- renderVideos();
- renderDashboard();
-}
-
-function deleteVideo(id){
- if(!confirm("¿Eliminar este video?"))return;
- videos=videos.filter(v=>v.id!==id);
- renderVideos();renderDashboard();renderAnalytics();
-}
-
-function renderVideos(){
- const query=$("videoSearch").value.toLowerCase();
- const filtered=videos.filter(v=>v.title.toLowerCase().includes(query));
- $("videoTable").innerHTML=filtered.length?filtered.map(v=>`
- <tr>
- <td><strong>${escapeHTML(v.title)}</strong></td>
- <td>${format(v.views)}</td>
- <td><span class="tag">${escapeHTML(v.status)}</span></td>
- <td><button class="delete" onclick="deleteVideo(${v.id})">Eliminar</button></td>
- </tr>`).join(""):`<tr><td colspan="4" class="empty">No hay videos registrados.</td></tr>`;
-}
-
-// IDEAS
-function addIdea(){
- const title=$("ideaTitle").value.trim();
- const description=$("ideaDescription").value.trim();
- if(!title){alert("Escribí el título de la idea");return}
- ideas.unshift({id:Date.now(),title,description});
- $("ideaTitle").value="";
- $("ideaDescription").value="";
- renderIdeas();renderAnalytics();
-}
-
-function deleteIdea(id){
- ideas=ideas.filter(i=>i.id!==id);
- renderIdeas();renderAnalytics();
-}
-
-function renderIdeas(){
- $("ideasList").innerHTML=ideas.length?ideas.map(i=>`
- <div class="card idea-card">
- <h3>${escapeHTML(i.title)}</h3>
- <p>${escapeHTML(i.description)}</p>
- <div class="idea-actions">
- <span class="muted" style="font-size:10px">Idea guardada</span>
- <button class="delete" onclick="deleteIdea(${i.id})">Eliminar</button>
- </div>
- </div>`).join(""):`<div class="card empty">Todavía no guardaste ninguna idea.</div>`;
-}
-
-// CALENDARIO
-function changeMonth(delta){
- monthDate.setMonth(monthDate.getMonth()+delta);
- renderCalendar();
-}
-
-function renderCalendar(){
- const year=monthDate.getFullYear(),month=monthDate.getMonth();
- $("monthLabel").textContent=new Intl.DateTimeFormat("es",{month:"long",year:"numeric"}).format(monthDate);
- const first=new Date(year,month,1).getDay();
- const days=new Date(year,month+1,0).getDate();
- const names=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
- let html=names.map(n=>`<div class="muted" style="text-align:center;padding:8px;font-size:10px">${n}</div>`).join("");
- for(let i=0;i<first;i++)html+="<div></div>";
- for(let d=1;d<=days;d++){
-  const date=`${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-  const matching=events.filter(e=>e.date===date);
-  html+=`<div class="day ${matching.length?"event":""}">
-   <strong>${d}</strong>
-   ${matching.map(e=>`<small>${escapeHTML(e.title)}</small>`).join("")}
-  </div>`;
- }
- $("calendarGrid").innerHTML=html;
-}
-
-function addEvent(){
- const title=$("eventTitle").value.trim();
- const date=$("eventDate").value;
- if(!title||!date){alert("Completá el título y la fecha");return}
- events.push({id:Date.now(),title,date});
- $("eventTitle").value="";
- renderCalendar();
-}
-
-// INGRESOS
-function calculate(){
- const views=Math.max(0,Number($("calcViews").value)||0);
- const rpm=Math.max(0,Number($("calcRPM").value)||0);
- $("earningsResult").textContent="USD "+((views/1000)*rpm).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
- $("incomeStat").textContent="USD "+((views/1000)*rpm).toFixed(2);
-}
-
-// GRÁFICOS
-function drawChart(id,data){
- const canvas=$(id);
- if(!canvas)return;
- const rect=canvas.getBoundingClientRect();
- const w=rect.width,h=rect.height;
- if(!w||!h)return;
- const dpr=window.devicePixelRatio||1;
- canvas.width=w*dpr;canvas.height=h*dpr;
- const ctx=canvas.getContext("2d");
- ctx.scale(dpr,dpr);
- const max=Math.max(...data,1)*1.2;
- const left=28,bottom=h-25,top=12,right=w-10;
- const step=(right-left)/(data.length-1);
- ctx.strokeStyle="#292a36";ctx.lineWidth=1;
- for(let i=0;i<4;i++){
-  const y=top+(bottom-top)*i/3;
-  ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();
- }
- const points=data.map((v,i)=>({x:left+i*step,y:bottom-(v/max)*(bottom-top)}));
- const gradient=ctx.createLinearGradient(0,top,0,bottom);
- gradient.addColorStop(0,"rgba(148,113,255,.30)");
- gradient.addColorStop(1,"rgba(148,113,255,0)");
- ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
- ctx.lineTo(right,bottom);ctx.lineTo(left,bottom);ctx.closePath();
- ctx.fillStyle=gradient;ctx.fill();
- ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
- ctx.strokeStyle="#9471ff";ctx.lineWidth=2.5;ctx.stroke();
- points.forEach(p=>{
-  ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);
-  ctx.fillStyle="#ad95ff";ctx.fill();
- });
-}
-
-function renderAnalytics(){
- const total=videos.reduce((s,v)=>s+v.views,0);
- $("analyticsVideos").textContent=videos.length;
- $("analyticsViews").textContent=format(total);
- $("analyticsAverage").textContent=format(videos.length?Math.round(total/videos.length):0);
- $("analyticsIdeas").textContent=ideas.length;
- drawChart("analyticsChart",videos.slice(0,7).reverse().map(v=>v.views));
-}
-
-// DASHBOARD
-function renderDashboard(){
- $("videoStat").textContent=videos.length;
- $("recentVideos").innerHTML=videos.slice(0,4).map(v=>`
- <div class="video-row">
-  <div class="thumb">▶</div>
-  <div class="video-info"><strong>${escapeHTML(v.title)}</strong><small>${escapeHTML(v.status)}</small></div>
-  <div class="video-views">${format(v.views)}</div>
- </div>`).join("")||'<div class="empty">Sin videos todavía</div>';
-}
-
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- })[c]);
-}
-
-// EXPORTACIÓN
-function exportData(){
- const data={videos,ideas,events,channel:{
- name:$("channelName").value,
- subscribers:$("channelSubs").value,
- views:$("channelViews").value
- }};
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;a.download="creator-hub-data.json";a.click();
- URL.revokeObjectURL(url);
-}
-
-// INICIO
-function init(){
- const now=new Date();
- $("dateLabel").textContent=new Intl.DateTimeFormat("es",{dateStyle:"full"}).format(now).toUpperCase();
- renderDashboard();
- renderVideos();
- renderIdeas();
- renderCalendar();
- calculate();
- drawChart("mainChart",[3200,4800,3900,6500,5200,8200,9700]);
- window.addEventListener("resize",()=>{
-  if($("dashboard").classList.contains("active"))
-   drawChart("mainChart",[3200,4800,3900,6500,5200,8200,9700]);
-  if($("analytics").classList.contains("active"))renderAnalytics();
- });
-}
-init();
-</script>
 </body>
 </html>
