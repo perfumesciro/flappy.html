@@ -1,3214 +1,667 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mundial Draft</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator Hub</title>
 <style>
-*{box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+:root {
+  --bg:#0c0d12;
+  --panel:#14151d;
+  --panel2:#1b1c26;
+  --border:#282936;
+  --text:#f3f3f8;
+  --muted:#858797;
+  --accent:#9471ff;
+  --green:#42d6a0;
+  --red:#ff657e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
 body{
- margin:0;
- font-family:Arial,Helvetica,sans-serif;
- color:white;
- background:#06111b;
+  background:var(--bg);color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  min-height:100vh;
 }
-
-button{
- border:0;
- border-radius:10px;
- padding:12px 18px;
- font-weight:bold;
- cursor:pointer;
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+  width:245px;background:#101117;
+  border-right:1px solid var(--border);
+  padding:25px 16px;position:fixed;
+  top:0;bottom:0;left:0;z-index:5;
 }
-
-.screen{
- display:none;
- min-height:100vh;
+.logo{font-size:22px;font-weight:800;margin:0 10px 38px}
+.logo span{color:var(--accent)}
+.section-label{
+  color:#666979;font-size:10px;font-weight:700;
+  letter-spacing:1.5px;margin:24px 10px 10px
 }
-
-.active{
- display:flex;
+.nav-item{
+  width:100%;display:flex;gap:12px;
+  align-items:center;padding:12px;
+  color:var(--muted);border:0;
+  background:none;border-radius:9px;
+  text-align:left;margin-bottom:4px;
+  font-size:13px;transition:.2s
 }
-
-/* ================= INICIO ================= */
-
-#inicio{
- align-items:center;
- justify-content:center;
- text-align:center;
- background:
- radial-gradient(circle at 50% 20%,#17659b,#06111b 65%);
+.nav-item:hover,.nav-item.active{
+  background:#242033;color:white
 }
-
-.inicioBox{
- width:min(800px,92%);
+.nav-item.active{border-left:3px solid var(--accent)}
+.nav-icon{width:19px;text-align:center;font-size:16px}
+.sidebar-bottom{
+  position:absolute;bottom:22px;left:17px;right:17px
 }
-
-.inicioBox h1{
- font-size:clamp(42px,8vw,80px);
- margin:10px;
+.upgrade{
+  background:linear-gradient(140deg,#30234f,#1c1930);
+  border:1px solid #514078;border-radius:12px;
+  padding:15px;font-size:12px;line-height:1.6
 }
-
-.inicioBox p{
- color:#b8cbd8;
- font-size:19px;
+.upgrade button{
+  margin-top:12px;width:100%;padding:9px;
+  background:var(--accent);border:0;
+  color:white;border-radius:7px;font-weight:700
 }
-
-input{
- width:min(420px,90%);
- padding:14px;
- border-radius:10px;
- border:1px solid #45657d;
- background:#0c2030;
- color:white;
- font-size:17px;
+.main{margin-left:245px;width:calc(100% - 245px);padding:30px 36px}
+.topbar{
+  display:flex;align-items:center;
+  justify-content:space-between;margin-bottom:34px
 }
-
-.btnVerde{background:#16db75;color:#03150c}
-.btnAzul{background:#347dff;color:white}
-.btnGris{background:#35495a;color:white}
-
-/* ================= DRAFT ================= */
-
-#draft{
- flex-direction:column;
- padding:15px;
- background:
- radial-gradient(circle at top,#14547f,#06111b 65%);
+.welcome small{color:var(--muted);font-size:12px}
+.welcome h1{font-size:25px;margin-top:6px}
+.top-actions{display:flex;align-items:center;gap:12px}
+.avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:#49376d;display:grid;place-items:center;
+  font-weight:800
 }
-
-.top{
- width:min(1450px,100%);
- margin:auto;
- display:flex;
- justify-content:space-between;
- align-items:center;
+.btn{
+  padding:10px 15px;border:1px solid var(--border);
+  background:var(--panel2);color:white;border-radius:8px;
+  font-size:12px;font-weight:600
 }
-
-.draftGrid{
- width:min(1450px,100%);
- margin:auto;
- display:grid;
- grid-template-columns:230px 1fr 600px;
- gap:14px;
-}
-
-.panel{
- background:#0b1b29dd;
- border:1px solid #29475d;
- border-radius:15px;
- padding:14px;
- box-shadow:0 15px 40px #0007;
-}
-
-.flag{
- font-size:70px;
- text-align:center;
-}
-
-.country{
- font-size:23px;
- text-align:center;
- font-weight:bold;
-}
-
-.dado{
- width:75px;
- height:75px;
- background:white;
- color:#111;
- display:grid;
- place-items:center;
- font-size:45px;
- margin:18px auto;
- border-radius:15px;
-}
-
-.actions{
- display:flex;
- gap:6px;
- justify-content:center;
-}
-
-.skip{
- color:#ffd33d;
-}
-
-.players{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:7px;
- max-height:650px;
- overflow:auto;
-}
-
+.btn.primary{background:var(--accent);border-color:var(--accent)}
+.page{display:none}
+.page.active{display:block}
+.grid{display:grid;gap:17px}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:20px}
 .card{
- background:#122a3d;
- border:1px solid #31536b;
- border-radius:10px;
- padding:9px;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;padding:19px;min-width:0
+}
+.stat-label{color:var(--muted);font-size:12px}
+.stat-value{font-size:27px;font-weight:800;margin:14px 0 8px}
+.stat-change{font-size:11px;color:var(--green)}
+.muted{color:var(--muted)}
+.content-grid{grid-template-columns:1.6fr 1fr;margin-bottom:20px}
+.card-head{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:20px;gap:10px
+}
+.card-head h3{font-size:14px}
+.card-head small{font-size:11px;color:var(--muted)}
+.chart{height:215px;width:100%;position:relative}
+.chart canvas{width:100%;height:100%}
+.chart-legend{display:flex;gap:17px;margin-top:12px}
+.legend{font-size:11px;color:var(--muted)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.video-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--border)
+}
+.video-row:last-child{border:0}
+.thumb{
+  width:75px;height:48px;border-radius:7px;
+  background:linear-gradient(135deg,#46376c,#24283d);
+  display:grid;place-items:center;font-size:20px
+}
+.video-info{flex:1;min-width:0}
+.video-info strong{font-size:11px;display:block}
+.video-info small{color:var(--muted);font-size:10px}
+.video-views{font-size:12px;font-weight:700}
+.bottom-grid{grid-template-columns:1fr 1fr}
+.activity{
+  padding:12px 0;border-bottom:1px solid var(--border);
+  font-size:12px
+}
+.activity small{display:block;color:var(--muted);margin-top:5px}
+.page-title{font-size:23px;margin-bottom:7px}
+.page-description{color:var(--muted);font-size:12px;margin-bottom:23px}
+.toolbar{display:flex;gap:10px;margin-bottom:17px;flex-wrap:wrap}
+.input{
+  background:#101119;color:white;
+  border:1px solid var(--border);border-radius:8px;
+  padding:11px 12px;outline:none;width:100%
+}
+.input:focus{border-color:var(--accent)}
+.toolbar .input{max-width:280px}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{text-align:left;color:var(--muted);padding:13px 10px;font-weight:500}
+.data-table td{padding:15px 10px;border-top:1px solid var(--border)}
+.tag{padding:5px 8px;border-radius:5px;font-size:10px;background:#28243c;color:#b9a4ff}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+.field label{font-size:11px;color:var(--muted)}
+.full{grid-column:1/-1}
+.idea-card{margin-bottom:12px}
+.idea-card h3{font-size:14px;margin-bottom:9px}
+.idea-card p{font-size:12px;color:var(--muted);line-height:1.6}
+.idea-actions{display:flex;justify-content:space-between;margin-top:14px}
+.delete{color:var(--red);background:none;border:0;font-size:11px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.day{
+  min-height:88px;background:var(--panel2);
+  border:1px solid var(--border);border-radius:8px;
+  padding:9px;font-size:11px;color:var(--muted)
+}
+.day strong{color:white}
+.day.event{border-color:#7054c0;background:#211c32}
+.day small{display:block;color:#b99fff;margin-top:10px}
+.result-box{
+  background:#211b33;border:1px solid #49366e;
+  border-radius:10px;padding:20px;margin-top:17px
+}
+.result-box strong{font-size:30px;display:block;margin:9px 0}
+.empty{padding:35px;text-align:center;color:var(--muted);font-size:12px}
+.mobile-menu{display:none}
+@media(max-width:1050px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .content-grid{grid-template-columns:1fr}
 }
-
-.card.lock{
- opacity:.4;
-}
-
-.card button{
- width:100%;
- margin-top:7px;
- padding:8px;
- background:#18dc76;
-}
-
-.card.lock button{
- background:#293b49;
- color:#8193a0;
- cursor:not-allowed;
-}
-
-.nombre{
- font-weight:bold;
-}
-
-.pos{
- color:#71d8ff;
- font-size:12px;
-}
-
-.media{
- color:#ffd33d;
- font-weight:bold;
-}
-
-.small{
- color:#91a8b9;
- font-size:12px;
-}
-
-/* ================= CANCHA ================= */
-
-.cancha{
- position:relative;
- width:100%;
- aspect-ratio:1.5;
- overflow:hidden;
- border:4px solid white;
- border-radius:14px;
-
- background:
- repeating-linear-gradient(
-  90deg,
-  #176d38 0px,
-  #176d38 55px,
-  #1b783e 55px,
-  #1b783e 110px
- );
- box-shadow:
-  inset 0 0 50px #001a0b,
-  0 15px 40px #0008;
-}
-
-/* líneas */
-
-.cancha:before{
- content:"";
- position:absolute;
- left:50%;
- top:0;
- height:100%;
- border-left:3px solid #ffffffaa;
-}
-
-.centro{
- position:absolute;
- width:90px;
- height:90px;
- border:3px solid #ffffffaa;
- border-radius:50%;
- left:50%;
- top:50%;
- transform:translate(-50%,-50%);
-}
-
-.punto{
- position:absolute;
- width:10px;
- height:10px;
- background:white;
- border-radius:50%;
- left:50%;
- top:50%;
- transform:translate(-50%,-50%);
-}
-
-/* áreas */
-
-.area{
- position:absolute;
- width:17%;
- height:45%;
- top:27.5%;
- border:3px solid #ffffffbb;
-}
-
-.area.izq{left:-3px}
-.area.der{right:-3px}
-
-.arco{
- position:absolute;
- width:35px;
- height:22%;
- top:39%;
- border:3px solid white;
-}
-
-.arco.izq{
- left:-8px;
- border-left:0;
-}
-
-.arco.der{
- right:-8px;
- border-right:0;
-}
-
-.esquina{
- position:absolute;
- width:25px;
- height:25px;
- border:2px solid #ffffffaa;
- border-radius:50%;
-}
-
-.e1{left:-13px;top:-13px}
-.e2{right:-13px;top:-13px}
-.e3{left:-13px;bottom:-13px}
-.e4{right:-13px;bottom:-13px}
-
-/* jugadores */
-
-.spot{
- position:absolute;
- transform:translate(-50%,-50%);
- min-width:72px;
- min-height:48px;
- padding:4px;
- border-radius:8px;
- text-align:center;
- background:#071725dd;
- border:2px dashed #ffffff77;
- font-size:9px;
- transition:.3s;
-}
-
-.spot.filled{
- border:2px solid #18df79;
- box-shadow:0 0 15px #18df7988;
-}
-
-.spot b{
- display:block;
- color:#72dfff;
-}
-
-.spot em{
- display:block;
- color:#ffd33d;
- font-style:normal;
- font-weight:bold;
-}
-
-/* ================= CONFIGURACIÓN ================= */
-
-.config{
- margin-top:12px;
- text-align:center;
- background:#0d2233;
- border-radius:12px;
- padding:13px;
- border:1px solid #31536b;
-}
-
-.configTitle{
- font-size:20px;
- font-weight:bold;
- margin-bottom:8px;
-}
-
-.configGrid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:7px;
-}
-
-.select{
- background:#132c40;
- border:1px solid #35536a;
- border-radius:8px;
- padding:10px;
-}
-
-select{
- width:100%;
- padding:8px;
- background:#0a1925;
- color:white;
- border:1px solid #456277;
- border-radius:7px;
-}
-
-/* ================= MUNDIAL ================= */
-
-#mundial{
- flex-direction:column;
- padding:25px;
- background:
- radial-gradient(circle at top,#14547f,#06111b 65%);
-}
-
-.mundialBox{
- width:min(1250px,100%);
- margin:auto;
-}
-
-.mundialBox h1{
- text-align:center;
-}
-
-.fases{
- display:grid;
- grid-template-columns:repeat(5,1fr);
- gap:7px;
-}
-
-.fase{
- background:#10283a;
- border:1px solid #29465d;
- border-radius:8px;
- padding:12px;
- text-align:center;
-}
-
-.fase.activa{
- background:#123c31;
- border-color:#18dc76;
-}
-
-.partidos{
- margin-top:15px;
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:8px;
-}
-
-.partido{
- background:#122a3d;
- padding:15px;
- border-radius:9px;
-}
-
-.modos{
- display:flex;
- justify-content:center;
- gap:10px;
- margin-top:18px;
- flex-wrap:wrap;
-}
-
-/* ================= PARTIDO ================= */
-
-#partido{
- flex-direction:column;
- align-items:center;
- padding:12px;
- background:#030a10;
-}
-
-.partidoBox{
- width:min(1250px,98vw);
-}
-
-.marcador{
- display:grid;
- grid-template-columns:1fr auto 1fr;
- align-items:center;
- gap:15px;
- background:#0c1e2d;
- border-radius:12px;
- padding:14px;
-}
-
-.equipoR{
- text-align:right;
-}
-
-.score{
- font-size:42px;
- font-weight:900;
- text-align:center;
-}
-
-.reloj{
- color:#18dc76;
- text-align:center;
-}
-
-.canchaPartido{
- position:relative;
- width:100%;
- aspect-ratio:1.8;
- margin-top:10px;
- border:4px solid white;
- border-radius:12px;
- overflow:hidden;
-
- background:
- repeating-linear-gradient(
-  90deg,
-  #126e39 0 70px,
-  #197a40 70px 140px
- );
-}
-
-.canchaPartido:before{
- content:"";
- position:absolute;
- left:50%;
- height:100%;
- border-left:3px solid white;
-}
-
-.centroPartido{
- position:absolute;
- width:145px;
- height:145px;
- border:3px solid white;
- border-radius:50%;
- left:50%;
- top:50%;
- transform:translate(-50%,-50%);
-}
-
-.areaPartido{
- position:absolute;
- width:16%;
- height:42%;
- top:29%;
- border:3px solid white;
-}
-
-.areaPartido.izq{left:-3px}
-.areaPartido.der{right:-3px}
-
-.jugadorPartido{
- position:absolute;
- width:30px;
- height:30px;
- border-radius:50%;
- transform:translate(-50%,-50%);
- border:2px solid white;
- z-index:5;
- transition:left .4s linear,top .4s linear;
-}
-
-.jugadorPartido.azul{
- background:#277cff;
-}
-
-.jugadorPartido.rojo{
- background:#e63d50;
-}
-
-.jugadorPartido span{
- position:absolute;
- top:31px;
- left:50%;
- transform:translateX(-50%);
- white-space:nowrap;
- font-size:9px;
- text-shadow:0 2px 3px #000;
-}
-
-.pelota{
- position:absolute;
- width:15px;
- height:15px;
- background:white;
- border-radius:50%;
- z-index:10;
- box-shadow:0 0 12px white;
- transition:left .35s linear,top .35s linear;
-}
-
-.eventos{
- height:125px;
- overflow:auto;
- margin-top:10px;
- background:#0b1926;
- border-radius:9px;
- padding:9px;
-}
-
-.evento{
- font-size:13px;
- margin:4px;
-}
-
-/* ================= GOLES ================= */
-
-#flashGol{
- display:none;
- position:fixed;
- z-index:100;
- inset:0;
- place-items:center;
- background:#18dc7633;
- pointer-events:none;
-}
-
-#flashGol.mostrar{
- display:grid;
- animation:flash .9s;
-}
-
-.textoGol{
- font-size:clamp(45px,9vw,100px);
- font-weight:1000;
- text-shadow:0 5px 20px black;
- animation:pop .9s;
-}
-
-@keyframes flash{
- 0%,100%{opacity:0}
- 30%,70%{opacity:1}
-}
-
-@keyframes pop{
- 0%{transform:scale(.3)}
- 50%{transform:scale(1.15)}
- 100%{transform:scale(1)}
-}
-
-/* confeti */
-
-#confeti{
- position:fixed;
- inset:0;
- z-index:90;
- pointer-events:none;
- overflow:hidden;
-}
-
-.conf{
- position:absolute;
- top:-20px;
- width:9px;
- height:14px;
- animation:caer 2.5s linear forwards;
-}
-
-@keyframes caer{
- to{
-  transform:translateY(110vh) rotate(720deg);
- }
-}
-
-/* ganador */
-
-.overlay{
- display:none;
- position:fixed;
- z-index:200;
- inset:0;
- background:#02090dcc;
- place-items:center;
- text-align:center;
-}
-
-.boxFinal{
- background:linear-gradient(#174e77,#0b1e2e);
- padding:35px;
- border-radius:20px;
- box-shadow:0 20px 100px #000;
-}
-
-.trofeo{
- font-size:100px;
- animation:rebote 1s infinite alternate;
-}
-
-@keyframes rebote{
- to{transform:translateY(-15px) scale(1.08)}
-}
-
-/* responsive */
-
-@media(max-width:1200px){
- .draftGrid{
-  grid-template-columns:210px 1fr;
- }
- .draftGrid>.panel:last-child{
-  grid-column:1/-1;
- }
-}
-
 @media(max-width:700px){
- .draftGrid{
-  grid-template-columns:1fr;
- }
-
- .players{
-  grid-template-columns:1fr;
- }
-
- .configGrid{
-  grid-template-columns:1fr 1fr;
- }
-
- .fases{
-  grid-template-columns:1fr;
- }
-
- .partidos{
-  grid-template-columns:1fr;
- }
-
- .marcador{
-  grid-template-columns:1fr auto 1fr;
- }
-
- .spot{
-  min-width:52px;
-  font-size:7px;
- }
-
- .jugadorPartido{
-  width:23px;
-  height:23px;
- }
-
- .jugadorPartido span{
-  font-size:7px;
- }
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;width:100%;padding:20px 15px}
+  .mobile-menu{display:block}
+  .topbar{gap:10px}
+  .welcome h1{font-size:19px}
+  .top-actions .btn{display:none}
+  .stats{gap:9px}
+  .card{padding:14px}
+  .stat-value{font-size:22px}
+  .bottom-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .calendar{gap:3px}
+  .day{min-height:65px;padding:5px;font-size:9px}
+  .data-table{min-width:560px}
+  .table-wrap{overflow-x:auto}
 }
 </style>
 </head>
-
 <body>
-
-<!-- ================= INICIO ================= -->
-
-<section id="inicio" class="screen active">
-
-<div class="inicioBox">
-
-<div style="font-size:80px">🌎⚽🏆</div>
-
-<h1>WORLD CUP DRAFT</h1>
-
-<p>
-Creá tu selección, elegí tus jugadores y tratá de ganar el Mundial.
-</p>
-
-<input id="nombreEquipo"
-placeholder="Nombre de tu equipo"
-maxlength="25">
-
-<br><br>
-
-<button class="btnVerde" onclick="comenzar()">
-EMPEZAR MUNDIAL
-</button>
-
-</div>
-
-</section>
-
-
-<!-- ================= DRAFT ================= -->
-
-<section id="draft" class="screen">
-
-<div class="top">
-
-<h2>🌎 DRAFT</h2>
-
-<div>
-SKIPS:
-<b id="cantidadSkips">4</b>
-</div>
-
-</div>
-
-
-<div class="draftGrid">
-
-<!-- dado -->
-
-<div class="panel">
-
-<div class="small">
-SELECCIÓN SORTEADA
-</div>
-
-<div id="bandera" class="flag">
-🎲
-</div>
-
-<div id="pais" class="country">
-Tirar dado
-</div>
-
-<div id="dado" class="dado">
-🎲
-</div>
-
-<div class="actions">
-
-<button class="btnAzul" onclick="tirarDado()">
-🎲 DADO
-</button>
-
-<button class="btnGris skip" onclick="usarSkip()">
-⏭ SKIP
-</button>
-
-</div>
-
-<br>
-
-<div class="small">
-Tenés que elegir un jugador antes de volver a tirar.
-</div>
-
-</div>
-
-
-<!-- jugadores -->
-
-<div class="panel">
-
-<div class="small">
-20 JUGADORES DISPONIBLES
-</div>
-
-<div id="listaJugadores" class="players">
-
-<div class="small">
-Tirá el dado para comenzar.
-</div>
-
-</div>
-
-</div>
-
-
-<!-- cancha -->
-
-<div class="panel">
-
-<div class="small">
-TU XI — <span id="contador">0</span>/11
-</div>
-
-<br>
-
-<div class="cancha">
-
-<div class="centro"></div>
-<div class="punto"></div>
-
-<div class="area izq"></div>
-<div class="area der"></div>
-
-<div class="arco izq"></div>
-<div class="arco der"></div>
-
-<div class="esquina e1"></div>
-<div class="esquina e2"></div>
-<div class="esquina e3"></div>
-<div class="esquina e4"></div>
-
-
-<!-- posiciones -->
-
-<div class="spot" id="POR" style="left:7%;top:50%">
-<b>POR</b>VACÍO
-</div>
-
-<div class="spot" id="LI" style="left:24%;top:18%">
-<b>LI</b>VACÍO
-</div>
-
-<div class="spot" id="DFC1" style="left:24%;top:40%">
-<b>DFC</b>VACÍO
-</div>
-
-<div class="spot" id="DFC2" style="left:24%;top:60%">
-<b>DFC</b>VACÍO
-</div>
-
-<div class="spot" id="LD" style="left:24%;top:82%">
-<b>LD</b>VACÍO
-</div>
-
-<div class="spot" id="MCD" style="left:44%;top:50%">
-<b>MCD</b>VACÍO
-</div>
-
-<div class="spot" id="MC1" style="left:48%;top:30%">
-<b>MC</b>VACÍO
-</div>
-
-<div class="spot" id="MC2" style="left:48%;top:70%">
-<b>MC</b>VACÍO
-</div>
-
-<div class="spot" id="EI" style="left:72%;top:18%">
-<b>EI</b>VACÍO
-</div>
-
-<div class="spot" id="DC" style="left:80%;top:50%">
-<b>DC</b>VACÍO
-</div>
-
-<div class="spot" id="ED" style="left:72%;top:82%">
-<b>ED</b>VACÍO
-</div>
-
-</div>
-
-
-<!-- configuración debajo de la cancha -->
-
-<div class="config">
-
-<div class="configTitle">
-⚙️ CONFIGURACIÓN DEL EQUIPO
-</div>
-
-<div class="configGrid">
-
-<div class="select">
-
-<div class="small">📋 FORMACIÓN</div>
-
-<select id="formacion" onchange="cambiarFormacion()">
-
-<option value="4-3-3">4-3-3</option>
-<option value="4-4-2">4-4-2</option>
-<option value="4-2-3-1">4-2-3-1</option>
-<option value="4-3-2-1">4-3-2-1</option>
-<option value="3-4-3">3-4-3</option>
-<option value="3-5-2">3-5-2</option>
-<option value="5-3-2">5-3-2</option>
-<option value="5-4-1">5-4-1</option>
-
-</select>
-
-</div>
-
-
-<div class="select">
-
-<div class="small">👑 CAPITÁN</div>
-
-<select id="capitan">
-
-<option>
-Elegí después de completar el XI
-</option>
-
-</select>
-
-</div>
-
-
-<div class="select">
-
-<div class="small">⚔️ ESTILO</div>
-
-<select id="estilo">
-
-<option value="equilibrado">
-⚖️ Equilibrado
-</option>
-
-<option value="ofensivo">
-🔴 Ofensivo
-</option>
-
-<option value="defensivo">
-🔵 Defensivo
-</option>
-
-</select>
-
-</div>
-
-
-<div class="select">
-
-<div class="small">🏆 EQUIPO</div>
-
-<div id="nombreMostrado">
-Mi equipo
-</div>
-
-</div>
-
-</div>
-
-<br>
-
-<button
-id="btnMundial"
-class="btnVerde"
-style="display:none"
-onclick="entrarMundial()">
-
-🏆 COMENZAR MUNDIAL
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- error -->
-
-<div id="error" class="overlay">
-
-<div class="boxFinal">
-
-<h2>⚠️ DRAFT BLOQUEADO</h2>
-
-<p id="textoError"></p>
-
-<button class="btnGris" onclick="cerrarError()">
-ENTENDIDO
-</button>
-
-</div>
-
-</div>
-
-
-<!-- ================= MUNDIAL ================= -->
-
-<section id="mundial" class="screen">
-
-<div class="mundialBox">
-
-<h1>
-🏆 MUNDIAL — <span id="tituloEquipo"></span>
-</h1>
-
-<div class="fases">
-
-<div id="fase0" class="fase activa">
-GRUPOS
-</div>
-
-<div id="fase1" class="fase">
-OCTAVOS
-</div>
-
-<div id="fase2" class="fase">
-CUARTOS
-</div>
-
-<div id="fase3" class="fase">
-SEMIFINAL
-</div>
-
-<div id="fase4" class="fase">
-FINAL
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<h2 id="tituloFase">
-FASE DE GRUPOS
-</h2>
-
-<div id="partidosMundial" class="partidos"></div>
-
-</div>
-
-
-<div class="modos">
-
-<button class="btnAzul" onclick="simular(true)">
-⚡ SIMULAR MUNDIAL RÁPIDO
-</button>
-
-<button class="btnVerde" onclick="simular(false)">
-🏟️ SIMULAR MUNDIAL
-</button>
-
-</div>
-
-<p style="text-align:center;color:#91a8b9">
-Solo podés avanzar si ganás el partido.
-</p>
-
-</div>
-
-</section>
-
-
-<!-- ================= PARTIDO ================= -->
-
-<section id="partido" class="screen">
-
-<div class="partidoBox">
-
-<div class="marcador">
-
-<div id="nombreLocal">
-MI EQUIPO
-</div>
-
-<div>
-
-<div class="score">
-<span id="golesLocal">0</span>
--
-<span id="golesVisitante">0</span>
-</div>
-
-<div class="reloj">
-<span id="minuto">0</span>'
-</div>
-
-</div>
-
-<div id="nombreVisitante" class="equipoR">
-RIVAL
-</div>
-
-</div>
-
-
-<div class="canchaPartido">
-
-<div class="centroPartido"></div>
-
-<div class="areaPartido izq"></div>
-<div class="areaPartido der"></div>
-
-<div id="jugadoresPartido"></div>
-
-<div id="pelota" class="pelota"></div>
-
-</div>
-
-
-<div id="eventos" class="eventos"></div>
-
-</div>
-
-</section>
-
-
-<!-- GOL -->
-
-<div id="flashGol">
-
-<div id="textoGol" class="textoGol">
-⚽ ¡GOOOOOOOL!
-</div>
-
-</div>
-
-
-<div id="confeti"></div>
-
-
-<!-- GANADOR -->
-
-<div id="ganador" class="overlay">
-
-<div class="boxFinal">
-
-<div class="trofeo">
-🏆
-</div>
-
-<h1>
-¡CAMPEÓN DEL MUNDO!
-</h1>
-
-<h2 id="ganadorNombre"></h2>
-
-<p>
-🎉 ¡Ganaste el Mundial! 🎉
-</p>
-
-<button class="btnVerde" onclick="location.reload()">
-NUEVO MUNDIAL
-</button>
-
-</div>
-
-</div>
-
-
-<!-- PERDEDOR -->
-
-<div id="perdedor" class="overlay">
-
-<div class="boxFinal">
-
-<div style="font-size:70px">
-❌
-</div>
-
-<h1>
-MUNDIAL TERMINADO
-</h1>
-
-<p>
-Perdiste el partido.
-</p>
-
-<p>
-Tenés que empezar un nuevo Mundial y volver a formar tu equipo.
-</p>
-
-<button class="btnVerde" onclick="location.reload()">
-NUEVO MUNDIAL
-</button>
-
-</div>
-
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo">CREATOR<span>HUB</span></div>
+  <div class="section-label">GENERAL</div>
+  <button class="nav-item active" data-page="dashboard"><span class="nav-icon">▦</span> Inicio</button>
+  <button class="nav-item" data-page="channel"><span class="nav-icon">◉</span> Mi canal</button>
+  <button class="nav-item" data-page="videos"><span class="nav-icon">▶</span> Mis videos</button>
+  <button class="nav-item" data-page="calendar"><span class="nav-icon">▦</span> Calendario</button>
+  <div class="section-label">HERRAMIENTAS</div>
+  <button class="nav-item" data-page="ideas"><span class="nav-icon">✧</span> Ideas y guiones</button>
+  <button class="nav-item" data-page="analytics"><span class="nav-icon">⌁</span> Analíticas</button>
+  <button class="nav-item" data-page="earnings"><span class="nav-icon">$</span> Ingresos</button>
+  <div class="sidebar-bottom">
+    <div class="upgrade">
+      <strong>CREATOR PRO</strong>
+      <p class="muted">Próximamente, herramientas avanzadas para tu canal.</p>
+      <button onclick="alert('Los planes estarán disponibles próximamente.')">Descubrir planes</button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="welcome">
+      <button class="btn mobile-menu" onclick="toggleMenu()">☰</button>
+      <small id="dateLabel">PANEL DE CONTROL</small>
+      <h1 id="greeting">Bienvenido a Creator Hub</h1>
+    </div>
+    <div class="top-actions">
+      <button class="btn" onclick="exportData()">↓ Exportar datos</button>
+      <div class="avatar">C</div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <section class="page active" id="dashboard">
+    <div class="grid stats">
+      <div class="card">
+        <div class="stat-label">Suscriptores</div>
+        <div class="stat-value" id="subStat">5.700</div>
+        <div class="stat-change">Datos de demostración</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Visualizaciones</div>
+        <div class="stat-value" id="viewStat">128.450</div>
+        <div class="stat-change">Datos de demostración</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Videos publicados</div>
+        <div class="stat-value" id="videoStat">24</div>
+        <div class="stat-change">En tu registro</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Ingresos estimados</div>
+        <div class="stat-value" id="incomeStat">$0</div>
+        <div class="stat-change">Calculados manualmente</div>
+      </div>
+    </div>
+
+    <div class="grid content-grid">
+      <div class="card">
+        <div class="card-head">
+          <h3>Rendimiento del canal</h3>
+          <small>Últimos 7 días · Ejemplo</small>
+        </div>
+        <div class="chart"><canvas id="mainChart"></canvas></div>
+        <div class="chart-legend">
+          <span class="legend"><i class="dot" style="background:#9471ff"></i>Visualizaciones</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Últimos videos</h3><small>Tu contenido</small></div>
+        <div id="recentVideos"></div>
+      </div>
+    </div>
+
+    <div class="grid bottom-grid">
+      <div class="card">
+        <div class="card-head"><h3>Actividad reciente</h3></div>
+        <div class="activity">✧ Bienvenido a Creator Hub<small>Tu espacio de trabajo está listo</small></div>
+        <div class="activity">▦ Organizá tus publicaciones<small>Planificá tus próximos videos</small></div>
+        <div class="activity">↗ Revisá tus resultados<small>Registrá tus estadísticas</small></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Próximo objetivo</h3></div>
+        <div class="stat-value">10.000</div>
+        <div class="stat-label">Suscriptores objetivo</div>
+        <div style="background:#292638;height:8px;border-radius:8px;margin:17px 0;overflow:hidden">
+          <div id="goalProgress" style="width:57%;background:var(--accent);height:100%;border-radius:8px"></div>
+        </div>
+        <small class="muted" id="goalText">5.700 de 10.000 suscriptores</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHANNEL -->
+  <section class="page" id="channel">
+    <h2 class="page-title">Mi canal</h2>
+    <p class="page-description">Configurá la información de tu canal y tus estadísticas.</p>
+    <div class="card">
+      <div class="field">
+        <label>Nombre del canal</label>
+        <input class="input" id="channelName" value="Mi canal de YouTube">
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Suscriptores actuales</label>
+          <input class="input" id="channelSubs" type="number" value="5700">
+        </div>
+        <div class="field">
+          <label>Visualizaciones totales</label>
+          <input class="input" id="channelViews" type="number" value="128450">
+        </div>
+      </div>
+      <button class="btn primary" onclick="saveChannel()">Guardar información</button>
+      <p class="muted" style="font-size:10px;margin-top:12px">Estos valores son manuales. Todavía no existe conexión con YouTube.</p>
+    </div>
+  </section>
+
+  <!-- VIDEOS -->
+  <section class="page" id="videos">
+    <h2 class="page-title">Mis videos</h2>
+    <p class="page-description">Administrá tu contenido y su rendimiento.</p>
+    <div class="toolbar">
+      <button class="btn primary" onclick="openVideoForm()">+ Nuevo video</button>
+      <input class="input" id="videoSearch" placeholder="Buscar videos..." oninput="renderVideos()">
+    </div>
+    <div class="card" id="videoForm" style="display:none;margin-bottom:18px">
+      <h3 style="margin-bottom:16px">Agregar video</h3>
+      <div class="form-grid">
+        <div class="field full"><label>Título</label><input class="input" id="vTitle" placeholder="Título del video"></div>
+        <div class="field"><label>Visualizaciones</label><input class="input" type="number" id="vViews" value="0"></div>
+        <div class="field"><label>Estado</label>
+          <select class="input" id="vStatus"><option>Publicado</option><option>En producción</option><option>Idea</option></select>
+        </div>
+      </div>
+      <button class="btn primary" onclick="addVideo()">Guardar video</button>
+      <button class="btn" onclick="closeVideoForm()">Cancelar</button>
+    </div>
+    <div class="card table-wrap">
+      <table class="data-table">
+        <thead><tr><th>VIDEO</th><th>VISITAS</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead>
+        <tbody id="videoTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="page" id="calendar">
+    <h2 class="page-title">Calendario de contenido</h2>
+    <p class="page-description">Organizá tus próximas publicaciones.</p>
+    <div class="card">
+      <div class="card-head">
+        <button class="btn" onclick="changeMonth(-1)">←</button>
+        <h3 id="monthLabel"></h3>
+        <button class="btn" onclick="changeMonth(1)">→</button>
+      </div>
+      <div class="calendar" id="calendarGrid"></div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <h3 style="margin-bottom:15px">Agregar publicación</h3>
+      <div class="form-grid">
+        <div class="field"><label>Título</label><input class="input" id="eventTitle" placeholder="Nombre del video"></div>
+        <div class="field"><label>Fecha</label><input class="input" type="date" id="eventDate"></div>
+      </div>
+      <button class="btn primary" onclick="addEvent()">Agregar al calendario</button>
+    </div>
+  </section>
+
+  <!-- IDEAS -->
+  <section class="page" id="ideas">
+    <h2 class="page-title">Ideas y guiones</h2>
+    <p class="page-description">Guardá tus ideas para futuros contenidos.</p>
+    <div class="card" style="margin-bottom:18px">
+      <div class="field"><label>Título de la idea</label><input class="input" id="ideaTitle" placeholder="Ej: 10 futbolistas que desaparecieron"></div>
+      <div class="field"><label>Descripción o guion</label><textarea class="input" id="ideaDescription" rows="4" placeholder="Desarrollá tu idea..."></textarea></div>
+      <button class="btn primary" onclick="addIdea()">Guardar idea</button>
+    </div>
+    <div id="ideasList"></div>
+  </section>
+
+  <!-- ANALYTICS -->
+  <section class="page" id="analytics">
+    <h2 class="page-title">Analíticas</h2>
+    <p class="page-description">Registrá y compará las métricas de tus publicaciones.</p>
+    <div class="grid stats">
+      <div class="card"><div class="stat-label">Total de videos</div><div class="stat-value" id="analyticsVideos">0</div></div>
+      <div class="card"><div class="stat-label">Visitas registradas</div><div class="stat-value" id="analyticsViews">0</div></div>
+      <div class="card"><div class="stat-label">Promedio por video</div><div class="stat-value" id="analyticsAverage">0</div></div>
+      <div class="card"><div class="stat-label">Ideas guardadas</div><div class="stat-value" id="analyticsIdeas">0</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Comparación de videos</h3></div>
+      <div class="chart"><canvas id="analyticsChart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- EARNINGS -->
+  <section class="page" id="earnings">
+    <h2 class="page-title">Calculadora de ingresos</h2>
+    <p class="page-description">Simulá posibles ingresos según las visitas y el RPM.</p>
+    <div class="card" style="max-width:650px">
+      <div class="field">
+        <label>Visualizaciones mensuales</label>
+        <input class="input" id="calcViews" type="number" value="100000">
+      </div>
+      <div class="field">
+        <label>RPM estimado (USD por cada 1.000 visitas)</label>
+        <input class="input" id="calcRPM" type="number" value="1.5" step="0.1">
+      </div>
+      <button class="btn primary" onclick="calculate()">Calcular ingresos</button>
+      <div class="result-box">
+        <span class="muted">Ingresos mensuales estimados</span>
+        <strong id="earningsResult">USD 150.00</strong>
+        <small class="muted">Estimación orientativa, no representa ingresos garantizados.</small>
+      </div>
+      <div style="margin-top:18px;font-size:12px;line-height:1.8;color:var(--muted)">
+        Fórmula: (visualizaciones ÷ 1.000) × RPM.
+        <br>El RPM real varía según audiencia, formato, país, temática y monetización.
+      </div>
+    </div>
+  </section>
+
+</main>
 </div>
-
 
 <script>
-
-/* =========================================================
-   DATOS DE JUGADORES
-========================================================= */
-
-const selecciones=[
-
-{
-pais:"Argentina",
-bandera:"🇦🇷",
-jugadores:[
-["Messi","ED/MP",95],
-["Maradona","MP/ED",98],
-["Di María","ED/EI",89],
-["Julián Álvarez","DC",89],
-["Lautaro Martínez","DC",88],
-["Agüero","DC",93],
-["Batistuta","DC",94],
-["Riquelme","MP",91],
-["Zanetti","LD/LI",90],
-["Mascherano","MCD/DFC",87],
-["Redondo","MCD/MC",90],
-["Passarella","DFC",93],
-["Ayala","DFC",88],
-["Kempes","DC",94],
-["Caniggia","ED/DC",91],
-["Crespo","DC",91],
-["Verón","MC/MP",88],
-["Heinze","DFC/LI",85],
-["Valdano","DC",89],
-["Emiliano Martínez","POR",88]
-]
-},
-
-{
-pais:"Brasil",
-bandera:"🇧🇷",
-jugadores:[
-["Pelé","DC/MP",99],
-["Ronaldo","DC",97],
-["Ronaldinho","MP/EI",96],
-["Neymar","EI/MP",95],
-["Vinícius Jr.","EI/ED",94],
-["Rivaldo","EI/MP",94],
-["Romário","DC",96],
-["Kaká","MP/MC",93],
-["Cafu","LD",94],
-["Roberto Carlos","LI",94],
-["Thiago Silva","DFC",90],
-["Lúcio","DFC",90],
-["Casemiro","MCD",88],
-["Zico","MP",95],
-["Garrincha","ED",97],
-["Adriano","DC",92],
-["Bebeto","DC/ED",91],
-["Marcelo","LI",90],
-["Alisson","POR",90],
-["Dunga","MCD/MC",87]
-]
-},
-
-{
-pais:"Francia",
-bandera:"🇫🇷",
-jugadores:[
-["Mbappé","EI/DC",97],
-["Zidane","MP/MC",96],
-["Henry","DC/EI",96],
-["Platini","MP/MC",96],
-["Griezmann","MP/DC",91],
-["Dembélé","ED/EI",90],
-["Benzema","DC",94],
-["Giroud","DC",88],
-["Ribéry","EI",91],
-["Vieira","MCD/MC",92],
-["Kanté","MCD/MC",90],
-["Makélélé","MCD",90],
-["Thuram","LD/DFC",91],
-["Varane","DFC",88],
-["Blanc","DFC",92],
-["Desailly","DFC/MCD",93],
-["Cantona","DC/MP",93],
-["Pirès","EI/MP",89],
-["Pogba","MC/MP",88],
-["Lloris","POR",89]
-]
-},
-
-{
-pais:"España",
-bandera:"🇪🇸",
-jugadores:[
-["Lamine Yamal","ED",89],
-["Xavi","MC/MP",96],
-["Iniesta","MC/MP",96],
-["Casillas","POR",93],
-["Sergio Ramos","DFC/LD",92],
-["Puyol","DFC",91],
-["Torres","DC",91],
-["David Villa","DC/EI",94],
-["Raúl","DC/MP",92],
-["Xabi Alonso","MCD/MC",91],
-["Busquets","MCD",91],
-["David Silva","MP/EI",92],
-["Cesc","MC/MP",89],
-["Hierro","DFC/MCD",91],
-["Piqué","DFC",90],
-["Jordi Alba","LI",89],
-["Pedro","ED/EI",88],
-["Rodri","MCD/MC",94],
-["Morientes","DC",88],
-["De Gea","POR",88]
-]
-},
-
-{
-pais:"Alemania",
-bandera:"🇩🇪",
-jugadores:[
-["Beckenbauer","DFC/MCD",97],
-["Gerd Müller","DC",97],
-["Matthäus","MC/MCD",96],
-["Klose","DC",92],
-["Thomas Müller","MP/DC",90],
-["Kroos","MC/MCD",94],
-["Özil","MP",91],
-["Schweinsteiger","MC/MCD",91],
-["Neuer","POR",94],
-["Lahm","LD/LI",93],
-["Hummels","DFC",89],
-["Ballack","MC/MP",92],
-["Rummenigge","DC",95],
-["Klinsmann","DC",91],
-["Kahn","POR",94],
-["Musiala","MP/EI",91],
-["Götze","MP",85],
-["Vogts","LD/DFC",89],
-["Völler","DC",91],
-["Netzer","MC/MP",93]
-]
-},
-
-{
-pais:"Italia",
-bandera:"🇮🇹",
-jugadores:[
-["Maldini","LI/DFC",97],
-["Baresi","DFC",96],
-["Baggio","MP/DC",95],
-["Del Piero","DC/MP",94],
-["Totti","MP/DC",94],
-["Pirlo","MC/MCD",94],
-["Buffon","POR",96],
-["Cannavaro","DFC",93],
-["Chiellini","DFC",90],
-["Verratti","MC",88],
-["De Rossi","MCD/MC",88],
-["Gattuso","MCD",87],
-["Inzaghi","DC",90],
-["Vieri","DC",91],
-["Toni","DC",88],
-["Zola","MP/DC",90],
-["Chiesa","ED/EI",87],
-["Zoff","POR",94],
-["Nesta","DFC",94],
-["Mazzola","MP/DC",93]
-]
-},
-
-{
-pais:"Portugal",
-bandera:"🇵🇹",
-jugadores:[
-["Cristiano Ronaldo","DC/EI",97],
-["Eusébio","DC",98],
-["Figo","ED/MP",95],
-["Rui Costa","MP/MC",92],
-["Bernardo Silva","MP/ED",91],
-["Bruno Fernandes","MP/MC",91],
-["Deco","MC/MP",91],
-["Pepe","DFC",91],
-["Ricardo Carvalho","DFC",90],
-["Cancelo","LD/LI",88],
-["Nani","ED/EI",87],
-["Quaresma","ED",88],
-["Futre","EI",91],
-["Simão","EI/ED",87],
-["Moutinho","MC",86],
-["William Carvalho","MCD",84],
-["Rui Patrício","POR",86],
-["Vítor Baía","POR",90],
-["Fernando Couto","DFC",89],
-["Rafael Leão","EI/DC",89]
-]
-},
-
-{
-pais:"Inglaterra",
-bandera:"🏴",
-jugadores:[
-["Kane","DC",94],
-["Bellingham","MC/MP",93],
-["Beckham","ED/MC",93],
-["Rooney","DC/MP",94],
-["Gerrard","MC",92],
-["Lampard","MC/MP",92],
-["Bobby Charlton","MP/MC",96],
-["Lineker","DC",93],
-["Owen","DC",91],
-["Shearer","DC",94],
-["Scholes","MC/MP",92],
-["Terry","DFC",90],
-["Ferdinand","DFC",90],
-["Ashley Cole","LI",91],
-["Walker","LD/DFC",88],
-["John Barnes","EI/MP",91],
-["Keegan","DC/MP",91],
-["Shilton","POR",93],
-["Saka","ED",88],
-["Foden","MP/EI",90]
-]
-},
-
-{
-pais:"Uruguay",
-bandera:"🇺🇾",
-jugadores:[
-["Suárez","DC",94],
-["Forlán","DC/EI",93],
-["Cavani","DC",91],
-["Francescoli","MP/DC",93],
-["Godín","DFC",90],
-["Valverde","MC/MCD",91],
-["Araújo","DFC/LD",88],
-["Obdulio Varela","MCD/MC",94],
-["Schiaffino","MP/DC",94],
-["Nasazzi","DFC",94],
-["Scarone","ED/DC",95],
-["Ghiggia","ED",93],
-["Recoba","MP/EI",89],
-["Lugano","DFC",87],
-["Abreu","DC",86],
-["Muslera","POR",87],
-["Darwin Núñez","DC",89],
-["De Arrascaeta","MP",88],
-["Giménez","DFC",87],
-["Héctor Castro","DC",86]
-]
-},
-
-{
-pais:"Países Bajos",
-bandera:"🇳🇱",
-jugadores:[
-["Cruyff","DC/MP",98],
-["Van Basten","DC",97],
-["Gullit","MP/DC",95],
-["Bergkamp","DC/MP",94],
-["Robben","ED",94],
-["Sneijder","MP/MC",92],
-["Rijkaard","MCD/DFC",94],
-["Seedorf","MC/MP",92],
-["Davids","MC/MCD",90],
-["Van Dijk","DFC",92],
-["Koeman","DFC/MCD",94],
-["Van Nistelrooy","DC",93],
-["Van Persie","DC/EI",93],
-["Kluivert","DC",90],
-["Overmars","EI/ED",90],
-["Van der Sar","POR",93],
-["Stam","DFC",90],
-["De Jong","MC/MCD",89],
-["Depay","DC/EI",87],
-["Van der Vaart","MP/MC",88]
-]
-},
-
-{
-pais:"India",
-bandera:"🇮🇳",
-jugadores:[
-["Sunil Chhetri","DC",78],
-["Bhaichung Bhutia","DC",82],
-["IM Vijayan","DC",80],
-["Gurpreet Singh","POR",75],
-["Anirudh Thapa","MC",74],
-["Sandesh Jhingan","DFC",76],
-["Jeje Lalpekhlua","DC",73],
-["Brandon Fernandes","MP",75],
-["Jackichand Singh","ED",72],
-["Pronay Halder","MCD",71],
-["Subrata Pal","POR",74],
-["Mehtab Hossain","MCD",70],
-["Mohammed Rafique","MC",70],
-["Rowllin Borges","MCD",72],
-["Udanta Singh","ED",73],
-["Lalrindika Ralte","MC",68],
-["Denzil Franco","LD",68],
-["Pritam Kotal","LD",71],
-["Anas Edathodika","DFC",72],
-["Rahul Bheke","DFC",69]
-]
-},
-
-{
-pais:"Chad",
-bandera:"🇹🇩",
-jugadores:[
-["Ezechiel N'Douassel","DC",73],
-["Karl Max Barthelemy","ED",69],
-["Marius Mouandilmadji","DC",72],
-["Casimir Ninga","EI/DC",75],
-["Mahamat Ahmat","MC",64],
-["Abakar Mahamat","DFC",66],
-["Mbaïssé","MCD",65],
-["Youssouf Mahamat","DFC",63],
-["Moustapha Djibrine","MC",64],
-["Idriss Carlos Kameni","POR",68],
-["Adoum Djibrine","LD",62],
-["Hassan Ibrahim","MC",63],
-["Mamadou Kébé","DFC",64],
-["Ali Mahamat","DC",65],
-["Oumar Mahamat","EI",63],
-["Haroun Tchari","MC",62],
-["Abdelkerim Mahamat","DFC",61],
-["Moussa Faki","ED",60],
-["Zakaria Issa","POR",62],
-["Ngarlemdana","DFC",64]
-]
-},
-
-{
-pais:"Jordania",
-bandera:"🇯🇴",
-jugadores:[
-["Musa Al-Taamari","ED",79],
-["Yazan Al-Naimat","DC",78],
-["Baha Abdel-Rahman","MC",75],
-["Amer Shafi","POR",77],
-["Ahmad Hayel","DC",74],
-["Odai Al-Saify","EI",72],
-["Anas Bani Yaseen","DFC",74],
-["Ibrahim Sadeh","MC",69],
-["Mohammad Abu Zrayq","ED",72],
-["Nour Al-Din","MC",68],
-["Tareq Khattab","DFC",71],
-["Yousef Rawashdeh","EI",70],
-["Mahmoud Al-Mardi","EI",73],
-["Hamad Al-Najjar","POR",65],
-["Ali Alwan","DC",74],
-["Faisal Ibrahim","MC",67],
-["Amer Deeb","MC",68],
-["Hussein Zaidan","DFC",66],
-["Anas Al-Battat","LD",65],
-["Khaled Saad","LI",67]
-]
-},
-
-{
-pais:"Japón",
-bandera:"🇯🇵",
-jugadores:[
-["Honda","MP",85],
-["Nakata","MP/MC",90],
-["Kagawa","MP",86],
-["Kubo","ED/MP",86],
-["Mitoma","EI",85],
-["Nakamura","MP",88],
-["Nagatomo","LI",83],
-["Yoshida","DFC",82],
-["Hasebe","MCD/DFC",84],
-["Okazaki","DC",82],
-["Miura","DC",84],
-["Kawashima","POR",80],
-["Minamino","MP/DC",83],
-["Endo","MCD",84],
-["Doan","ED",81],
-["Inamoto","MC",80],
-["Nakayama","DC",79],
-["Uchida","LD",80],
-["Nakazawa","DFC",82],
-["Kamada","MP/MC",83]
-]
-},
-
-{
-pais:"Marruecos",
-bandera:"🇲🇦",
-jugadores:[
-["Hakimi","LD/LI",89],
-["Ziyech","ED/MP",86],
-["Amrabat","MCD",84],
-["En-Nesyri","DC",84],
-["Naybet","DFC",89],
-["Mustapha Hadji","MP",88],
-["Badou Zaki","POR",88],
-["Benatia","DFC",88],
-["Kharja","MC",81],
-["Chamakh","DC",82],
-["Chippo","MC",80],
-["Hadda","DC",79],
-["Dirar","ED",78],
-["Saïss","DFC",80],
-["Harit","MP",80],
-["Boufal","EI",82],
-["Munir","POR",77],
-["Nordin Amrabat","ED",80],
-["Belhanda","MP",82],
-["Mazraoui","LD/LI",84]
-]
-},
-
-{
-pais:"Nigeria",
-bandera:"🇳🇬",
-jugadores:[
-["Okocha","MP",93],
-["Kanu","DC/MP",90],
-["Osimhen","DC",90],
-["Finidi George","ED",88],
-["Yekini","DC",91],
-["Amokachi","DC",85],
-["Oliseh","MCD",86],
-["Mikel","MC/MCD",84],
-["Yobo","DFC",82],
-["Enyeama","POR",86],
-["Musa","EI/ED",80],
-["Moses","ED/LD",81],
-["Ndidi","MCD",84],
-["Taribo West","DFC",85],
-["Iheanacho","DC/MP",80],
-["Iwobi","MP",80],
-["Amunike","EI",84],
-["Keshi","DFC",84],
-["Babayaro","LI",82],
-["Odemwingie","DC/ED",80]
-]
-},
-
-{
-pais:"México",
-bandera:"🇲🇽",
-jugadores:[
-["Hugo Sánchez","DC",95],
-["Rafa Márquez","DFC/MCD",91],
-["Jorge Campos","POR",88],
-["Cuauhtémoc Blanco","MP/DC",88],
-["Chicharito","DC",86],
-["Borgetti","DC",87],
-["Lozano","EI",84],
-["Ochoa","POR",85],
-["Guardado","MC",84],
-["Claudio Suárez","DFC",87],
-["Luis Hernández","DC",85],
-["Ramón Ramírez","EI",84],
-["Torrado","MCD",82],
-["Carlos Vela","ED/DC",85],
-["Benjamín Galindo","MP",83],
-["García Aspe","MC",84],
-["Luis García","DC",82],
-["Oswaldo Sánchez","POR",83],
-["Rafa Puente","DFC",75],
-["Alberto García","DFC",76]
-]
-},
-
-{
-pais:"Colombia",
-bandera:"🇨🇴",
-jugadores:[
-["Valderrama","MP",93],
-["Falcao","DC",91],
-["James Rodríguez","MP/MC",89],
-["Higuita","POR",89],
-["Asprilla","DC",88],
-["Cuadrado","ED/LD",86],
-["Yepes","DFC",86],
-["Rincón","MC/MCD",88],
-["Iván Córdoba","DFC",88],
-["Adolfo Valencia","DC",84],
-["Iguarán","DC",86],
-["Ospina","POR",82],
-["Yerry Mina","DFC",80],
-["Luis Díaz","EI",87],
-["Jhon Arias","ED",82],
-["Aristizábal","DC",87],
-["Bacca","DC",83],
-["Abel Aguilar","MC",81],
-["Juan Pablo Ángel","DC",82],
-["Carlos Sánchez","MCD",80]
-]
-},
-
-{
-pais:"Estados Unidos",
-bandera:"🇺🇸",
-jugadores:[
-["Donovan","MP/ED",88],
-["Dempsey","MP/DC",87],
-["Pulisic","EI/ED",87],
-["Tim Howard","POR",87],
-["Beasley","LI/EI",82],
-["Bradley","MC",82],
-["Claudio Reyna","MP/MC",86],
-["Cobi Jones","ED",82],
-["Altidore","DC",80],
-["Bocanegra","DFC",81],
-["McBride","DC",82],
-["Lalas","DFC",78],
-["McKennie","MC",82],
-["Adams","MCD",81],
-["Yedlin","LD",79],
-["Keller","POR",84],
-["Eddie Pope","DFC",82],
-["Gio Reyna","MP",80],
-["Jozy Jr","DC",75],
-["Pope Jr","DFC",74]
-]
-},
-
-{
-pais:"Yugoslavia",
-bandera:"🏳️",
-jugadores:[
-["Džajić","EI",94],
-["Savićević","MP/EI",92],
-["Prosinečki","MP/MC",91],
-["Boban","MP/MC",91],
-["Šuker","DC",93],
-["Mijatović","DC/MP",89],
-["Sušić","MP",93],
-["Stojković","MP",92],
-["Skoblar","DC",91],
-["Vladimir Beara","POR",92],
-["Vasović","DFC",90],
-["Zebec","EI/DC",90],
-["Galić","DC",89],
-["Osim","MP",89],
-["Boškov","DFC",87],
-["Bilić","DFC",86],
-["Katanec","MCD/DFC",87],
-["Pančev","DC",91],
-["Vujović","DC",87],
-["Durković","LD",87]
-]
-},
-
-{
-pais:"Unión Soviética",
-bandera:"☭",
-jugadores:[
-["Yashin","POR",98],
-["Blokhin","EI/DC",95],
-["Ivanov","DC",91],
-["Streltsov","DC/MP",94],
-["Netto","MC/MCD",91],
-["Voronin","MCD",90],
-["Dasayev","POR",94],
-["Ponedelnik","DC",90],
-["Litovchenko","MC",88],
-["Kanchelskis","ED",89],
-["Kolotov","MC",89],
-["Byshovets","DC",88],
-["Shesternyov","DFC",92],
-["Muntyan","MP",90],
-["Mostovoi","MP/MC",88],
-["Onopko","DFC",87],
-["Voinov","MC",87],
-["Maslyonkov","DFC",88],
-["Semichastniy","LD",85],
-["Kholmov","MC",86]
-]
-},
-
-{
-pais:"Checoslovaquia",
-bandera:"🇨🇿",
-jugadores:[
-["Josef Bican","DC",98],
-["Masopust","MC/MP",94],
-["Panenka","MP/MC",91],
-["Nedvěd","MC/EI",94],
-["Poborský","ED/MP",88],
-["Skuhravý","DC",88],
-["Ivo Viktor","POR",92],
-["Popluhár","DFC",90],
-["Novák","LI/DFC",88],
-["Plánička","POR",94],
-["Pluskal","MCD/DFC",87],
-["Kvašňák","MP",88],
-["Adamec","DC",89],
-["Dobiáš","LD",87],
-["Nehoda","DC",88],
-["Koubek","MC",84],
-["Kuna","MC",85],
-["Kramerius","DFC",84],
-["Bican Jr","DC",82],
-["Viktor Jr","POR",80]
-]
-}
-
+// ESTADO DE LA APLICACIÓN
+let videos = [
+ {id:1,title:"La historia que nadie te contó",views:45000,status:"Publicado"},
+ {id:2,title:"10 promesas que decepcionaron",views:28000,status:"Publicado"},
+ {id:3,title:"Los secretos del fútbol",views:15000,status:"En producción"}
 ];
 
-/* =========================================================
-   VARIABLES
-========================================================= */
+let ideas = [];
+let events = [];
+let monthDate = new Date();
 
-let nombreEquipo="";
-let paisActual=null;
-let usados=[];
-let skips=4;
-let jugadoresElegidos=[];
-let esperando=true;
+const $ = id => document.getElementById(id);
+const format = n => Number(n||0).toLocaleString("es-AR");
 
-let formacion="4-3-3";
-let capitan="";
-let estilo="equilibrado";
-
-let fase=0;
-
-let rival="";
-let modoRapido=false;
-
-let golesLocal=0;
-let golesVisitante=0;
-let minuto=0;
-
-let tiempoExtra=false;
-let intervalo=null;
-
-let jugadoresLocal=[];
-let jugadoresRival=[];
-
-
-/* =========================================================
-   UTILIDADES
-========================================================= */
-
-function mostrar(id){
-
- document.querySelectorAll(".screen")
- .forEach(e=>e.classList.remove("active"));
-
- document.getElementById(id)
- .classList.add("active");
-
+function toggleMenu(){
+ $("sidebar").classList.toggle("open");
 }
 
-function error(texto){
-
- document.getElementById("textoError").textContent=texto;
-
- document.getElementById("error").style.display="grid";
-
-}
-
-function cerrarError(){
-
- document.getElementById("error").style.display="none";
-
-}
-
-
-/* =========================================================
-   COMENZAR
-========================================================= */
-
-function comenzar(){
-
- nombreEquipo=
- document.getElementById("nombreEquipo").value.trim();
-
- if(!nombreEquipo)
- nombreEquipo="MI SELECCIÓN";
-
- document.getElementById("nombreMostrado").textContent=
- nombreEquipo;
-
- mostrar("draft");
-
-}
-
-
-/* =========================================================
-   POSICIONES
-========================================================= */
-
-function posicionDisponible(jugador){
-
- let posiciones=jugador[1].split("/");
-
- for(let p of posiciones){
-
-  if(p==="POR" &&
-  !jugadoresElegidos.some(x=>x.slot==="POR"))
-  return "POR";
-
-  if(p==="LI" &&
-  !jugadoresElegidos.some(x=>x.slot==="LI"))
-  return "LI";
-
-  if(p==="LD" &&
-  !jugadoresElegidos.some(x=>x.slot==="LD"))
-  return "LD";
-
-  if(p==="DFC"){
-
-   if(!jugadoresElegidos.some(x=>x.slot==="DFC1"))
-   return "DFC1";
-
-   if(!jugadoresElegidos.some(x=>x.slot==="DFC2"))
-   return "DFC2";
-
-  }
-
-  if(p==="MCD" &&
-  !jugadoresElegidos.some(x=>x.slot==="MCD"))
-  return "MCD";
-
-  if(p==="MC"){
-
-   if(!jugadoresElegidos.some(x=>x.slot==="MC1"))
-   return "MC1";
-
-   if(!jugadoresElegidos.some(x=>x.slot==="MC2"))
-   return "MC2";
-
-  }
-
-  if(p==="EI" &&
-  !jugadoresElegidos.some(x=>x.slot==="EI"))
-  return "EI";
-
-  if(p==="ED" &&
-  !jugadoresElegidos.some(x=>x.slot==="ED"))
-  return "ED";
-
-  if((p==="DC"||p==="MP") &&
-  !jugadoresElegidos.some(x=>x.slot==="DC"))
-  return "DC";
-
- }
-
- return null;
-
-}
-
-
-/* =========================================================
-   DADO
-========================================================= */
-
-function tirarDado(){
-
- if(!esperando){
-
-  error(
-   "No podés tirar el dado todavía. Primero tenés que elegir un jugador."
-  );
-
-  return;
-
- }
-
- if(jugadoresElegidos.length>=11){
-
-  error("Ya tenés los 11 jugadores.");
-
-  return;
-
- }
-
- let disponibles=
- selecciones.filter(
-  s=>!usados.includes(s.pais)
- );
-
- if(disponibles.length===0){
-
-  usados=[];
-
-  disponibles=selecciones;
-
- }
-
- paisActual=
- disponibles[
- Math.floor(Math.random()*disponibles.length)
- ];
-
- usados.push(paisActual.pais);
-
- esperando=false;
-
- let dado=document.getElementById("dado");
-
- let contador=0;
-
- let anim=setInterval(()=>{
-
-  dado.textContent=
-  ["⚽","🌎","🎲","🏆","🇦🇷","🇧🇷"][
-  Math.floor(Math.random()*6)
-  ];
-
-  contador++;
-
-  if(contador>10){
-
-   clearInterval(anim);
-
-   dado.textContent="🎲";
-
-   document.getElementById("bandera")
-   .textContent=paisActual.bandera;
-
-   document.getElementById("pais")
-   .textContent=paisActual.pais;
-
-   mostrarJugadores();
-
-  }
-
- },70);
-
-}
-
-
-/* =========================================================
-   SKIP
-========================================================= */
-
-function usarSkip(){
-
- if(esperando){
-
-  error("Primero tenés que tirar el dado.");
-
-  return;
-
- }
-
- if(skips<=0){
-
-  error(
-   "No te quedan SKIPS. Elegí un jugador antes de poder continuar."
-  );
-
-  return;
-
- }
-
- skips--;
-
- document.getElementById("cantidadSkips").textContent=skips;
-
- esperando=true;
-
- tirarDado();
-
-}
-
-
-/* =========================================================
-   MOSTRAR JUGADORES
-========================================================= */
-
-function mostrarJugadores(){
-
- let caja=
- document.getElementById("listaJugadores");
-
- caja.innerHTML="";
-
- /*
-    Mezclamos los jugadores para que los mejores
-    puedan aparecer al principio, medio o final.
- */
-
- let mezclados=
- [...paisActual.jugadores]
- .sort(()=>Math.random()-.5);
-
- mezclados.forEach((j,i)=>{
-
-  let slot=posicionDisponible(j);
-
-  let card=document.createElement("div");
-
-  card.className=
-  "card "+(!slot?"lock":"");
-
-  card.innerHTML=`
-
-   <div class="nombre">
-   ${j[0]}
-   </div>
-
-   <div class="small">
-   ${paisActual.pais}
-   </div>
-
-   <div class="pos">
-   ${j[1]}
-   </div>
-
-   <div class="media">
-   MEDIA ${j[2]}
-   </div>
-
-   ${
-    slot
-    ?
-    `<button onclick="elegirJugador(${paisActual.jugadores.indexOf(j)})">
-       ELEGIR
-     </button>`
-    :
-    `<button disabled>
-       🔒 POSICIÓN OCUPADA
-     </button>`
-   }
-
-  `;
-
-  caja.appendChild(card);
-
+// NAVEGACIÓN
+document.querySelectorAll(".nav-item").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  btn.classList.add("active");
+  $(btn.dataset.page).classList.add("active");
+  $("greeting").textContent=btn.textContent.trim();
+  $("sidebar").classList.remove("open");
+  if(btn.dataset.page==="analytics") renderAnalytics();
  });
+});
 
+// CANAL
+function saveChannel(){
+ const name=$("channelName").value.trim();
+ const subs=Math.max(0,Number($("channelSubs").value)||0);
+ const views=Math.max(0,Number($("channelViews").value)||0);
+ if(!name){alert("Ingresá el nombre del canal");return}
+ $("greeting").textContent=name;
+ $("subStat").textContent=format(subs);
+ $("viewStat").textContent=format(views);
+ $("goalProgress").style.width=Math.min(100,subs/10000*100)+"%";
+ $("goalText").textContent=format(subs)+" de 10.000 suscriptores";
+ alert("Información guardada.");
 }
 
+// VIDEOS
+function openVideoForm(){$("videoForm").style.display="block"}
+function closeVideoForm(){$("videoForm").style.display="none"}
 
-/* =========================================================
-   ELEGIR JUGADOR
-========================================================= */
+function addVideo(){
+ const title=$("vTitle").value.trim();
+ const views=Math.max(0,Number($("vViews").value)||0);
+ if(!title){alert("Ingresá un título");return}
+ videos.unshift({id:Date.now(),title,views,status:$("vStatus").value});
+ $("vTitle").value="";
+ $("vViews").value=0;
+ closeVideoForm();
+ renderVideos();
+ renderDashboard();
+}
 
-function elegirJugador(indice){
+function deleteVideo(id){
+ if(!confirm("¿Eliminar este video?"))return;
+ videos=videos.filter(v=>v.id!==id);
+ renderVideos();renderDashboard();renderAnalytics();
+}
 
- if(esperando){
+function renderVideos(){
+ const query=$("videoSearch").value.toLowerCase();
+ const filtered=videos.filter(v=>v.title.toLowerCase().includes(query));
+ $("videoTable").innerHTML=filtered.length?filtered.map(v=>`
+ <tr>
+ <td><strong>${escapeHTML(v.title)}</strong></td>
+ <td>${format(v.views)}</td>
+ <td><span class="tag">${escapeHTML(v.status)}</span></td>
+ <td><button class="delete" onclick="deleteVideo(${v.id})">Eliminar</button></td>
+ </tr>`).join(""):`<tr><td colspan="4" class="empty">No hay videos registrados.</td></tr>`;
+}
 
-  error("Primero tirá el dado.");
+// IDEAS
+function addIdea(){
+ const title=$("ideaTitle").value.trim();
+ const description=$("ideaDescription").value.trim();
+ if(!title){alert("Escribí el título de la idea");return}
+ ideas.unshift({id:Date.now(),title,description});
+ $("ideaTitle").value="";
+ $("ideaDescription").value="";
+ renderIdeas();renderAnalytics();
+}
 
-  return;
+function deleteIdea(id){
+ ideas=ideas.filter(i=>i.id!==id);
+ renderIdeas();renderAnalytics();
+}
 
- }
-
- let jugador=
- paisActual.jugadores[indice];
-
- let slot=
- posicionDisponible(jugador);
-
- if(!slot){
-
-  error(
-   "Ese jugador no puede entrar porque sus posiciones ya están ocupadas."
-  );
-
-  return;
-
- }
-
- jugadoresElegidos.push({
-
-  name:jugador[0],
-  pos:jugador[1],
-  rating:jugador[2],
-  pais:paisActual.pais,
-  slot:slot
-
- });
-
- esperando=true;
-
- actualizarCancha();
-
- document.getElementById("contador")
- .textContent=jugadoresElegidos.length;
-
- document.getElementById("listaJugadores").innerHTML=`
-
- <div class="small">
-
- ✅ ${jugador[0]} seleccionado.
-
- <br><br>
-
- Tirás el dado para buscar al siguiente jugador.
-
+function renderIdeas(){
+ $("ideasList").innerHTML=ideas.length?ideas.map(i=>`
+ <div class="card idea-card">
+ <h3>${escapeHTML(i.title)}</h3>
+ <p>${escapeHTML(i.description)}</p>
+ <div class="idea-actions">
+ <span class="muted" style="font-size:10px">Idea guardada</span>
+ <button class="delete" onclick="deleteIdea(${i.id})">Eliminar</button>
  </div>
-
- `;
-
-
- if(jugadoresElegidos.length===11){
-
-  prepararCapitan();
-
- }
-
+ </div>`).join(""):`<div class="card empty">Todavía no guardaste ninguna idea.</div>`;
 }
 
+// CALENDARIO
+function changeMonth(delta){
+ monthDate.setMonth(monthDate.getMonth()+delta);
+ renderCalendar();
+}
 
-/* =========================================================
-   CANCHA
-========================================================= */
+function renderCalendar(){
+ const year=monthDate.getFullYear(),month=monthDate.getMonth();
+ $("monthLabel").textContent=new Intl.DateTimeFormat("es",{month:"long",year:"numeric"}).format(monthDate);
+ const first=new Date(year,month,1).getDay();
+ const days=new Date(year,month+1,0).getDate();
+ const names=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+ let html=names.map(n=>`<div class="muted" style="text-align:center;padding:8px;font-size:10px">${n}</div>`).join("");
+ for(let i=0;i<first;i++)html+="<div></div>";
+ for(let d=1;d<=days;d++){
+  const date=`${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+  const matching=events.filter(e=>e.date===date);
+  html+=`<div class="day ${matching.length?"event":""}">
+   <strong>${d}</strong>
+   ${matching.map(e=>`<small>${escapeHTML(e.title)}</small>`).join("")}
+  </div>`;
+ }
+ $("calendarGrid").innerHTML=html;
+}
 
-function actualizarCancha(){
+function addEvent(){
+ const title=$("eventTitle").value.trim();
+ const date=$("eventDate").value;
+ if(!title||!date){alert("Completá el título y la fecha");return}
+ events.push({id:Date.now(),title,date});
+ $("eventTitle").value="";
+ renderCalendar();
+}
 
- document.querySelectorAll(".spot")
- .forEach(e=>{
+// INGRESOS
+function calculate(){
+ const views=Math.max(0,Number($("calcViews").value)||0);
+ const rpm=Math.max(0,Number($("calcRPM").value)||0);
+ $("earningsResult").textContent="USD "+((views/1000)*rpm).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+ $("incomeStat").textContent="USD "+((views/1000)*rpm).toFixed(2);
+}
 
-  let b=e.querySelector("b");
-
-  e.classList.remove("filled");
-
-  e.innerHTML=
-  `<b>${b.textContent}</b>VACÍO`;
-
+// GRÁFICOS
+function drawChart(id,data){
+ const canvas=$(id);
+ if(!canvas)return;
+ const rect=canvas.getBoundingClientRect();
+ const w=rect.width,h=rect.height;
+ if(!w||!h)return;
+ const dpr=window.devicePixelRatio||1;
+ canvas.width=w*dpr;canvas.height=h*dpr;
+ const ctx=canvas.getContext("2d");
+ ctx.scale(dpr,dpr);
+ const max=Math.max(...data,1)*1.2;
+ const left=28,bottom=h-25,top=12,right=w-10;
+ const step=(right-left)/(data.length-1);
+ ctx.strokeStyle="#292a36";ctx.lineWidth=1;
+ for(let i=0;i<4;i++){
+  const y=top+(bottom-top)*i/3;
+  ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();
+ }
+ const points=data.map((v,i)=>({x:left+i*step,y:bottom-(v/max)*(bottom-top)}));
+ const gradient=ctx.createLinearGradient(0,top,0,bottom);
+ gradient.addColorStop(0,"rgba(148,113,255,.30)");
+ gradient.addColorStop(1,"rgba(148,113,255,0)");
+ ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+ ctx.lineTo(right,bottom);ctx.lineTo(left,bottom);ctx.closePath();
+ ctx.fillStyle=gradient;ctx.fill();
+ ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+ ctx.strokeStyle="#9471ff";ctx.lineWidth=2.5;ctx.stroke();
+ points.forEach(p=>{
+  ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);
+  ctx.fillStyle="#ad95ff";ctx.fill();
  });
+}
 
+function renderAnalytics(){
+ const total=videos.reduce((s,v)=>s+v.views,0);
+ $("analyticsVideos").textContent=videos.length;
+ $("analyticsViews").textContent=format(total);
+ $("analyticsAverage").textContent=format(videos.length?Math.round(total/videos.length):0);
+ $("analyticsIdeas").textContent=ideas.length;
+ drawChart("analyticsChart",videos.slice(0,7).reverse().map(v=>v.views));
+}
 
- jugadoresElegidos.forEach(j=>{
+// DASHBOARD
+function renderDashboard(){
+ $("videoStat").textContent=videos.length;
+ $("recentVideos").innerHTML=videos.slice(0,4).map(v=>`
+ <div class="video-row">
+  <div class="thumb">▶</div>
+  <div class="video-info"><strong>${escapeHTML(v.title)}</strong><small>${escapeHTML(v.status)}</small></div>
+  <div class="video-views">${format(v.views)}</div>
+ </div>`).join("")||'<div class="empty">Sin videos todavía</div>';
+}
 
-  let e=
-  document.getElementById(j.slot);
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
+}
 
-  if(!e)return;
+// EXPORTACIÓN
+function exportData(){
+ const data={videos,ideas,events,channel:{
+ name:$("channelName").value,
+ subscribers:$("channelSubs").value,
+ views:$("channelViews").value
+ }};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download="creator-hub-data.json";a.click();
+ URL.revokeObjectURL(url);
+}
 
-  e.classList.add("filled");
-
-  e.innerHTML=`
-
-   <b>${j.pos}</b>
-
-   ${j.name}
-
-   <em>${j.rating}</em>
-
-  `;
-
+// INICIO
+function init(){
+ const now=new Date();
+ $("dateLabel").textContent=new Intl.DateTimeFormat("es",{dateStyle:"full"}).format(now).toUpperCase();
+ renderDashboard();
+ renderVideos();
+ renderIdeas();
+ renderCalendar();
+ calculate();
+ drawChart("mainChart",[3200,4800,3900,6500,5200,8200,9700]);
+ window.addEventListener("resize",()=>{
+  if($("dashboard").classList.contains("active"))
+   drawChart("mainChart",[3200,4800,3900,6500,5200,8200,9700]);
+  if($("analytics").classList.contains("active"))renderAnalytics();
  });
-
 }
-
-
-/* =========================================================
-   CAPITÁN
-========================================================= */
-
-function prepararCapitan(){
-
- let select=
- document.getElementById("capitan");
-
- select.innerHTML="";
-
- jugadoresElegidos.forEach(j=>{
-
-  let option=
-  document.createElement("option");
-
-  option.value=j.name;
-
-  option.textContent=
-  `${j.name} — ${j.rating}`;
-
-  select.appendChild(option);
-
- });
-
- document.getElementById("btnMundial")
- .style.display="inline-block";
-
-}
-
-
-/* =========================================================
-   FORMACIÓN
-========================================================= */
-
-function cambiarFormacion(){
-
- formacion=
- document.getElementById("formacion").value;
-
- /*
-   En esta versión la formación se muestra y se usa
-   también para modificar el comportamiento del equipo.
- */
-
-}
-
-
-/* =========================================================
-   ENTRAR AL MUNDIAL
-========================================================= */
-
-function entrarMundial(){
-
- if(jugadoresElegidos.length!==11){
-
-  error("Necesitás completar los 11 jugadores.");
-
-  return;
-
- }
-
- capitan=
- document.getElementById("capitan").value;
-
- estilo=
- document.getElementById("estilo").value;
-
- document.getElementById("tituloEquipo")
- .textContent=nombreEquipo;
-
- mostrar("mundial");
-
- actualizarMundial();
-
-}
-
-
-/* =========================================================
-   MUNDIAL
-========================================================= */
-
-function actualizarMundial(){
-
- let nombres=[
- "FASE DE GRUPOS",
- "OCTAVOS DE FINAL",
- "CUARTOS DE FINAL",
- "SEMIFINAL",
- "FINAL"
- ];
-
- document.getElementById("tituloFase")
- .textContent=nombres[fase];
-
- for(let i=0;i<5;i++){
-
-  document
-  .getElementById("fase"+i)
-  .classList.toggle("activa",i===fase);
-
- }
-
- let cantidad=
- fase===0 ? 4 :
- fase===1 ? 8 :
- fase===2 ? 4 :
- fase===3 ? 2 : 1;
-
- let caja=
- document.getElementById("partidosMundial");
-
- caja.innerHTML="";
-
- for(let i=0;i<cantidad;i++){
-
-  let r=
-  obtenerRival();
-
-  caja.innerHTML+=`
-
-   <div class="partido">
-
-   <b>
-   ${nombreEquipo}
-   </b>
-
-   🆚
-
-   <b>
-   ${r.pais}
-   </b>
-
-   <br><br>
-
-   <span class="small">
-   Partido ${i+1} · 11 jugadores
-   </span>
-
-   </div>
-
-  `;
-
- }
-
-}
-
-
-/* =========================================================
-   RIVALES
-========================================================= */
-
-function obtenerRival(){
-
- return selecciones[
- Math.floor(Math.random()*selecciones.length)
- ];
-
-}
-
-
-/* =========================================================
-   SIMULACIÓN
-========================================================= */
-
-function simular(rapido){
-
- modoRapido=rapido;
-
- let r=
- obtenerRival();
-
- rival=r.pais;
-
- comenzarPartido();
-
-}
-
-
-/* =========================================================
-   COMENZAR PARTIDO
-========================================================= */
-
-function comenzarPartido(){
-
- mostrar("partido");
-
- golesLocal=0;
- golesVisitante=0;
- minuto=0;
- tiempoExtra=false;
-
- document.getElementById("golesLocal")
- .textContent=0;
-
- document.getElementById("golesVisitante")
- .textContent=0;
-
- document.getElementById("minuto")
- .textContent=0;
-
- document.getElementById("nombreLocal")
- .textContent=nombreEquipo;
-
- document.getElementById("nombreVisitante")
- .textContent=rival;
-
- document.getElementById("eventos")
- .innerHTML="";
-
- crearJugadoresPartido();
-
- agregarEvento(
- `🏟️ Comienza ${formacion} · ${estilo.toUpperCase()} · 👑 Capitán: ${capitan}`
- );
-
- clearInterval(intervalo);
-
- intervalo=
- setInterval(
- avanzarPartido,
- modoRapido ? 240 : 650
- );
-
-}
-
-
-/* =========================================================
-   POSICIONES DEL PARTIDO
-========================================================= */
-
-const posicionesPartido=[
-
- [7,50],
- [22,15],
- [22,38],
- [22,62],
- [22,85],
- [43,30],
- [43,50],
- [43,70],
- [68,15],
- [78,50],
- [68,85]
-
-];
-
-
-/* =========================================================
-   CREAR JUGADORES PARTIDO
-========================================================= */
-
-function crearJugadoresPartido(){
-
- let caja=
- document.getElementById("jugadoresPartido");
-
- caja.innerHTML="";
-
- jugadoresLocal=[];
- jugadoresRival=[];
-
- jugadoresElegidos.forEach((j,i)=>{
-
-  let p=
-  posicionesPartido[i];
-
-  let el=
-  document.createElement("div");
-
-  el.className=
-  "jugadorPartido azul";
-
-  el.style.left=p[0]+"%";
-  el.style.top=p[1]+"%";
-
-  el.innerHTML=
-  `<span>${j.name}</span>`;
-
-  caja.appendChild(el);
-
-  jugadoresLocal.push({
-
-   el:el,
-   x:p[0],
-   y:p[1],
-   jugador:j
-
-  });
-
- });
-
-
- for(let i=0;i<11;i++){
-
-  let p=posicionesPartido[i];
-
-  let el=
-  document.createElement("div");
-
-  el.className=
-  "jugadorPartido rojo";
-
-  el.style.left=
-  (100-p[0])+"%";
-
-  el.style.top=
-  p[1]+"%";
-
-  el.innerHTML=
-  `<span>Jugador ${i+1}</span>`;
-
-  caja.appendChild(el);
-
-  jugadoresRival.push({
-
-   el:el,
-   x:100-p[0],
-   y:p[1]
-
-  });
-
- }
-
- moverPelota(50,50);
-
-}
-
-
-/* =========================================================
-   SIMULACIÓN DE PARTIDO
-========================================================= */
-
-function avanzarPartido(){
-
- let incremento=
- modoRapido
- ? Math.floor(Math.random()*5)+1
- : Math.floor(Math.random()*3)+1;
-
- minuto+=incremento;
-
- if(minuto>=90 && !tiempoExtra){
-
-  minuto=90;
-
-  document.getElementById("minuto")
-  .textContent=90;
-
-  clearInterval(intervalo);
-
-  agregarEvento(
-   "⏱️ Terminaron los 90 minutos."
-  );
-
-  if(golesLocal===golesVisitante){
-
-   tiempoExtra=true;
-
-   agregarEvento(
-    "🤝 Empate. Se juega tiempo extra."
-   );
-
-   setTimeout(()=>{
-
-    intervalo=
-    setInterval(
-     avanzarExtra,
-     modoRapido?250:650
-    );
-
-   },700);
-
-  }else{
-
-   terminarPartido();
-
-  }
-
-  return;
-
- }
-
- document.getElementById("minuto")
- .textContent=minuto;
-
- jugada();
-
-}
-
-
-/* =========================================================
-   TIEMPO EXTRA
-========================================================= */
-
-function avanzarExtra(){
-
- minuto+=modoRapido?4:2;
-
- if(minuto>=120){
-
-  minuto=120;
-
-  document.getElementById("minuto")
-  .textContent=120;
-
-  clearInterval(intervalo);
-
-  if(golesLocal===golesVisitante){
-
-   agregarEvento(
-    "🎯 Empate después del tiempo extra. Penales."
-   );
-
-   setTimeout(penales,600);
-
-  }else{
-
-   terminarPartido();
-
-  }
-
-  return;
-
- }
-
- document.getElementById("minuto")
- .textContent=minuto;
-
- jugada();
-
-}
-
-
-/* =========================================================
-   FUERZA DEL EQUIPO
-========================================================= */
-
-function fuerzaEquipo(){
-
- let promedio=
- jugadoresElegidos
- .reduce((a,b)=>a+b.rating,0)/11;
-
- /*
-   Estilo:
-   ofensivo = más posibilidades de gol
-   defensivo = menos goles pero más resistencia
- */
-
- if(estilo==="ofensivo")
- promedio+=3;
-
- if(estilo==="defensivo")
- promedio+=1;
-
- return promedio;
-
-}
-
-
-/* =========================================================
-   JUGADA
-========================================================= */
-
-function jugada(){
-
- let equipoLocal=
- Math.random()<
- (
-  .5+
-  (fuerzaEquipo()-80)/300+
-  (estilo==="ofensivo"?.07:0)
- );
-
- let equipo=
- equipoLocal
- ? jugadoresLocal
- : jugadoresRival;
-
- let desde=
- equipo[
- Math.floor(Math.random()*equipo.length)
- ];
-
- let hacia=
- equipo[
- Math.floor(Math.random()*equipo.length)
- ];
-
- if(desde===hacia)
- hacia=
- equipo[
- (equipo.indexOf(desde)+1)%equipo.length
- ];
-
- moverPelota(desde.x,desde.y);
-
- agregarEvento(
- `${minuto}' ${desde.jugador?desde.jugador.name:"Jugador"} recibe la pelota.`
- );
-
- setTimeout(()=>{
-
-  hacia.x=
-  Math.max(
-   5,
-   Math.min(
-    95,
-    hacia.x+
-    (equipoLocal?5:-5)
-   )
-  );
-
-  hacia.y=
-  Math.max(
-   7,
-   Math.min(
-    93,
-    hacia.y+(Math.random()*8-4)
-   )
-  );
-
-  hacia.el.style.left=
-  hacia.x+"%";
-
-  hacia.el.style.top=
-  hacia.y+"%";
-
-  moverPelota(
-   hacia.x,
-   hacia.y
-  );
-
-  agregarEvento(
-   `${minuto}' Pase hacia ${hacia.jugador?hacia.jugador.name:"un compañero"}.`
-  );
-
-  if(Math.random()<.25){
-
-   remate(equipoLocal,hacia);
-
-  }
-
- },modoRapido?80:250);
-
-}
-
-
-/* =========================================================
-   REMATE
-========================================================= */
-
-function remate(esLocal,jugador){
-
- let fuerza=
- esLocal
- ? fuerzaEquipo()
- : 75+Math.random()*18;
-
- let estiloBonus=
- esLocal && estilo==="ofensivo"
- ? .08
- : 0;
-
- let probabilidad=
- .12+
- (fuerza-70)/300+
- estiloBonus;
-
- if(Math.random()<probabilidad){
-
-  if(esLocal){
-
-   golesLocal++;
-
-   document.getElementById("golesLocal")
-   .textContent=golesLocal;
-
-   marcarGol(
-    true,
-    jugador
-   );
-
-  }else{
-
-   golesVisitante++;
-
-   document.getElementById("golesVisitante")
-   .textContent=golesVisitante;
-
-   marcarGol(
-    false,
-    jugador
-   );
-
-  }
-
- }else{
-
-  agregarEvento(
-   `${minuto}' 🧤 ¡ATAJADA!`
-  );
-
- }
-
-}
-
-
-/* =========================================================
-   GOL
-========================================================= */
-
-function marcarGol(esNuestro,jugador){
-
- agregarEvento(
-  `${minuto}' ⚽ ¡GOL!`
- );
-
- mostrarGol(esNuestro);
-
- if(esNuestro){
-
-  lanzarConfeti(100);
-
-  hablar(
-   "¡GOOOOOOOL!"
-  );
-
- }else{
-
-  hablar(
-   "¡Ohhh, qué mal!"
-  );
-
- }
-
-}
-
-
-/* =========================================================
-   ANIMACIÓN GOL
-========================================================= */
-
-function mostrarGol(esNuestro){
-
- let flash=
- document.getElementById("flashGol");
-
- let texto=
- document.getElementById("textoGol");
-
- texto.textContent=
- esNuestro
- ? "⚽ ¡GOOOOOOOL!"
- : "😱 ¡GOL DEL RIVAL!";
-
- flash.style.background=
- esNuestro
- ? "#19dc7633"
- : "#ff303033";
-
- flash.classList.remove("mostrar");
-
- void flash.offsetWidth;
-
- flash.classList.add("mostrar");
-
-}
-
-
-/* =========================================================
-   VOZ
-========================================================= */
-
-function hablar(texto){
-
- if(!("speechSynthesis" in window))
- return;
-
- speechSynthesis.cancel();
-
- let voz=
- new SpeechSynthesisUtterance(texto);
-
- voz.lang="es-ES";
- voz.rate=.9;
- voz.pitch=1;
-
- speechSynthesis.speak(voz);
-
-}
-
-
-/* =========================================================
-   CONFETI
-========================================================= */
-
-function lanzarConfeti(cantidad){
-
- let caja=
- document.getElementById("confeti");
-
- for(let i=0;i<cantidad;i++){
-
-  let pieza=
-  document.createElement("i");
-
-  pieza.className="conf";
-
-  pieza.style.left=
-  Math.random()*100+"%";
-
-  pieza.style.background=
-  `hsl(${Math.random()*360},90%,60%)`;
-
-  pieza.style.animationDelay=
-  Math.random()*.5+"s";
-
-  caja.appendChild(pieza);
-
-  setTimeout(
-   ()=>pieza.remove(),
-   3000
-  );
-
- }
-
-}
-
-
-/* =========================================================
-   PELOTA
-========================================================= */
-
-function moverPelota(x,y){
-
- let pelota=
- document.getElementById("pelota");
-
- pelota.style.left=x+"%";
- pelota.style.top=y+"%";
-
-}
-
-
-/* =========================================================
-   EVENTOS
-========================================================= */
-
-function agregarEvento(texto){
-
- let caja=
- document.getElementById("eventos");
-
- let e=
- document.createElement("div");
-
- e.className="evento";
-
- e.textContent=texto;
-
- caja.prepend(e);
-
-}
-
-
-/* =========================================================
-   PENALES
-========================================================= */
-
-function penales(){
-
- let nuestro=0;
- let rivalPenales=0;
-
- for(let i=0;i<5;i++){
-
-  if(Math.random()<.76)
-  nuestro++;
-
-  if(Math.random()<.70)
-  rivalPenales++;
-
- }
-
- while(nuestro===rivalPenales){
-
-  if(Math.random()<.5)
-  nuestro++;
-  else
-  rivalPenales++;
-
- }
-
- agregarEvento(
-  `🎯 Penales: ${nuestro} - ${rivalPenales}`
- );
-
- if(nuestro>rivalPenales){
-
-  golesLocal=nuestro;
-  golesVisitante=rivalPenales;
-
-  terminarPartido();
-
- }else{
-
-  perder();
-
- }
-
-}
-
-
-/* =========================================================
-   TERMINAR PARTIDO
-========================================================= */
-
-function terminarPartido(){
-
- clearInterval(intervalo);
-
- if(golesLocal>golesVisitante){
-
-  ganar();
-
- }else{
-
-  perder();
-
- }
-
-}
-
-
-/* =========================================================
-   GANAR
-========================================================= */
-
-function ganar(){
-
- if(fase===4){
-
-  mostrarCampeon();
-
-  return;
-
- }
-
- fase++;
-
- setTimeout(()=>{
-
-  mostrar("mundial");
-
-  actualizarMundial();
-
- },1000);
-
-}
-
-
-/* =========================================================
-   PERDER
-========================================================= */
-
-function perder(){
-
- clearInterval(intervalo);
-
- document.getElementById("perdedor")
- .style.display="grid";
-
- hablar(
-  "Oh no. Mundial terminado."
- );
-
-}
-
-
-/* =========================================================
-   CAMPEÓN
-========================================================= */
-
-function mostrarCampeon(){
-
- clearInterval(intervalo);
-
- document.getElementById("ganadorNombre")
- .textContent=nombreEquipo;
-
- document.getElementById("ganador")
- .style.display="grid";
-
- lanzarConfeti(200);
-
- hablar(
-  "¡Campeón del mundo! ¡Ganaste el Mundial!"
- );
-
-}
-
-
-/* =========================================================
-   FORMACIONES VISUALES
-========================================================= */
-
-/*
-   Estas posiciones sirven como referencia para que
-   las formaciones puedan modificarse posteriormente.
-*/
-
-const formaciones={
-
- "4-3-3":[
-  "POR","LI","DFC1","DFC2","LD",
-  "MC1","MCD","MC2",
-  "EI","DC","ED"
- ],
-
- "4-4-2":[
-  "POR","LI","DFC1","DFC2","LD",
-  "EI","MC1","MC2","ED",
-  "DC","DC"
- ],
-
- "4-2-3-1":[
-  "POR","LI","DFC1","DFC2","LD",
-  "MCD","MCD",
-  "EI","MP","ED",
-  "DC"
- ],
-
- "4-3-2-1":[
-  "POR","LI","DFC1","DFC2","LD",
-  "MC1","MCD","MC2",
-  "MP","MP","DC"
- ],
-
- "3-4-3":[
-  "POR","DFC1","DFC2","DFC1",
-  "LI","MC1","MC2","LD",
-  "EI","DC","ED"
- ],
-
- "3-5-2":[
-  "POR","DFC1","DFC2","DFC1",
-  "LI","MC1","MCD","MC2","LD",
-  "DC","DC"
- ],
-
- "5-3-2":[
-  "POR","LI","DFC1","DFC2","LD",
-  "MC1","MCD","MC2",
-  "DC","DC","EI"
- ],
-
- "5-4-1":[
-  "POR","LI","DFC1","DFC2","LD",
-  "EI","MC1","MC2","ED",
-  "DC","MCD"
- ]
-
-};
-
+init();
 </script>
-
 </body>
 </html>
