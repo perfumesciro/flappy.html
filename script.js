@@ -1,503 +1,340 @@
 
-// ==========================================
-// CREATOR HUB - SCRIPT PRINCIPAL
-// ==========================================
-
-// ESTADO DE LA APLICACIÓN
-let videos = [
-  {id:1,title:"La historia que nadie te contó",views:45000,status:"Publicado"},
-  {id:2,title:"10 promesas que decepcionaron",views:28000,status:"Publicado"},
-  {id:3,title:"Los secretos del fútbol",views:15000,status:"En producción"}
-];
-
-let ideas = [];
-let events = [];
-let monthDate = new Date();
-
 const $ = id => document.getElementById(id);
-const format = n => Number(n || 0).toLocaleString("es-AR");
 
-// ==========================================
-// NAVEGACIÓN
-// ==========================================
+let tasks = JSON.parse(localStorage.getItem('aura_tasks') || '[]');
+let notes = JSON.parse(localStorage.getItem('aura_notes') || '[]');
 
-function toggleMenu(){
-  $("sidebar").classList.toggle("open");
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+// GUARDADO
+function save() {
+  localStorage.setItem('aura_tasks', JSON.stringify(tasks));
+  localStorage.setItem('aura_notes', JSON.stringify(notes));
+  renderAll();
 }
 
-document.querySelectorAll(".nav-item").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+// NAVEGACIÓN
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  $(id).classList.add('active');
 
-    btn.classList.add("active");
-    $(btn.dataset.page).classList.add("active");
-
-    $("greeting").textContent=btn.textContent.trim();
-    $("sidebar").classList.remove("open");
-
-    if(btn.dataset.page==="analytics") renderAnalytics();
+  document.querySelectorAll('.nav-item[data-view]').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === id);
   });
+
+  const labels = {
+    dashboard: 'Inicio',
+    tasks: 'Mis tareas',
+    calendar: 'Calendario',
+    notes: 'Notas',
+    assistant: 'Asistente AURA'
+  };
+
+  $('crumb').textContent = labels[id];
+  $('sidebar').classList.remove('open');
+
+  if (id === 'calendar') renderCalendar('fullCalendar');
+  if (id === 'tasks') renderTasks();
+  if (id === 'notes') renderNotes();
+}
+
+document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
+  btn.addEventListener('click', () => showView(btn.dataset.view));
 });
 
-// ==========================================
-// INFORMACIÓN DEL CANAL
-// ==========================================
+$('menuBtn').onclick = () => $('sidebar').classList.toggle('open');
 
-function saveChannel(){
-  const name=$("channelName").value.trim();
-  const subs=Math.max(0,Number($("channelSubs").value)||0);
-  const views=Math.max(0,Number($("channelViews").value)||0);
+// MODALES
+function openTaskModal() {
+  $('taskInput').value = '';
+  $('taskTime').value = '';
+  $('taskModal').classList.add('open');
+  $('taskInput').focus();
+}
 
-  if(!name){
-    alert("Ingresá el nombre del canal");
+function openNoteModal() {
+  $('noteTitle').value = '';
+  $('noteContent').value = '';
+  $('noteModal').classList.add('open');
+}
+
+function closeModal(id) {
+  $(id).classList.remove('open');
+}
+
+// TAREAS
+function addTask() {
+  const name = $('taskInput').value.trim();
+
+  if (!name) {
+    alert('Escribí el nombre de la tarea.');
     return;
   }
 
-  $("greeting").textContent=name;
-  $("subStat").textContent=format(subs);
-  $("viewStat").textContent=format(views);
-
-  const progress=Math.min(100,subs/10000*100);
-  $("goalProgress").style.width=progress+"%";
-  $("goalText").textContent=format(subs)+" de 10.000 suscriptores";
-
-  alert("Información guardada.");
-}
-
-// ==========================================
-// GESTIÓN DE VIDEOS
-// ==========================================
-
-function openVideoForm(){
-  $("videoForm").style.display="block";
-}
-
-function closeVideoForm(){
-  $("videoForm").style.display="none";
-}
-
-function addVideo(){
-  const title=$("vTitle").value.trim();
-  const views=Math.max(0,Number($("vViews").value)||0);
-
-  if(!title){
-    alert("Ingresá un título");
-    return;
-  }
-
-  videos.unshift({
-    id:Date.now(),
-    title,
-    views,
-    status:$("vStatus").value
+  tasks.push({
+    id: Date.now(),
+    name,
+    date: $('taskTime').value,
+    done: false
   });
 
-  $("vTitle").value="";
-  $("vViews").value=0;
-
-  closeVideoForm();
-  renderVideos();
-  renderDashboard();
-  renderAnalytics();
+  closeModal('taskModal');
+  save();
 }
 
-function deleteVideo(id){
-  if(!confirm("¿Eliminar este video?")) return;
-
-  videos=videos.filter(v=>v.id!==id);
-
-  renderVideos();
-  renderDashboard();
-  renderAnalytics();
+function toggleTask(id) {
+  tasks = tasks.map(t =>
+    t.id === id ? { ...t, done: !t.done } : t
+  );
+  save();
 }
 
-function renderVideos(){
-  const query=$("videoSearch").value.toLowerCase();
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  save();
+}
 
-  const filtered=videos.filter(v=>
-    v.title.toLowerCase().includes(query)
+function taskHTML(t) {
+  return `
+    <div class="task">
+      <button class="task-check ${t.done ? 'done' : ''}"
+        onclick="toggleTask(${t.id})">
+        ${t.done ? '✓' : ''}
+      </button>
+
+      <div class="task-text ${t.done ? 'done' : ''}">
+        ${escapeHTML(t.name)}
+        ${t.date ? `<div class="task-time">${escapeHTML(t.date)}</div>` : ''}
+      </div>
+
+      <button class="delete-task"
+        onclick="deleteTask(${t.id})">×</button>
+    </div>
+  `;
+}
+
+function renderTasks() {
+  const query = ($('taskSearch')?.value || '').toLowerCase();
+
+  const filtered = tasks.filter(t =>
+    t.name.toLowerCase().includes(query)
   );
 
-  $("videoTable").innerHTML=filtered.length
-    ?filtered.map(v=>`
-      <tr>
-        <td><strong>${escapeHTML(v.title)}</strong></td>
-        <td>${format(v.views)}</td>
-        <td><span class="tag">${escapeHTML(v.status)}</span></td>
-        <td>
-          <button class="delete" onclick="deleteVideo(${v.id})">
-            Eliminar
-          </button>
-        </td>
-      </tr>
-    `).join("")
-    :`<tr><td colspan="4" class="empty">No hay videos registrados.</td></tr>`;
+  $('allTasks').innerHTML = filtered.length
+    ? filtered.map(taskHTML).join('')
+    : '<div class="empty">No hay tareas para mostrar.</div>';
 }
 
-// ==========================================
-// IDEAS Y GUIONES
-// ==========================================
+// PANEL PRINCIPAL
+function renderDashboard() {
+  const done = tasks.filter(t => t.done).length;
+  const pending = tasks.length - done;
 
-function addIdea(){
-  const title=$("ideaTitle").value.trim();
-  const description=$("ideaDescription").value.trim();
+  const percent = tasks.length
+    ? Math.round(done / tasks.length * 100)
+    : 0;
 
-  if(!title){
-    alert("Escribí el título de la idea");
+  $('completedStat').textContent = done;
+  $('pendingStat').textContent = pending;
+  $('notesStat').textContent = notes.length;
+
+  $('progressText').textContent = percent + '%';
+  $('progressFill').style.width = percent + '%';
+
+  $('dashboardTasks').innerHTML = tasks.length
+    ? tasks.slice(-5).reverse().map(taskHTML).join('')
+    : '<div class="empty">Todavía no tenés tareas.</div>';
+}
+
+// NOTAS
+function addNote() {
+  const title = $('noteTitle').value.trim();
+  const content = $('noteContent').value.trim();
+
+  if (!title || !content) {
+    alert('Completá el título y el contenido.');
     return;
   }
 
-  ideas.unshift({
-    id:Date.now(),
+  notes.unshift({
+    id: Date.now(),
     title,
-    description
+    content
   });
 
-  $("ideaTitle").value="";
-  $("ideaDescription").value="";
-
-  renderIdeas();
-  renderAnalytics();
+  closeModal('noteModal');
+  save();
 }
 
-function deleteIdea(id){
-  ideas=ideas.filter(i=>i.id!==id);
-
-  renderIdeas();
-  renderAnalytics();
+function deleteNote(id) {
+  notes = notes.filter(n => n.id !== id);
+  save();
 }
 
-function renderIdeas(){
-  $("ideasList").innerHTML=ideas.length
-    ?ideas.map(i=>`
-      <div class="card idea-card">
-        <h3>${escapeHTML(i.title)}</h3>
-        <p>${escapeHTML(i.description)}</p>
+function renderNotes() {
+  $('notesList').innerHTML = notes.length
+    ? notes.map(n => `
+      <div class="note-box">
+        <button class="note-delete"
+          onclick="deleteNote(${n.id})">×</button>
 
-        <div class="idea-actions">
-          <span class="muted" style="font-size:10px">
-            Idea guardada
-          </span>
-
-          <button class="delete" onclick="deleteIdea(${i.id})">
-            Eliminar
-          </button>
-        </div>
+        <div class="note-title">${escapeHTML(n.title)}</div>
+        <div class="note-content">${escapeHTML(n.content)}</div>
       </div>
-    `).join("")
-    :`<div class="card empty">Todavía no guardaste ninguna idea.</div>`;
+    `).join('')
+    : '<div class="empty">Todavía no guardaste ninguna nota.</div>';
 }
 
-// ==========================================
+// SEGURIDAD DE TEXTO HTML
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[c]);
+}
+
 // CALENDARIO
-// ==========================================
+function calendarHTML(target) {
+  const now = new Date();
+  const first = new Date(currentYear, currentMonth, 1).getDay();
+  const total = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-function changeMonth(delta){
-  monthDate.setMonth(monthDate.getMonth()+delta);
-  renderCalendar();
-}
+  const names = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
 
-function renderCalendar(){
-  const year=monthDate.getFullYear();
-  const month=monthDate.getMonth();
+  let html = names.map(n =>
+    `<div class="day-name">${n}</div>`
+  ).join('');
 
-  $("monthLabel").textContent=
-    new Intl.DateTimeFormat("es",{
-      month:"long",
-      year:"numeric"
-    }).format(monthDate);
-
-  const first=new Date(year,month,1).getDay();
-  const days=new Date(year,month+1,0).getDate();
-
-  const names=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
-
-  let html=names.map(n=>`
-    <div class="muted" style="text-align:center;padding:8px;font-size:10px">
-      ${n}
-    </div>
-  `).join("");
-
-  for(let i=0;i<first;i++){
-    html+="<div></div>";
+  for (let i = 0; i < first; i++) {
+    html += '<div></div>';
   }
 
-  for(let d=1;d<=days;d++){
-    const date=
-      `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+  for (let d = 1; d <= total; d++) {
+    const isToday =
+      d === now.getDate() &&
+      currentMonth === now.getMonth() &&
+      currentYear === now.getFullYear();
 
-    const matching=events.filter(e=>e.date===date);
-
-    html+=`
-      <div class="day ${matching.length?"event":""}">
-        <strong>${d}</strong>
-        ${matching.map(e=>`
-          <small>${escapeHTML(e.title)}</small>
-        `).join("")}
+    html += `
+      <div class="day ${isToday ? 'today' : ''}">
+        ${d}
       </div>
     `;
   }
 
-  $("calendarGrid").innerHTML=html;
+  $(target).innerHTML = html;
 }
 
-function addEvent(){
-  const title=$("eventTitle").value.trim();
-  const date=$("eventDate").value;
-
-  if(!title||!date){
-    alert("Completá el título y la fecha");
-    return;
-  }
-
-  events.push({
-    id:Date.now(),
-    title,
-    date
-  });
-
-  $("eventTitle").value="";
-  renderCalendar();
-}
-
-// ==========================================
-// CALCULADORA DE INGRESOS
-// ==========================================
-
-function calculate(){
-  const views=Math.max(0,Number($("calcViews").value)||0);
-  const rpm=Math.max(0,Number($("calcRPM").value)||0);
-
-  const income=(views/1000)*rpm;
-
-  $("earningsResult").textContent=
-    "USD "+income.toLocaleString("en-US",{
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
+function renderCalendar(target) {
+  const label = new Date(currentYear, currentMonth, 1)
+    .toLocaleDateString('es-AR', {
+      month: 'long',
+      year: 'numeric'
     });
 
-  $("incomeStat").textContent="USD "+income.toFixed(2);
-}
-
-// ==========================================
-// GRÁFICOS
-// ==========================================
-
-function drawChart(id,data){
-  const canvas=$(id);
-
-  if(!canvas) return;
-
-  const rect=canvas.getBoundingClientRect();
-  const w=rect.width;
-  const h=rect.height;
-
-  if(!w||!h) return;
-
-  const dpr=window.devicePixelRatio||1;
-
-  canvas.width=w*dpr;
-  canvas.height=h*dpr;
-
-  const ctx=canvas.getContext("2d");
-
-  ctx.scale(dpr,dpr);
-
-  const max=Math.max(...data,1)*1.2;
-
-  const left=28;
-  const bottom=h-25;
-  const top=12;
-  const right=w-10;
-
-  const step=data.length>1
-    ?(right-left)/(data.length-1)
-    :0;
-
-  // Líneas de referencia
-
-  ctx.strokeStyle="#292a36";
-  ctx.lineWidth=1;
-
-  for(let i=0;i<4;i++){
-    const y=top+(bottom-top)*i/3;
-
-    ctx.beginPath();
-    ctx.moveTo(left,y);
-    ctx.lineTo(right,y);
-    ctx.stroke();
+  if (target === 'fullCalendar') {
+    $('fullMonth').textContent = label;
   }
 
-  const points=data.map((v,i)=>({
-    x:left+i*step,
-    y:bottom-(v/max)*(bottom-top)
-  }));
+  if (target === 'miniCalendar') {
+    $('monthName').textContent = label;
+  }
 
-  // Área del gráfico
-
-  const gradient=ctx.createLinearGradient(0,top,0,bottom);
-
-  gradient.addColorStop(0,"rgba(148,113,255,.30)");
-  gradient.addColorStop(1,"rgba(148,113,255,0)");
-
-  ctx.beginPath();
-
-  points.forEach((p,i)=>
-    i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)
-  );
-
-  ctx.lineTo(right,bottom);
-  ctx.lineTo(left,bottom);
-  ctx.closePath();
-
-  ctx.fillStyle=gradient;
-  ctx.fill();
-
-  // Línea
-
-  ctx.beginPath();
-
-  points.forEach((p,i)=>
-    i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)
-  );
-
-  ctx.strokeStyle="#9471ff";
-  ctx.lineWidth=2.5;
-  ctx.stroke();
-
-  // Puntos
-
-  points.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,3,0,Math.PI*2);
-    ctx.fillStyle="#ad95ff";
-    ctx.fill();
-  });
+  calendarHTML(target);
 }
 
-function renderAnalytics(){
-  const total=videos.reduce((s,v)=>s+v.views,0);
+function changeMonth(amount) {
+  currentMonth += amount;
 
-  $("analyticsVideos").textContent=videos.length;
-  $("analyticsViews").textContent=format(total);
+  if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
 
-  $("analyticsAverage").textContent=format(
-    videos.length
-      ?Math.round(total/videos.length)
-      :0
-  );
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
 
-  $("analyticsIdeas").textContent=ideas.length;
-
-  drawChart(
-    "analyticsChart",
-    videos.slice(0,7).reverse().map(v=>v.views)
-  );
+  renderCalendar('fullCalendar');
 }
 
-// ==========================================
-// DASHBOARD
-// ==========================================
+// ASISTENTE DEMOSTRATIVO
+function sendMessage() {
+  const input = $('chatInput');
+  const msg = input.value.trim();
 
-function renderDashboard(){
-  $("videoStat").textContent=videos.length;
+  if (!msg) return;
 
-  $("recentVideos").innerHTML=videos.slice(0,4).map(v=>`
-    <div class="video-row">
-      <div class="thumb">▶</div>
+  const box = $('chatBox');
 
-      <div class="video-info">
-        <strong>${escapeHTML(v.title)}</strong>
-        <small>${escapeHTML(v.status)}</small>
-      </div>
+  box.innerHTML += `
+    <div class="message user">${escapeHTML(msg)}</div>
+  `;
 
-      <div class="video-views">${format(v.views)}</div>
-    </div>
-  `).join("")||'<div class="empty">Sin videos todavía</div>';
+  input.value = '';
+
+  const lower = msg.toLowerCase();
+
+  let answer = 'Puedo ayudarte a organizar tus tareas, pensar objetivos o guardar ideas.';
+
+  if (lower.includes('tarea')) {
+    answer = `Tenés ${tasks.length} tareas en total y ${tasks.filter(t => !t.done).length} pendientes.`;
+  } else if (lower.includes('nota')) {
+    answer = `Actualmente tenés ${notes.length} notas guardadas.`;
+  } else if (lower.includes('hola')) {
+    answer = '¡Hola! ¿Qué te gustaría organizar hoy?';
+  } else if (lower.includes('objetivo')) {
+    answer = 'Un buen objetivo debe ser claro, concreto y tener una fecha.';
+  }
+
+  box.innerHTML += `
+    <div class="message bot">${escapeHTML(answer)}</div>
+  `;
+
+  box.scrollTop = box.scrollHeight;
 }
 
-// ==========================================
-// SEGURIDAD DE TEXTO
-// ==========================================
+// MODO OSCURO
+$('themeBtn').onclick = () => {
+  const dark = document.body.classList.toggle('dark');
 
-function escapeHTML(value){
-  return String(value).replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  })[c]);
-}
-
-// ==========================================
-// EXPORTAR INFORMACIÓN
-// ==========================================
-
-function exportData(){
-  const data={
-    videos,
-    ideas,
-    events,
-    channel:{
-      name:$("channelName").value,
-      subscribers:$("channelSubs").value,
-      views:$("channelViews").value
-    }
+  const variables = {
+    '--bg': dark ? '#111218' : '#f6f7f9',
+    '--panel': dark ? '#1b1c24' : '#ffffff',
+    '--text': dark ? '#f3f3f8' : '#17191f',
+    '--border': dark ? '#30313b' : '#eceef1',
+    '--muted': dark ? '#a2a4b0' : '#9297a2'
   };
 
-  const blob=new Blob(
-    [JSON.stringify(data,null,2)],
-    {type:"application/json"}
-  );
-
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-
-  a.href=url;
-  a.download="creator-hub-data.json";
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
-
-// ==========================================
-// INICIALIZACIÓN
-// ==========================================
-
-function init(){
-  const now=new Date();
-
-  $("dateLabel").textContent=
-    new Intl.DateTimeFormat("es",{
-      dateStyle:"full"
-    }).format(now).toUpperCase();
-
-  renderDashboard();
-  renderVideos();
-  renderIdeas();
-  renderCalendar();
-  calculate();
-
-  drawChart(
-    "mainChart",
-    [3200,4800,3900,6500,5200,8200,9700]
-  );
-
-  window.addEventListener("resize",()=>{
-    if($("dashboard").classList.contains("active")){
-      drawChart(
-        "mainChart",
-        [3200,4800,3900,6500,5200,8200,9700]
-      );
-    }
-
-    if($("analytics").classList.contains("active")){
-      renderAnalytics();
-    }
+  Object.entries(variables).forEach(([key, value]) => {
+    document.documentElement.style.setProperty(key, value);
   });
+
+  localStorage.setItem('aura_dark', dark ? '1' : '0');
+};
+
+// INICIALIZACIÓN
+function renderAll() {
+  renderDashboard();
+  renderTasks();
+  renderNotes();
+  renderCalendar('miniCalendar');
 }
 
-init();
+$('todayDate').textContent = new Date().toLocaleDateString('es-AR', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
 
+if (localStorage.getItem('aura_dark') === '1') {
+  $('themeBtn').click();
+}
+
+renderAll();
