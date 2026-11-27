@@ -2,734 +2,614 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA — Personal Workspace</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-  <meta name="theme-color" content="#0c0d12">
-  <meta name="description" content="Creator Hub: tu centro de control para administrar y hacer crecer tu canal de YouTube.">
+:root {
+  --bg:#f6f7f9;
+  --panel:#ffffff;
+  --text:#17191f;
+  --muted:#9297a2;
+  --border:#eceef1;
+  --accent:#6958e8;
+  --soft:#f0edff;
+  --shadow:0 8px 30px rgba(20,20,40,.035);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.app{display:flex;min-height:100vh}
 
-  <title>Creator Hub | Creator Dashboard</title>
+/* SIDEBAR */
+.sidebar{
+  width:245px;
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  padding:28px 19px;
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  height:100vh;
+  z-index:10;
+}
+.logo{
+  display:flex;align-items:center;gap:11px;
+  font-family:Manrope;font-size:22px;font-weight:800;
+  letter-spacing:-1px;padding:0 10px;margin-bottom:48px;
+}
+.logo-icon{
+  width:35px;height:35px;border-radius:12px;
+  background:linear-gradient(135deg,#8c7bff,#5845d8);
+  color:white;display:grid;place-items:center;
+  font-size:19px;
+}
+.nav-label{
+  font-size:10px;color:var(--muted);
+  font-weight:800;letter-spacing:1.5px;
+  padding:0 12px;margin:20px 0 10px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:13px;
+  padding:12px 13px;border-radius:10px;
+  color:#777d89;font-size:13px;font-weight:600;
+  margin-bottom:4px;background:transparent;
+  width:100%;text-align:left;transition:.2s;
+}
+.nav-item:hover{background:#f7f6ff;color:var(--accent)}
+.nav-item.active{background:var(--soft);color:var(--accent)}
+.nav-icon{font-size:17px;width:20px;text-align:center}
+.sidebar-bottom{margin-top:auto}
+.profile{
+  border-top:1px solid var(--border);
+  padding:20px 5px 0;display:flex;align-items:center;gap:10px;
+}
+.avatar{
+  width:37px;height:37px;border-radius:50%;
+  background:#eae6ff;color:#6553dc;
+  display:grid;place-items:center;font-weight:800;
+}
+.profile-name{font-size:12px;font-weight:700}
+.profile-sub{font-size:10px;color:var(--muted);margin-top:3px}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+/* MAIN */
+.main{margin-left:245px;width:calc(100% - 245px);padding:32px 45px 60px;max-width:1700px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px}
+.breadcrumb{font-size:12px;color:var(--muted)}
+.top-right{display:flex;align-items:center;gap:12px}
+.icon-btn{
+  width:39px;height:39px;border:1px solid var(--border);
+  background:white;border-radius:11px;font-size:16px;
+}
+.date{font-size:12px;color:var(--muted)}
+.page-title{
+  font-family:Manrope;font-size:30px;
+  font-weight:800;letter-spacing:-1.3px;
+}
+.subtitle{font-size:13px;color:var(--muted);margin-top:7px}
+.header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:27px}
+.primary-btn{
+  background:var(--accent);color:white;
+  border-radius:10px;padding:12px 17px;
+  font-size:12px;font-weight:700;
+  box-shadow:0 5px 15px #6958e833;
+}
+.primary-btn:hover{background:#5745d0;transform:translateY(-1px)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:15px;padding:21px;box-shadow:var(--shadow);
+}
+.card-label{font-size:11px;color:var(--muted);font-weight:600}
+.stat-value{font-family:Manrope;font-size:29px;font-weight:800;margin:13px 0 7px}
+.stat-foot{font-size:10px;color:var(--muted)}
+.stat-icon{
+  float:right;width:34px;height:34px;border-radius:10px;
+  background:var(--soft);display:grid;place-items:center;
+  color:var(--accent);font-size:17px;
+}
+.section-title{font-family:Manrope;font-size:16px;font-weight:800;letter-spacing:-.4px}
+.section-sub{font-size:11px;color:var(--muted);margin-top:5px}
+.content-grid{
+  display:grid;grid-template-columns:1.45fr 1fr;
+  gap:17px;margin-top:20px;
+}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.small-btn{
+  padding:8px 11px;border-radius:8px;
+  background:var(--soft);color:var(--accent);
+  font-size:10px;font-weight:700;
+}
+.task{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 0;border-bottom:1px solid #f1f1f3;
+}
+.task:last-child{border:0}
+.task-check{
+  width:18px;height:18px;border:1.5px solid #d8d9e1;
+  border-radius:6px;background:white;flex-shrink:0;
+}
+.task-check.done{background:var(--accent);border-color:var(--accent);color:white}
+.task-text{font-size:12px;font-weight:600;flex:1}
+.task-text.done{text-decoration:line-through;color:#aeb0b8}
+.task-time{font-size:10px;color:var(--muted)}
+.delete-task{background:transparent;color:#aaa;font-size:15px;padding:5px}
+.empty{font-size:12px;color:var(--muted);padding:20px 0;text-align:center}
+.progress-area{margin-top:20px}
+.progress-line{height:7px;background:#f0eff5;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress-fill{height:100%;width:0;background:var(--accent);border-radius:20px;transition:.3s}
+.progress-info{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:18px}
+.day-name{text-align:center;color:var(--muted);font-size:10px;padding-bottom:8px}
+.day{
+  aspect-ratio:1;border-radius:8px;display:grid;
+  place-items:center;font-size:11px;color:#6d7180;
+}
+.day.today{background:var(--accent);color:white;font-weight:800}
+.day:not(.today):hover{background:var(--soft)}
+.note-box{
+  border:1px solid var(--border);border-radius:11px;
+  padding:13px;margin-top:12px;
+}
+.note-title{font-size:12px;font-weight:700;margin-bottom:6px}
+.note-content{font-size:11px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
+.note-delete{float:right;background:transparent;color:#aaa}
+.notes-list{margin-top:15px}
+.assistant{
+  background:linear-gradient(135deg,#211b40,#30275c);
+  color:white;border-radius:15px;padding:23px;
+  margin-top:20px;position:relative;overflow:hidden;
+}
+.assistant:after{
+  content:"✦";position:absolute;right:30px;top:12px;
+  font-size:90px;color:#ffffff0b;
+}
+.assistant h3{font-family:Manrope;font-size:18px;margin-bottom:8px}
+.assistant p{font-size:11px;color:#c4bddf;line-height:1.7;max-width:450px}
+.assistant button{margin-top:17px;background:white;color:#352b67}
+.view{display:none}
+.view.active{display:block}
+.search{
+  width:100%;padding:13px 15px;border-radius:10px;
+  border:1px solid var(--border);outline:none;margin:20px 0;
+}
+.search:focus,textarea:focus,input:focus{border-color:var(--accent)}
+textarea,.field{
+  width:100%;border:1px solid var(--border);
+  border-radius:10px;padding:13px;font-size:12px;
+  outline:none;margin-top:10px;background:white;
+}
+textarea{resize:vertical;min-height:110px}
+.modal-bg{
+  display:none;position:fixed;inset:0;
+  background:#11182766;z-index:30;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:white;border-radius:17px;padding:25px;
+  width:100%;max-width:390px;
+  box-shadow:0 20px 70px #0002;
+}
+.modal h3{font-family:Manrope;font-size:19px;margin-bottom:15px}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:17px}
+.secondary-btn{background:#f1f1f5;padding:11px 15px;border-radius:9px;font-size:11px}
+.chat-box{
+  height:310px;overflow:auto;background:#faf9fd;
+  border:1px solid var(--border);border-radius:12px;padding:14px;
+  margin:15px 0;
+}
+.message{
+  max-width:85%;padding:11px 13px;border-radius:12px;
+  font-size:12px;line-height:1.6;margin-bottom:10px;
+}
+.message.bot{background:white;border:1px solid var(--border)}
+.message.user{background:var(--accent);color:white;margin-left:auto}
+.chat-input{display:flex;gap:8px}
+.chat-input input{flex:1;min-width:0}
+.mobile-menu{display:none}
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
-
-  <script src="script.js" defer></script>
+@media(max-width:1000px){
+  .main{padding:28px 25px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  .sidebar{width:245px;transform:translateX(-100%);transition:.25s;box-shadow:none}
+  .sidebar.open{transform:translateX(0);box-shadow:10px 0 40px #0002}
+  .main{margin:0;width:100%;padding:20px 16px 50px}
+  .mobile-menu{display:block}
+  .topbar{margin-bottom:27px}
+  .date{display:none}
+  .header-row{align-items:flex-start;gap:10px}
+  .page-title{font-size:25px}
+  .grid{grid-template-columns:1fr 1fr;gap:10px}
+  .card{padding:15px}
+  .stat-value{font-size:23px}
+  .content-grid{grid-template-columns:1fr}
+  .primary-btn{padding:11px;font-size:10px}
+}
+</style>
 </head>
-
 <body>
-
 <div class="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><div class="logo-icon">✦</div>AURA</div>
 
-    <div class="logo">
-      CREATOR<span>HUB</span>
+  <div class="nav-label">WORKSPACE</div>
+  <button class="nav-item active" data-view="dashboard"><span class="nav-icon">▦</span> Inicio</button>
+  <button class="nav-item" data-view="tasks"><span class="nav-icon">✓</span> Mis tareas</button>
+  <button class="nav-item" data-view="calendar"><span class="nav-icon">▣</span> Calendario</button>
+  <button class="nav-item" data-view="notes"><span class="nav-icon">▤</span> Notas</button>
+
+  <div class="nav-label">INTELIGENCIA</div>
+  <button class="nav-item" data-view="assistant"><span class="nav-icon">✧</span> Asistente AURA</button>
+
+  <div class="sidebar-bottom">
+    <div class="nav-label">CUENTA</div>
+    <button class="nav-item" id="themeBtn"><span class="nav-icon">◐</span> Apariencia</button>
+    <div class="profile">
+      <div class="avatar">M</div>
+      <div><div class="profile-name">Mi espacio</div><div class="profile-sub">Personal workspace</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:13px">
+      <button class="icon-btn mobile-menu" id="menuBtn">☰</button>
+      <div class="breadcrumb">Workspace / <span id="crumb">Inicio</span></div>
+    </div>
+    <div class="top-right">
+      <span class="date" id="todayDate"></span>
+      <button class="icon-btn" onclick="showView('assistant')" title="Asistente">✧</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <section class="view active" id="dashboard">
+    <div class="header-row">
+      <div>
+        <h1 class="page-title">Buen día. ✦</h1>
+        <p class="subtitle">Tu espacio personal, organizado en un solo lugar.</p>
+      </div>
+      <button class="primary-btn" onclick="openTaskModal()">＋ Nueva tarea</button>
     </div>
 
-    <div class="section-label">GENERAL</div>
-
-    <button class="nav-item active" data-page="dashboard">
-      <span class="nav-icon">▦</span>
-      Inicio
-    </button>
-
-    <button class="nav-item" data-page="channel">
-      <span class="nav-icon">◉</span>
-      Mi canal
-    </button>
-
-    <button class="nav-item" data-page="videos">
-      <span class="nav-icon">▶</span>
-      Mis videos
-    </button>
-
-    <button class="nav-item" data-page="calendar">
-      <span class="nav-icon">▦</span>
-      Calendario
-    </button>
-
-    <div class="section-label">HERRAMIENTAS</div>
-
-    <button class="nav-item" data-page="ideas">
-      <span class="nav-icon">✧</span>
-      Ideas y guiones
-    </button>
-
-    <button class="nav-item" data-page="analytics">
-      <span class="nav-icon">⌁</span>
-      Analíticas
-    </button>
-
-    <button class="nav-item" data-page="earnings">
-      <span class="nav-icon">$</span>
-      Ingresos
-    </button>
-
-    <!-- PLAN PREMIUM -->
-    <div class="sidebar-bottom">
-
-      <div class="upgrade">
-        <strong>CREATOR PRO</strong>
-
-        <p class="muted">
-          Herramientas avanzadas para hacer crecer tu canal.
-        </p>
-
-        <button onclick="alert('Próximamente disponibles.')">
-          Descubrir planes
-        </button>
+    <div class="grid">
+      <div class="card">
+        <span class="stat-icon">✓</span>
+        <div class="card-label">Tareas completadas</div>
+        <div class="stat-value" id="completedStat">0</div>
+        <div class="stat-foot">En tu espacio personal</div>
       </div>
-
+      <div class="card">
+        <span class="stat-icon">◷</span>
+        <div class="card-label">Tareas pendientes</div>
+        <div class="stat-value" id="pendingStat">0</div>
+        <div class="stat-foot">Por completar</div>
+      </div>
+      <div class="card">
+        <span class="stat-icon">▤</span>
+        <div class="card-label">Notas guardadas</div>
+        <div class="stat-value" id="notesStat">0</div>
+        <div class="stat-foot">Tus ideas y apuntes</div>
+      </div>
     </div>
 
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- HEADER -->
-    <header class="topbar">
-
-      <div class="welcome">
-
-        <button
-          class="btn mobile-menu"
-          onclick="toggleMenu()"
-          aria-label="Abrir menú">
-          ☰
-        </button>
-
-        <small id="dateLabel">
-          PANEL DE CONTROL
-        </small>
-
-        <h1 id="greeting">
-          Bienvenido a Creator Hub
-        </h1>
-
+    <div class="content-grid">
+      <div class="card">
+        <div class="section-head">
+          <div><div class="section-title">Tus tareas</div><div class="section-sub">Lo que tenés por hacer</div></div>
+          <button class="small-btn" onclick="showView('tasks')">Ver todas →</button>
+        </div>
+        <div id="dashboardTasks"></div>
+        <div class="progress-area">
+          <div class="progress-info"><span>Progreso general</span><span id="progressText">0%</span></div>
+          <div class="progress-line"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
       </div>
-
-      <div class="top-actions">
-
-        <button class="btn" onclick="exportData()">
-          ↓ Exportar datos
-        </button>
-
-        <div class="avatar">
-          C
-        </div>
-
-      </div>
-
-    </header>
-
-
-    <!-- =========================
-         DASHBOARD
-    ========================== -->
-
-    <section class="page active" id="dashboard">
-
-      <div class="grid stats">
-
-        <div class="card">
-          <div class="stat-label">Suscriptores</div>
-          <div class="stat-value" id="subStat">5.700</div>
-          <div class="stat-change">Datos de demostración</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Visualizaciones</div>
-          <div class="stat-value" id="viewStat">128.450</div>
-          <div class="stat-change">Datos de demostración</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Videos publicados</div>
-          <div class="stat-value" id="videoStat">24</div>
-          <div class="stat-change">En tu registro</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Ingresos estimados</div>
-          <div class="stat-value" id="incomeStat">$0</div>
-          <div class="stat-change">Calculados manualmente</div>
-        </div>
-
-      </div>
-
-
-      <div class="grid content-grid">
-
-        <!-- GRÁFICO -->
-        <div class="card">
-
-          <div class="card-head">
-
-            <h3>Rendimiento del canal</h3>
-
-            <small>Últimos 7 días · Ejemplo</small>
-
-          </div>
-
-          <div class="chart">
-            <canvas id="mainChart"></canvas>
-          </div>
-
-          <div class="chart-legend">
-
-            <span class="legend">
-              <i class="dot" style="background:#9471ff"></i>
-              Visualizaciones
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- ÚLTIMOS VIDEOS -->
-        <div class="card">
-
-          <div class="card-head">
-            <h3>Últimos videos</h3>
-            <small>Tu contenido</small>
-          </div>
-
-          <div id="recentVideos"></div>
-
-        </div>
-
-      </div>
-
-
-      <div class="grid bottom-grid">
-
-        <div class="card">
-
-          <div class="card-head">
-            <h3>Actividad reciente</h3>
-          </div>
-
-          <div class="activity">
-            ✧ Bienvenido a Creator Hub
-            <small>Tu espacio de trabajo está listo</small>
-          </div>
-
-          <div class="activity">
-            ▦ Organizá tus publicaciones
-            <small>Planificá tus próximos videos</small>
-          </div>
-
-          <div class="activity">
-            ↗ Revisá tus resultados
-            <small>Registrá tus estadísticas</small>
-          </div>
-
-        </div>
-
-
-        <div class="card">
-
-          <div class="card-head">
-            <h3>Próximo objetivo</h3>
-          </div>
-
-          <div class="stat-value">10.000</div>
-
-          <div class="stat-label">
-            Suscriptores objetivo
-          </div>
-
-          <div style="background:#292638;height:8px;border-radius:8px;margin:17px 0;overflow:hidden">
-
-            <div
-              id="goalProgress"
-              style="width:57%;background:var(--accent);height:100%;border-radius:8px">
-            </div>
-
-          </div>
-
-          <small class="muted" id="goalText">
-            5.700 de 10.000 suscriptores
-          </small>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         MI CANAL
-    ========================== -->
-
-    <section class="page" id="channel">
-
-      <h2 class="page-title">Mi canal</h2>
-
-      <p class="page-description">
-        Configurá la información de tu canal y tus estadísticas.
-      </p>
 
       <div class="card">
-
-        <div class="field">
-
-          <label for="channelName">
-            Nombre del canal
-          </label>
-
-          <input
-            class="input"
-            id="channelName"
-            value="Mi canal de YouTube">
-
+        <div class="section-head">
+          <div><div class="section-title">Calendario</div><div class="section-sub" id="monthName"></div></div>
+          <button class="small-btn" onclick="showView('calendar')">Abrir →</button>
         </div>
-
-
-        <div class="form-grid">
-
-          <div class="field">
-
-            <label for="channelSubs">
-              Suscriptores actuales
-            </label>
-
-            <input
-              class="input"
-              id="channelSubs"
-              type="number"
-              min="0"
-              value="5700">
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="channelViews">
-              Visualizaciones totales
-            </label>
-
-            <input
-              class="input"
-              id="channelViews"
-              type="number"
-              min="0"
-              value="128450">
-
-          </div>
-
-        </div>
-
-
-        <button class="btn primary" onclick="saveChannel()">
-          Guardar información
-        </button>
-
-        <p class="muted" style="font-size:10px;margin-top:12px">
-          Estos valores son manuales. Todavía no existe conexión con YouTube.
-        </p>
-
+        <div id="miniCalendar" class="calendar-grid"></div>
       </div>
+    </div>
 
-    </section>
+    <div class="assistant">
+      <h3>Tu asistente personal.</h3>
+      <p>Organizá tus ideas, planificá tus objetivos y mantené todo bajo control desde un solo espacio.</p>
+      <button class="small-btn" onclick="showView('assistant')">Abrir asistente ↗</button>
+    </div>
+  </section>
 
+  <!-- TASKS -->
+  <section class="view" id="tasks">
+    <div class="header-row">
+      <div><h1 class="page-title">Mis tareas</h1><p class="subtitle">Organizá tus pendientes.</p></div>
+      <button class="primary-btn" onclick="openTaskModal()">＋ Crear tarea</button>
+    </div>
+    <input class="search" id="taskSearch" placeholder="⌕  Buscar tareas..." oninput="renderTasks()">
+    <div class="card"><div id="allTasks"></div></div>
+  </section>
 
-    <!-- =========================
-         VIDEOS
-    ========================== -->
-
-    <section class="page" id="videos">
-
-      <h2 class="page-title">Mis videos</h2>
-
-      <p class="page-description">
-        Administrá tu contenido y su rendimiento.
-      </p>
-
-
-      <div class="toolbar">
-
-        <button class="btn primary" onclick="openVideoForm()">
-          + Nuevo video
-        </button>
-
-        <input
-          class="input"
-          id="videoSearch"
-          placeholder="Buscar videos..."
-          oninput="renderVideos()">
-
+  <!-- CALENDAR -->
+  <section class="view" id="calendar">
+    <div class="header-row">
+      <div><h1 class="page-title">Calendario</h1><p class="subtitle">Consultá las fechas y organizá tus días.</p></div>
+      <button class="primary-btn" onclick="openTaskModal()">＋ Nueva tarea</button>
+    </div>
+    <div class="card">
+      <div class="section-head">
+        <button class="icon-btn" onclick="changeMonth(-1)">‹</button>
+        <div class="section-title" id="fullMonth"></div>
+        <button class="icon-btn" onclick="changeMonth(1)">›</button>
       </div>
+      <div id="fullCalendar" class="calendar-grid"></div>
+    </div>
+  </section>
 
+  <!-- NOTES -->
+  <section class="view" id="notes">
+    <div class="header-row">
+      <div><h1 class="page-title">Mis notas</h1><p class="subtitle">Un lugar para guardar tus ideas.</p></div>
+      <button class="primary-btn" onclick="openNoteModal()">＋ Nueva nota</button>
+    </div>
+    <div class="card">
+      <div class="section-head"><div class="section-title">Tus apuntes</div></div>
+      <div id="notesList"></div>
+    </div>
+  </section>
 
-      <div class="card" id="videoForm" style="display:none;margin-bottom:18px">
-
-        <h3 style="margin-bottom:16px">
-          Agregar video
-        </h3>
-
-        <div class="form-grid">
-
-          <div class="field full">
-
-            <label for="vTitle">Título</label>
-
-            <input
-              class="input"
-              id="vTitle"
-              placeholder="Título del video">
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="vViews">Visualizaciones</label>
-
-            <input
-              class="input"
-              type="number"
-              min="0"
-              id="vViews"
-              value="0">
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="vStatus">Estado</label>
-
-            <select class="input" id="vStatus">
-
-              <option>Publicado</option>
-              <option>En producción</option>
-              <option>Idea</option>
-
-            </select>
-
-          </div>
-
-        </div>
-
-
-        <button class="btn primary" onclick="addVideo()">
-          Guardar video
-        </button>
-
-        <button class="btn" onclick="closeVideoForm()">
-          Cancelar
-        </button>
-
+  <!-- ASSISTANT -->
+  <section class="view" id="assistant">
+    <div class="header-row">
+      <div><h1 class="page-title">Asistente AURA</h1><p class="subtitle">Tu espacio de conversación y organización.</p></div>
+    </div>
+    <div class="card">
+      <div class="section-title">✦ Hola, ¿en qué puedo ayudarte?</div>
+      <div class="section-sub">Modo demostración · Sin conexión a un modelo de IA</div>
+      <div class="chat-box" id="chatBox">
+        <div class="message bot">¡Hola! Soy AURA. Puedo ayudarte con algunas ideas y organizar tus tareas en esta versión de demostración.</div>
       </div>
-
-
-      <div class="card table-wrap">
-
-        <table class="data-table">
-
-          <thead>
-
-            <tr>
-              <th>VIDEO</th>
-              <th>VISITAS</th>
-              <th>ESTADO</th>
-              <th>ACCIÓN</th>
-            </tr>
-
-          </thead>
-
-          <tbody id="videoTable"></tbody>
-
-        </table>
-
+      <div class="chat-input">
+        <input class="field" id="chatInput" placeholder="Escribí tu mensaje..." onkeydown="if(event.key==='Enter')sendMessage()">
+        <button class="primary-btn" onclick="sendMessage()">Enviar ↗</button>
       </div>
+    </div>
+  </section>
 
-    </section>
-
-
-    <!-- =========================
-         CALENDARIO
-    ========================== -->
-
-    <section class="page" id="calendar">
-
-      <h2 class="page-title">Calendario de contenido</h2>
-
-      <p class="page-description">
-        Organizá tus próximas publicaciones.
-      </p>
-
-
-      <div class="card">
-
-        <div class="card-head">
-
-          <button class="btn" onclick="changeMonth(-1)">
-            ←
-          </button>
-
-          <h3 id="monthLabel"></h3>
-
-          <button class="btn" onclick="changeMonth(1)">
-            →
-          </button>
-
-        </div>
-
-        <div class="calendar" id="calendarGrid"></div>
-
-      </div>
-
-
-      <div class="card" style="margin-top:18px">
-
-        <h3 style="margin-bottom:15px">
-          Agregar publicación
-        </h3>
-
-        <div class="form-grid">
-
-          <div class="field">
-
-            <label for="eventTitle">Título</label>
-
-            <input
-              class="input"
-              id="eventTitle"
-              placeholder="Nombre del video">
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="eventDate">Fecha</label>
-
-            <input
-              class="input"
-              type="date"
-              id="eventDate">
-
-          </div>
-
-        </div>
-
-        <button class="btn primary" onclick="addEvent()">
-          Agregar al calendario
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         IDEAS Y GUIONES
-    ========================== -->
-
-    <section class="page" id="ideas">
-
-      <h2 class="page-title">Ideas y guiones</h2>
-
-      <p class="page-description">
-        Guardá tus ideas para futuros contenidos.
-      </p>
-
-
-      <div class="card" style="margin-bottom:18px">
-
-        <div class="field">
-
-          <label for="ideaTitle">
-            Título de la idea
-          </label>
-
-          <input
-            class="input"
-            id="ideaTitle"
-            placeholder="Ej: 10 futbolistas que desaparecieron">
-
-        </div>
-
-
-        <div class="field">
-
-          <label for="ideaDescription">
-            Descripción o guion
-          </label>
-
-          <textarea
-            class="input"
-            id="ideaDescription"
-            rows="4"
-            placeholder="Desarrollá tu idea...">
-          </textarea>
-
-        </div>
-
-
-        <button class="btn primary" onclick="addIdea()">
-          Guardar idea
-        </button>
-
-      </div>
-
-
-      <div id="ideasList"></div>
-
-    </section>
-
-
-    <!-- =========================
-         ANALÍTICAS
-    ========================== -->
-
-    <section class="page" id="analytics">
-
-      <h2 class="page-title">Analíticas</h2>
-
-      <p class="page-description">
-        Registrá y compará las métricas de tus publicaciones.
-      </p>
-
-
-      <div class="grid stats">
-
-        <div class="card">
-          <div class="stat-label">Total de videos</div>
-          <div class="stat-value" id="analyticsVideos">0</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Visitas registradas</div>
-          <div class="stat-value" id="analyticsViews">0</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Promedio por video</div>
-          <div class="stat-value" id="analyticsAverage">0</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Ideas guardadas</div>
-          <div class="stat-value" id="analyticsIdeas">0</div>
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="card-head">
-          <h3>Comparación de videos</h3>
-        </div>
-
-        <div class="chart">
-          <canvas id="analyticsChart"></canvas>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         INGRESOS
-    ========================== -->
-
-    <section class="page" id="earnings">
-
-      <h2 class="page-title">Calculadora de ingresos</h2>
-
-      <p class="page-description">
-        Simulá posibles ingresos según las visitas y el RPM.
-      </p>
-
-
-      <div class="card" style="max-width:650px">
-
-        <div class="field">
-
-          <label for="calcViews">
-            Visualizaciones mensuales
-          </label>
-
-          <input
-            class="input"
-            id="calcViews"
-            type="number"
-            min="0"
-            value="100000">
-
-        </div>
-
-
-        <div class="field">
-
-          <label for="calcRPM">
-            RPM estimado (USD por cada 1.000 visitas)
-          </label>
-
-          <input
-            class="input"
-            id="calcRPM"
-            type="number"
-            min="0"
-            step="0.1"
-            value="1.5">
-
-        </div>
-
-
-        <button class="btn primary" onclick="calculate()">
-          Calcular ingresos
-        </button>
-
-
-        <div class="result-box">
-
-          <span class="muted">
-            Ingresos mensuales estimados
-          </span>
-
-          <strong id="earningsResult">
-            USD 150.00
-          </strong>
-
-          <small class="muted">
-            Estimación orientativa, no representa ingresos garantizados.
-          </small>
-
-        </div>
-
-
-        <div style="margin-top:18px;font-size:12px;line-height:1.8;color:var(--muted)">
-
-          Fórmula: (visualizaciones ÷ 1.000) × RPM.
-
-          <br>
-
-          El RPM real varía según audiencia, formato, país, temática y monetización.
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
+</main>
 </div>
 
+<!-- TASK MODAL -->
+<div class="modal-bg" id="taskModal">
+  <div class="modal">
+    <h3>Nueva tarea</h3>
+    <input class="field" id="taskInput" placeholder="¿Qué tenés que hacer?">
+    <input class="field" id="taskTime" type="date">
+    <div class="modal-actions">
+      <button class="secondary-btn" onclick="closeModal('taskModal')">Cancelar</button>
+      <button class="primary-btn" onclick="addTask()">Guardar tarea</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE MODAL -->
+<div class="modal-bg" id="noteModal">
+  <div class="modal">
+    <h3>Nueva nota</h3>
+    <input class="field" id="noteTitle" placeholder="Título de la nota">
+    <textarea id="noteContent" placeholder="Escribí tu idea..."></textarea>
+    <div class="modal-actions">
+      <button class="secondary-btn" onclick="closeModal('noteModal')">Cancelar</button>
+      <button class="primary-btn" onclick="addNote()">Guardar nota</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let tasks = JSON.parse(localStorage.getItem('aura_tasks') || '[]');
+let notes = JSON.parse(localStorage.getItem('aura_notes') || '[]');
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+function save(){
+  localStorage.setItem('aura_tasks',JSON.stringify(tasks));
+  localStorage.setItem('aura_notes',JSON.stringify(notes));
+  renderAll();
+}
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $(id).classList.add('active');
+  document.querySelectorAll('.nav-item[data-view]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.view===id);
+  });
+  const labels={dashboard:'Inicio',tasks:'Mis tareas',calendar:'Calendario',notes:'Notas',assistant:'Asistente AURA'};
+  $('crumb').textContent=labels[id];
+  $('sidebar').classList.remove('open');
+  if(id==='calendar')renderCalendar('fullCalendar');
+  if(id==='tasks')renderTasks();
+  if(id==='notes')renderNotes();
+}
+
+document.querySelectorAll('.nav-item[data-view]').forEach(btn=>{
+  btn.addEventListener('click',()=>showView(btn.dataset.view));
+});
+
+$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open');
+
+function openTaskModal(){
+  $('taskInput').value='';
+  $('taskTime').value='';
+  $('taskModal').classList.add('open');
+  $('taskInput').focus();
+}
+function openNoteModal(){
+  $('noteTitle').value='';
+  $('noteContent').value='';
+  $('noteModal').classList.add('open');
+}
+function closeModal(id){$(id).classList.remove('open')}
+
+function addTask(){
+  const name=$('taskInput').value.trim();
+  if(!name){alert('Escribí el nombre de la tarea.');return}
+  tasks.push({
+    id:Date.now(),name,
+    date:$('taskTime').value,
+    done:false
+  });
+  closeModal('taskModal');
+  save();
+}
+
+function toggleTask(id){
+  tasks=tasks.map(t=>t.id===id?{...t,done:!t.done}:t);
+  save();
+}
+function deleteTask(id){
+  tasks=tasks.filter(t=>t.id!==id);
+  save();
+}
+
+function taskHTML(t){
+  return `<div class="task">
+    <button class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})">${t.done?'✓':''}</button>
+    <div class="task-text ${t.done?'done':''}">${escapeHTML(t.name)}
+      ${t.date?`<div class="task-time">${escapeHTML(t.date)}</div>`:''}
+    </div>
+    <button class="delete-task" onclick="deleteTask(${t.id})">×</button>
+  </div>`;
+}
+function renderTasks(){
+  const query=($('taskSearch')?.value||'').toLowerCase();
+  const filtered=tasks.filter(t=>t.name.toLowerCase().includes(query));
+  $('allTasks').innerHTML=filtered.length
+    ?filtered.map(taskHTML).join('')
+    :'<div class="empty">No hay tareas para mostrar.</div>';
+}
+function renderDashboard(){
+  const done=tasks.filter(t=>t.done).length;
+  const pending=tasks.length-done;
+  const percent=tasks.length?Math.round(done/tasks.length*100):0;
+  $('completedStat').textContent=done;
+  $('pendingStat').textContent=pending;
+  $('notesStat').textContent=notes.length;
+  $('progressText').textContent=percent+'%';
+  $('progressFill').style.width=percent+'%';
+  $('dashboardTasks').innerHTML=tasks.length
+    ?tasks.slice(-5).reverse().map(taskHTML).join('')
+    :'<div class="empty">Todavía no tenés tareas. ¡Agregá tu primera!</div>';
+}
+
+function addNote(){
+  const title=$('noteTitle').value.trim();
+  const content=$('noteContent').value.trim();
+  if(!title||!content){alert('Completá el título y el contenido.');return}
+  notes.unshift({id:Date.now(),title,content});
+  closeModal('noteModal');
+  save();
+}
+function deleteNote(id){
+  notes=notes.filter(n=>n.id!==id);
+  save();
+}
+function renderNotes(){
+  $('notesList').innerHTML=notes.length?notes.map(n=>`
+    <div class="note-box">
+      <button class="note-delete" onclick="deleteNote(${n.id})">×</button>
+      <div class="note-title">${escapeHTML(n.title)}</div>
+      <div class="note-content">${escapeHTML(n.content)}</div>
+    </div>`).join(''):'<div class="empty">Todavía no guardaste ninguna nota.</div>';
+}
+
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+
+function calendarHTML(target){
+  const now=new Date();
+  const first=new Date(currentYear,currentMonth,1).getDay();
+  const total=new Date(currentYear,currentMonth+1,0).getDate();
+  const names=['D','L','M','X','J','V','S'];
+  let html=names.map(n=>`<div class="day-name">${n}</div>`).join('');
+  for(let i=0;i<first;i++)html+='<div></div>';
+  for(let d=1;d<=total;d++){
+    const isToday=d===now.getDate()&&currentMonth===now.getMonth()&&currentYear===now.getFullYear();
+    html+=`<div class="day ${isToday?'today':''}">${d}</div>`;
+  }
+  $(target).innerHTML=html;
+}
+function renderCalendar(target){
+  const label=new Date(currentYear,currentMonth,1).toLocaleDateString('es-AR',{month:'long',year:'numeric'});
+  if(target==='fullCalendar')$('fullMonth').textContent=label;
+  if(target==='miniCalendar')$('monthName').textContent=label;
+  calendarHTML(target);
+}
+function changeMonth(amount){
+  currentMonth+=amount;
+  if(currentMonth>11){currentMonth=0;currentYear++}
+  if(currentMonth<0){currentMonth=11;currentYear--}
+  renderCalendar('fullCalendar');
+}
+
+function sendMessage(){
+  const input=$('chatInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  const box=$('chatBox');
+  box.innerHTML+=`<div class="message user">${escapeHTML(msg)}</div>`;
+  input.value='';
+  const lower=msg.toLowerCase();
+  let answer='Puedo ayudarte a organizar tus tareas, pensar objetivos o guardar ideas. Probá preguntarme cómo organizar tu día.';
+  if(lower.includes('tarea'))answer=`Tenés ${tasks.length} tareas en total y ${tasks.filter(t=>!t.done).length} pendientes. Podés administrarlas desde la sección Mis tareas.`;
+  else if(lower.includes('nota'))answer=`Actualmente tenés ${notes.length} notas guardadas. Podés crear más desde la sección Mis notas.`;
+  else if(lower.includes('hola'))answer='¡Hola! ¿Qué te gustaría organizar hoy?';
+  else if(lower.includes('objetivo'))answer='Un buen objetivo debe ser claro, concreto y tener una fecha. Podés dividirlo en pequeñas tareas desde tu espacio.';
+  box.innerHTML+=`<div class="message bot">${escapeHTML(answer)}</div>`;
+  box.scrollTop=box.scrollHeight;
+}
+
+$('themeBtn').onclick=()=>{
+  const dark=document.body.classList.toggle('dark');
+  document.documentElement.style.setProperty('--bg',dark?'#111218':'#f6f7f9');
+  document.documentElement.style.setProperty('--panel',dark?'#1b1c24':'#ffffff');
+  document.documentElement.style.setProperty('--text',dark?'#f3f3f8':'#17191f');
+  document.documentElement.style.setProperty('--border',dark?'#30313b':'#eceef1');
+  document.documentElement.style.setProperty('--muted',dark?'#a2a4b0':'#9297a2');
+  localStorage.setItem('aura_dark',dark?'1':'0');
+};
+if(localStorage.getItem('aura_dark')==='1')$('themeBtn').click();
+
+$('todayDate').textContent=new Date().toLocaleDateString('es-AR',{
+  weekday:'long',day:'numeric',month:'long',year:'numeric'
+});
+
+function renderAll(){
+  renderDashboard();
+  renderTasks();
+  renderNotes();
+  renderCalendar('miniCalendar');
+}
+renderAll();
+</script>
 </body>
 </html>
